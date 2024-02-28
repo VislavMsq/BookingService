@@ -25,32 +25,6 @@
         </createTable>
     </changeSet>
     <!-- endregion currencies table -->
-    <!-- region apartment_categories table -->
-    <changeSet author="Vladyslav Mosiuk" id="create apartment_categories table">
-        <preConditions onFail="CONTINUE" onFailMessage="Table apartment_categories already exists">
-            <not>
-                <tableExists tableName="apartment_categories"/>
-            </not>
-        </preConditions>
-        <createTable tableName="apartment_categories">
-            <column name="id" type="uuid">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="abbreviation" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="type" type="varchar(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="sleep_place" type="decimal(10)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <!-- endregion apartment_categories table -->
     <!-- region users table -->
     <changeSet author="Vladyslav Mosiuk" id="create users table">
         <preConditions onFail="CONTINUE" onFailMessage="Table users already exists">
@@ -62,8 +36,8 @@
             <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="parent_id" type="uuid">
-                <constraints foreignKeyName="parent_id" references="users(id)" nullable="true"/>
+            <column name="owner_id" type="uuid">
+                <constraints foreignKeyName="owner_id" references="users(id)" nullable="true"/>
             </column>
             <column name="currency_id" type="uuid">
                 <constraints foreignKeyName="currency_id" references="currencies(id)" nullable="false"/>
@@ -104,6 +78,41 @@
         </createTable>
     </changeSet>
     <!-- endregion users table -->
+    <!-- region apartment_categories table -->
+    <changeSet author="Vladyslav Mosiuk" id="create apartment_categories table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table apartment_categories already exists">
+            <not>
+                <tableExists tableName="apartment_categories"/>
+            </not>
+        </preConditions>
+        <createTable tableName="apartment_categories">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="owner_id" type="uuid">
+                <constraints foreignKeyName="owner_id" references="users(id)" nullable="true"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="abbreviation" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sleep_place" type="decimal(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <!-- endregion apartment_categories table -->
     <!-- region clients table -->
     <changeSet author="Vladyslav Mosiuk" id="create clients table">
         <preConditions onFail="CONTINUE" onFailMessage="Table clients already exists">
@@ -205,6 +214,9 @@
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <!-- endregion apartments table -->
@@ -278,6 +290,12 @@
             <column name="priority" type="int(10)">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <!-- endregion category_price table -->
@@ -311,6 +329,12 @@
             <column name="price" type="decimal(15,2)">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <!-- endregion category_price_to_apartments table -->
@@ -335,6 +359,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="end_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -367,6 +397,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="is_edited_price" type="bool">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -408,6 +444,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="apartments_sleeping_places" type="decimal(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>

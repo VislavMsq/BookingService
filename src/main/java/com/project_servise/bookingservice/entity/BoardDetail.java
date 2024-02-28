@@ -4,31 +4,22 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.UUID;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Table(name = "board_details")
-public class BoardDetail {
-
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class BoardDetail extends BaseEntity {
 
     @Column(name = "price")
     private BigDecimal price;
 
-    @UpdateTimestamp
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDate date;
 
     @Column(name = "client_name")
     private String clientName;
@@ -39,44 +30,27 @@ public class BoardDetail {
     @Column(name = "apartments_sleeping_places")
     private BigDecimal apartmentSleepingPlace;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id", referencedColumnName = "id")
     private Booking booking;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apartment_id", referencedColumnName = "id")
     private Apartment apartment;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    private User owner;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
     private Currency currnecy;
 
     @Override
     public String toString() {
         return "BoardDetail{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", price=" + price +
                 ", date=" + date +
                 ", clientName='" + clientName + '\'' +
                 ", apartmentCity='" + apartmentCity + '\'' +
                 ", apartmentSleepingPlace=" + apartmentSleepingPlace +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BoardDetail that = (BoardDetail) o;
-        return Objects.equals(id, that.id) && Objects.equals(price, that.price) && Objects.equals(clientName, that.clientName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, price, clientName);
     }
 }
