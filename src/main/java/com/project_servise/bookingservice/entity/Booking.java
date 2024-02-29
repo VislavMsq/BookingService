@@ -24,9 +24,6 @@ public class Booking extends BaseEntity {
     @Column(name = "is_edited_price")
     private Boolean isEditedPrice;
 
-    @Column(name = "currency_code")
-    private String currencyCode;
-
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
@@ -36,6 +33,10 @@ public class Booking extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apartament_id", referencedColumnName = "id")
     private Apartment apartment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+    private Currency currency;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "id")
@@ -48,7 +49,6 @@ public class Booking extends BaseEntity {
                 ", status='" + status + '\'' +
                 ", price=" + price +
                 ", isEditedPrice=" + isEditedPrice +
-                ", currencyCode='" + currencyCode + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 '}';

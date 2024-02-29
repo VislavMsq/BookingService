@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -16,10 +19,17 @@ public class CategoryPriceSchedule extends BaseEntity {
     @JoinColumn(name = "category_price_id", referencedColumnName = "id")
     private CategoryPrice categoryPrice;
 
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
+
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+
     @Override
     public String toString() {
         return "CategoryPriceSchedule{" +
-                "id=" + getId() +
+                "endDate=" + endDate +
+                ", startDate=" + startDate +
                 '}';
     }
 }

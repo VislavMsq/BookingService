@@ -1,5 +1,6 @@
 package com.project_servise.bookingservice.entity;
 
+import com.project_servise.bookingservice.entity.enam.Priority;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,9 @@ public class CategoryPrice extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "priority")
-    private Integer priority;
+    private Priority priority;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
