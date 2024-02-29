@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "category_prices")
-public class CategoryPrice extends BaseEntity {
+@Table(name = "price_categories")
+public class PriceCategory extends BaseEntity {
 
     @Column(name = "name")
     private String name;

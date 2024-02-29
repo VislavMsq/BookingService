@@ -13,8 +13,8 @@ import lombok.Setter;
 public class WorkerToApartment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "apartament_id", referencedColumnName = "id")
-    private Apartment apartament;
+    @JoinColumn(name = "apartment_id", referencedColumnName = "id")
+    private Apartment apartment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worker_id", referencedColumnName = "id")

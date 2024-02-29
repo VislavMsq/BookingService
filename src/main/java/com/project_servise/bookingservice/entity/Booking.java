@@ -31,7 +31,7 @@ public class Booking extends BaseEntity {
     private LocalDateTime endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "apartament_id", referencedColumnName = "id")
+    @JoinColumn(name = "apartment_id", referencedColumnName = "id")
     private Apartment apartment;
 
     @ManyToOne(fetch = FetchType.LAZY)

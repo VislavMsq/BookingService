@@ -5,19 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "category_price_schedule")
+@Table(name = "price_category_schedule")
 public class CategoryPriceSchedule extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_price_id", referencedColumnName = "id")
-    private CategoryPrice categoryPrice;
+    @JoinColumn(name = "price_category_id", referencedColumnName = "id")
+    private PriceCategory priceCategory;
 
     @Column(name = "end_date")
     private LocalDateTime endDate;

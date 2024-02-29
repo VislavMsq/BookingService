@@ -54,10 +54,10 @@
             <column name="timezone" type="int(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="firstname" type="varchar(50)">
+            <column name="first_name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="lastname" type="varchar(50)">
+            <column name="last_name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="country" type="varchar(30)">
@@ -133,10 +133,10 @@
             <column name="phone" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="firstname" type="varchar(50)">
+            <column name="first_name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="lastname" type="varchar(50)">
+            <column name="last_name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="country" type="varchar(30)">
@@ -267,14 +267,14 @@
         </createTable>
     </changeSet>
     <!-- endregion bookings table -->
-    <!-- region category_price table -->
-    <changeSet author="Vladyslav Mosiuk" id="PS-13 create category_price table">
-        <preConditions onFail="CONTINUE" onFailMessage="Table category_price already exists">
+    <!-- region price_categories table -->
+    <changeSet author="Vladyslav Mosiuk" id="PS-13 create price_categories table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table price_categories already exists">
             <not>
-                <tableExists tableName="category_price"/>
+                <tableExists tableName="price_categories"/>
             </not>
         </preConditions>
-        <createTable tableName="category_price">
+        <createTable tableName="price_categories">
             <column name="id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -298,15 +298,15 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion category_price table -->
-    <!-- region category_price_to_apartments table -->
-    <changeSet author="Vladyslav Mosiuk" id="PS-13 create category_price_to_apartments table">
-        <preConditions onFail="CONTINUE" onFailMessage="Table category_price_to_apartments already exists">
+    <!-- endregion price_categories table -->
+    <!-- region price_category_to_apartments_categories table -->
+    <changeSet author="Vladyslav Mosiuk" id="PS-13 create price_category_to_apartments_categories table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table price_category_to_apartments_categories already exists">
             <not>
-                <tableExists tableName="category_price_to_apartments"/>
+                <tableExists tableName="price_category_to_apartments_categories"/>
             </not>
         </preConditions>
-        <createTable tableName="category_price_to_apartments">
+        <createTable tableName="price_category_to_apartments_categories">
             <column name="id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -314,8 +314,8 @@
                 <constraints foreignKeyName="apartment_category_id" references="apartment_categories(id)"
                              nullable="false"/>
             </column>
-            <column name="category_price_id" type="uuid">
-                <constraints foreignKeyName="category_price_id" references="category_price(id)" nullable="false"/>
+            <column name="price_category_id" type="uuid">
+                <constraints foreignKeyName="price_category_id" references="price_categories(id)" nullable="false"/>
             </column>
             <column name="owner_id" type="uuid">
                 <constraints foreignKeyName="owner_id" references="users(id)" nullable="false"/>
@@ -337,23 +337,23 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion category_price_to_apartments table -->
-    <!-- region category_price_schedule table -->
-    <changeSet author="Vladyslav Mosiuk" id="PS-13 create category_price_schedule table">
-        <preConditions onFail="CONTINUE" onFailMessage="Table category_price_schedule already exists">
+    <!-- endregion price_category_to_apartments_categories table -->
+    <!-- region price_category_schedule table -->
+    <changeSet author="Vladyslav Mosiuk" id="PS-13 create price_category_schedule table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table price_category_schedule already exists">
             <not>
-                <tableExists tableName="category_price_schedule"/>
+                <tableExists tableName="price_category_schedule"/>
             </not>
         </preConditions>
-        <createTable tableName="category_price_schedule">
+        <createTable tableName="price_category_schedule">
             <column name="id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="owner_id" type="uuid">
                 <constraints foreignKeyName="owner_id" references="users(id)" nullable="false"/>
             </column>
-            <column name="category_price_id" type="uuid">
-                <constraints foreignKeyName="category_price_id" references="category_price(id)" nullable="false"/>
+            <column name="price_category_id" type="uuid">
+                <constraints foreignKeyName="price_category_id" references="price_categories(id)" nullable="false"/>
             </column>
             <column name="start_date" type="timestamp">
                 <constraints nullable="false"/>
@@ -456,13 +456,13 @@
     </changeSet>
     <!-- endregion board_details table -->
     <!-- region workers_to_appartments -->
-    <changeSet author="Vladyslav Mosiuk" id="PS-13 create workers_to_appartments table">
-        <preConditions onFail="CONTINUE" onFailMessage="Table workers_to_appartments already exists">
+    <changeSet author="Vladyslav Mosiuk" id="PS-13 create workers_to_apartments table">
+        <preConditions onFail="CONTINUE" onFailMessage="Table workers_to_apartments already exists">
             <not>
-                <tableExists tableName="workers_to_appartments"/>
+                <tableExists tableName="workers_to_apartments"/>
             </not>
         </preConditions>
-        <createTable tableName="workers_to_appartments">
+        <createTable tableName="workers_to_apartments">
             <column name="id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "category_price_to_apartments")
+@Table(name = "price_category_to_apartments_categories")
 public class CategoryPriceToApartments extends BaseEntity {
 
     @Column(name = "price")
@@ -22,12 +22,12 @@ public class CategoryPriceToApartments extends BaseEntity {
     private LocalDateTime year;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "apartment_id", referencedColumnName = "id")
-    private Apartment apartment;
+    @JoinColumn(name = "apartment_category_id", referencedColumnName = "id")
+    private ApartmentCategory apartmentCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_price_id", referencedColumnName = "id")
-    private CategoryPrice categoryPrice;
+    @JoinColumn(name = "price_category_id", referencedColumnName = "id")
+    private PriceCategory priceCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
