@@ -1,5 +1,6 @@
 package com.project_servise.bookingservice.entity;
 
+import com.project_servise.bookingservice.entity.enums.ApartmentType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ public class Apartment extends BaseEntity {
     private String name;
 
     @Column(name = "type")
-    private String type;
+    private ApartmentType type;
 
     @Column(name = "country")
     private String country;

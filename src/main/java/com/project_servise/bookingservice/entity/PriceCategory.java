@@ -1,6 +1,6 @@
 package com.project_servise.bookingservice.entity;
 
-import com.project_servise.bookingservice.entity.enam.Priority;
+import com.project_servise.bookingservice.entity.enums.Priority;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
