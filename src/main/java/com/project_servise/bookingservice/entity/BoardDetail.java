@@ -15,6 +15,18 @@ import java.time.LocalDate;
 @Table(name = "board_details")
 public class BoardDetail extends BaseEntity {
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
+    private Booking booking;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apartment_id", referencedColumnName = "id")
+    private Apartment apartment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+    private Currency currency;
+
     @Column(name = "price")
     private BigDecimal price;
 
@@ -29,18 +41,6 @@ public class BoardDetail extends BaseEntity {
 
     @Column(name = "apartments_sleeping_places")
     private BigDecimal apartmentSleepingPlace;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booking_id", referencedColumnName = "id")
-    private Booking booking;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "apartment_id", referencedColumnName = "id")
-    private Apartment apartment;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "currency_id", referencedColumnName = "id")
-    private Currency currnecy;
 
     @Override
     public String toString() {
