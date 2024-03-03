@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <!-- region currencies table -->
-    <changeSet author="Vladyslav Mosiuk"  id="PS-13 create currencies table">
+    <changeSet author="Vladyslav Mosiuk" id="PS-13 create currencies table">
         <preConditions onFail="CONTINUE" onFailMessage="Table currencies already exists">
             <not>
                 <tableExists tableName="currencies"/>
@@ -142,7 +140,7 @@
             <column name="country" type="varchar(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="language" type="varchar(3)">
+            <column name="language" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
             <column name="comment_text" type="varchar(255)">
@@ -199,7 +197,7 @@
             <column name="pet" type="bool">
                 <constraints nullable="false"/>
             </column>
-            <column name="smokable" type="bool">
+            <column name="smoking" type="bool">
                 <constraints nullable="false"/>
             </column>
             <column name="parking_place" type="int(3)">
@@ -320,7 +318,7 @@
             <column name="currency_id" type="uuid">
                 <constraints foreignKeyName="currency_id" references="currencies(id)" nullable="false"/>
             </column>
-            <column name="year" type="timestamp">
+            <column name="period" type="int">
                 <constraints nullable="false"/>
             </column>
             <column name="price" type="decimal(15,2)">

@@ -1,6 +1,5 @@
 package com.project_servise.bookingservice.entity;
 
-import com.project_servise.bookingservice.entity.enums.ApartmentType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "apartments")
 public class Apartment extends BaseEntity {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    private Apartment parent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apartment_category_id", referencedColumnName = "id")
+    private ApartmentCategory apartmentCategoryId;
 
     @Column(name = "name")
     private String name;
@@ -42,14 +49,6 @@ public class Apartment extends BaseEntity {
 
     @Column(name = "description")
     private String description;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id", referencedColumnName = "id")
-    private Apartment parent;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "apartment_category_id", referencedColumnName = "id")
-    private ApartmentCategory apartmentCategoryId;
 
     @Override
     public String toString() {

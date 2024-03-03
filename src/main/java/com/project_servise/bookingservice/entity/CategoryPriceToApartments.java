@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Year;
 
 @Entity
 @Getter
@@ -14,12 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "price_category_to_apartments_categories")
 public class CategoryPriceToApartments extends BaseEntity {
-
-    @Column(name = "price")
-    private BigDecimal price;
-
-    @Column(name = "year")
-    private LocalDateTime year;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apartment_category_id", referencedColumnName = "id")
@@ -33,12 +27,18 @@ public class CategoryPriceToApartments extends BaseEntity {
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
     private Currency currency;
 
+    @Column(name = "price")
+    private BigDecimal price;
+
+    @Column(name = "period")
+    private Year period;
+
     @Override
     public String toString() {
         return "CategoryPriceToApartments{" +
                 "id=" + getId() +
                 ", price=" + price +
-                ", year=" + year +
+                ", period=" + period +
                 '}';
     }
 }
