@@ -2,6 +2,8 @@ package com.project_servise.bookingservice.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class CreateApartmentDTO {
     private String name;
@@ -11,10 +13,11 @@ public class CreateApartmentDTO {
     private String street;
     private String floor;
     private String pet;
-    private String smokable;
+    private String smoking;
     private String parkingPlace;
     private String description;
     private String parent;
     private String apartmentCategoryId;
-    private String currency;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

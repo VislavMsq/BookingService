@@ -1,6 +1,7 @@
 package com.project_servise.bookingservice.service.serviceImpl;
 
 import com.project_servise.bookingservice.dto.ApartmentCategoryCreateDTO;
+import com.project_servise.bookingservice.dto.ApartmentCategoryDTO;
 import com.project_servise.bookingservice.entity.ApartmentCategory;
 import com.project_servise.bookingservice.exception.ApartmentCategoryNotFoundException;
 import com.project_servise.bookingservice.mapper.ApartmentCategoryMapper;
@@ -20,10 +21,10 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
     private final ApartmentCategoryRepository apartmentCategoryRepository;
 
     @Override
-    public ApartmentCategoryCreateDTO createApartmentCategory(ApartmentCategoryCreateDTO apartmentCategoryCreateDTO){
+    public ApartmentCategoryDTO createApartmentCategory(ApartmentCategoryCreateDTO apartmentCategoryCreateDTO){
         ApartmentCategory apartmentCategory = apartmentCategoryMapper.toEntity(apartmentCategoryCreateDTO);
         apartmentCategoryRepository.save(apartmentCategory);
-        return apartmentCategoryMapper.toDTO(apartmentCategory);
+        return apartmentCategoryMapper.toApartmentDTO(apartmentCategory);
     }
 
     public ApartmentCategory getApartmentCategory(String uuid){
@@ -32,12 +33,12 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
     }
 
     @Override
-    public ApartmentCategoryCreateDTO getDTO(String uuid){
-        return apartmentCategoryMapper.toDTO(getApartmentCategory(uuid));
+    public ApartmentCategoryDTO getDTO(String uuid){
+        return apartmentCategoryMapper.toApartmentDTO(getApartmentCategory(uuid));
     }
 
     @Override
-    public List<ApartmentCategoryCreateDTO> getList(){
+    public List<ApartmentCategoryDTO> getList(){
         List<ApartmentCategory> categories = apartmentCategoryRepository.findAll();
         return apartmentCategoryMapper.toListDTO(categories);
     }

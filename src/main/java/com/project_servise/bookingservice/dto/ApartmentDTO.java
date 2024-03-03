@@ -9,5 +9,4 @@ public class ApartmentDTO {
     private String city;
     private String street;
     private String country;
-
 }

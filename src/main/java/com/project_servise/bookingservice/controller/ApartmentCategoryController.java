@@ -1,6 +1,7 @@
 package com.project_servise.bookingservice.controller;
 
 import com.project_servise.bookingservice.dto.ApartmentCategoryCreateDTO;
+import com.project_servise.bookingservice.dto.ApartmentCategoryDTO;
 import com.project_servise.bookingservice.service.ApartmentCategoryService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,19 +18,19 @@ public class ApartmentCategoryController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
-    public ApartmentCategoryCreateDTO createDTO(@RequestBody ApartmentCategoryCreateDTO dto){
+    public ApartmentCategoryDTO createDTO(@RequestBody ApartmentCategoryCreateDTO dto){
         return apartmentCategoryService.createApartmentCategory(dto);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApartmentCategoryCreateDTO findCategory(@PathVariable String id){
+    public ApartmentCategoryDTO findCategory(@PathVariable String id){
         return apartmentCategoryService.getDTO(id);
     }
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
-    public List<ApartmentCategoryCreateDTO> findAllCategories(){
+    public List<ApartmentCategoryDTO> findAllCategories(){
         return apartmentCategoryService.getList();
     }
 }

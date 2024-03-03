@@ -1,13 +1,14 @@
 package com.project_servise.bookingservice.service;
 
 import com.project_servise.bookingservice.dto.ApartmentCategoryCreateDTO;
+import com.project_servise.bookingservice.dto.ApartmentCategoryDTO;
 
 import java.util.List;
 
 public interface ApartmentCategoryService {
-    ApartmentCategoryCreateDTO createApartmentCategory(ApartmentCategoryCreateDTO apartmentCategoryCreateDTO);
+    ApartmentCategoryDTO createApartmentCategory(ApartmentCategoryCreateDTO apartmentCategoryCreateDTO);
 
-    ApartmentCategoryCreateDTO getDTO(String uuid);
+    ApartmentCategoryDTO getDTO(String uuid);
 
-    List<ApartmentCategoryCreateDTO> getList();
+    List<ApartmentCategoryDTO> getList();
 }

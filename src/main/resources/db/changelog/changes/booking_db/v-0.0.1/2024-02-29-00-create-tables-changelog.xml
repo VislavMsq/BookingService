@@ -178,9 +178,6 @@
                 <constraints foreignKeyName="apartment_category_id" references="apartment_categories(id)"
                              nullable="false"/>
             </column>
-            <column name="currency_id" type="uuid">
-                <constraints foreignKeyName="currency_id" references="currencies(id)" nullable="false"/>
-            </column>
             <column name="name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
