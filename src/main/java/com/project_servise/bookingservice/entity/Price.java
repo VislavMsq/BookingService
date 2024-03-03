@@ -15,15 +15,6 @@ import java.time.LocalDate;
 @Table(name = "prices")
 public class Price extends BaseEntity {
 
-    @Column(name = "price")
-    private BigDecimal price;
-
-    @Column(name = "date")
-    private LocalDate date;
-
-    @Column(name = "is_edited_price")
-    private Boolean isEditedPrice;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apartment_id", referencedColumnName = "id")
     private Apartment apartment;
@@ -32,11 +23,19 @@ public class Price extends BaseEntity {
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
     private Currency currency;
 
+    @Column(name = "price")
+    private BigDecimal pricePerDay;
+
+    @Column(name = "date")
+    private LocalDate date;
+
+    @Column(name = "is_edited_price")
+    private Boolean isEditedPrice;
+
     @Override
     public String toString() {
         return "Price{" +
-                "id=" + getId() +
-                ", price=" + price +
+                "pricePerDay=" + pricePerDay +
                 ", date=" + date +
                 ", isEditedPrice=" + isEditedPrice +
                 '}';

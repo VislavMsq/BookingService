@@ -21,7 +21,7 @@ public abstract class BaseEntity {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id",referencedColumnName = "id")
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;
 
     @Column(name = "created_at")

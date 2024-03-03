@@ -12,6 +12,18 @@ import lombok.Setter;
 @Table(name = "apartments")
 public class Apartment extends BaseEntity {
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    private Apartment parent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apartment_category_id", referencedColumnName = "id")
+    private ApartmentCategory apartmentCategoryId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+    private Currency currency;
+
     @Column(name = "name")
     private String name;
 
@@ -33,26 +45,14 @@ public class Apartment extends BaseEntity {
     @Column(name = "pet")
     private Boolean pet;
 
-    @Column(name = "smokable")
-    private Boolean smokable;
+    @Column(name = "smoking")
+    private Boolean smoking;
 
     @Column(name = "parking_place")
     private Integer parkingPlace;
 
     @Column(name = "description")
     private String description;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id", referencedColumnName = "id")
-    private Apartment parent;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "apartment_category_id", referencedColumnName = "id")
-    private ApartmentCategory apartmentCategoryId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "currency_id", referencedColumnName = "id")
-    private Currency currency;
 
     @Override
     public String toString() {
@@ -65,7 +65,7 @@ public class Apartment extends BaseEntity {
                 ", street='" + street + '\'' +
                 ", floor=" + floor +
                 ", pet=" + pet +
-                ", smokable=" + smokable +
+                ", smoking=" + smoking +
                 ", parkingPlace=" + parkingPlace +
                 ", description='" + description + '\'' +
                 '}';

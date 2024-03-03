@@ -1,4 +1,4 @@
-package com.project_servise.bookingservice.entity.enam;
+package com.project_servise.bookingservice.entity.enums;
 
 public enum Priority {
     DEFAULT,
