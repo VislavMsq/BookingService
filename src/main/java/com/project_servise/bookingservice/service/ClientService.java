@@ -6,7 +6,7 @@ import com.project_servise.bookingservice.entity.Client;
 public interface ClientService {
     ClientDto findByPhone(String phone);
 
-    Client createClient(ClientDto clientDto);
+    Client create(ClientDto clientDto);
 
     ClientDto findById(String id);
 }
