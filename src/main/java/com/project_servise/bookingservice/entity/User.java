@@ -1,8 +1,7 @@
 package com.project_servise.bookingservice.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.project_servise.bookingservice.entity.enums.Role;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +12,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "users")
 public class User extends BaseEntity {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+    private Currency currency;
 
     @Column(name = "email")
     private String email;
@@ -39,7 +42,8 @@ public class User extends BaseEntity {
     private String language;
 
     @Column(name = "role")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Override
     public String toString() {

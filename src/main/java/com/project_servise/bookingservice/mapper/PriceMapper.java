@@ -16,7 +16,7 @@ public interface PriceMapper {
     @Mapping(source = "pricePerDay", target = "price")
     @Mapping(source = "apartment.id", target = "apartmentId")
     @Mapping(source = "currency.name", target = "currencyName")
-    @Mapping(source = "currency.currencyCode", target = "currencyCode")
+    @Mapping(source = "currency.code", target = "currencyCode")
     PriceDto mapToDto(Price price);
 
     @IterableMapping(qualifiedByName = "toPriceDto")

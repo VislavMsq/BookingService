@@ -1,22 +1,19 @@
-package com.project_servise.bookingservice.controllers;
+package com.project_servise.bookingservice.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project_servise.bookingservice.dto.BookingDto;
-import com.project_servise.bookingservice.dto.PriceDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql("/database/schema-cleanup.sql")
 @Sql("/database/create_tables.sql")
 @Sql("/database/add_test_data.sql")
-class PriceControllerTest {
+class BookingControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -33,49 +30,42 @@ class PriceControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void getPricesOfApartment() throws Exception {
+    @WithUserDetails(value = "aloha.test@gmail.com")
+    void createBooking() throws Exception {
         //given
         BookingDto bookingDto = new BookingDto();
         bookingDto.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        bookingDto.setCurrencyId("3b56fe6e-6910-4b0d-863e-ac60262e7a17");
+        bookingDto.setClientId("0e288090-280c-489f-8058-bc36d534f3a5");
+        bookingDto.setPrice(300.0);
         bookingDto.setStartDate(LocalDate.of(2024, 2, 29));
         bookingDto.setEndDate(LocalDate.of(2024, 3, 2));
-        List<PriceDto> expected = getExpectedPrices();
+        bookingDto.setIsEditedPrice(true);
 
         String bookingDtoStr = objectMapper.writeValueAsString(bookingDto);
 
         //when
-        String pricesResultStr = mockMvc.perform(MockMvcRequestBuilders.get("/prices")
+        String id = mockMvc.perform(MockMvcRequestBuilders.post("/bookings/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bookingDtoStr))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String bookingJson = mockMvc.perform(MockMvcRequestBuilders.get("/bookings/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
         //then
-        List<PriceDto> actual = objectMapper.readValue(pricesResultStr, new TypeReference<>() {
-        });
-        Assertions.assertEquals(expected, actual);
+        BookingDto bookingDtoResult = objectMapper.readValue(bookingJson, BookingDto.class);
 
-    }
-
-    private List<PriceDto> getExpectedPrices() {
-        PriceDto priceDto1 = new PriceDto();
-        priceDto1.setPrice(100.00);
-        priceDto1.setDate(LocalDate.of(2024, 2, 29));
-        priceDto1.setIsEditedPrice(false);
-        priceDto1.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        priceDto1.setCurrencyName("Peso");
-        priceDto1.setCurrencyCode("PHP");
-
-        PriceDto priceDto2 = new PriceDto();
-        priceDto2.setPrice(150.00);
-        priceDto2.setDate(LocalDate.of(2024, 3, 1));
-        priceDto2.setIsEditedPrice(false);
-        priceDto2.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        priceDto2.setCurrencyName("Yuan Renminbi");
-        priceDto2.setCurrencyCode("CNY");
-
-        return Arrays.asList(priceDto1, priceDto2);
+        Assertions.assertNotNull(bookingDtoResult.getId());
+        Assertions.assertEquals("NEW", bookingDtoResult.getStatus());
+        bookingDtoResult.setId(null);
+        bookingDtoResult.setStatus(null);
+        Assertions.assertEquals(bookingDto, bookingDtoResult);
     }
 }

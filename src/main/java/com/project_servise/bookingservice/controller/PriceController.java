@@ -1,4 +1,4 @@
-package com.project_servise.bookingservice.controllers;
+package com.project_servise.bookingservice.controller;
 
 import com.project_servise.bookingservice.dto.BookingDto;
 import com.project_servise.bookingservice.dto.PriceDto;

@@ -1,10 +1,7 @@
 package com.project_servise.bookingservice.service.impl;
 
 import com.project_servise.bookingservice.dto.BookingDto;
-import com.project_servise.bookingservice.entity.Apartment;
-import com.project_servise.bookingservice.entity.Booking;
-import com.project_servise.bookingservice.entity.Client;
-import com.project_servise.bookingservice.entity.Currency;
+import com.project_servise.bookingservice.entity.*;
 import com.project_servise.bookingservice.entity.enums.Status;
 import com.project_servise.bookingservice.exception.ApartmentNotFoundException;
 import com.project_servise.bookingservice.exception.BookingNotFoundException;
@@ -15,6 +12,7 @@ import com.project_servise.bookingservice.repository.ApartmentRepository;
 import com.project_servise.bookingservice.repository.BookingRepository;
 import com.project_servise.bookingservice.repository.ClientRepository;
 import com.project_servise.bookingservice.repository.CurrencyRepository;
+import com.project_servise.bookingservice.security.UserProvider;
 import com.project_servise.bookingservice.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,12 +28,13 @@ public class BookingServiceImpl implements BookingService {
     private final ClientRepository clientRepository;
     private final CurrencyRepository currencyRepository;
     private final BookingMapper bookingMapper;
+    private final UserProvider userProvider;
 
     @Override
     @Transactional
     public Booking createBooking(BookingDto bookingDto) {
         Booking booking = bookingMapper.mapToEntity(bookingDto);
-        //todo get owner from security
+        User owner = userProvider.getCurrentUser();
         Apartment apartment = apartmentRepository.findById(UUID.fromString(bookingDto.getApartmentId()))
                 .orElseThrow(() -> new ApartmentNotFoundException(String.format("Apartment with id %s not found",
                         bookingDto.getApartmentId())));
@@ -44,7 +43,8 @@ public class BookingServiceImpl implements BookingService {
                         bookingDto.getClientId())));
         Currency currency = currencyRepository.findById(UUID.fromString(bookingDto.getCurrencyId()))
                 .orElseThrow(() -> new CurrencyNotFoundException(String.format("Currency with id %s not found",
-                        bookingDto.getClientId())));
+                        bookingDto.getCurrencyId())));
+        booking.setOwner(owner);
         booking.setApartment(apartment);
         booking.setClient(client);
         booking.setCurrency(currency);

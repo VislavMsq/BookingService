@@ -20,10 +20,6 @@ public class Apartment extends BaseEntity {
     @JoinColumn(name = "apartment_category_id", referencedColumnName = "id")
     private ApartmentCategory apartmentCategoryId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "currency_id", referencedColumnName = "id")
-    private Currency currency;
-
     @Column(name = "name")
     private String name;
 
