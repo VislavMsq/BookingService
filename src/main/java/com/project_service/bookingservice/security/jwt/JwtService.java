@@ -1,4 +1,4 @@
-package com.project_servise.bookingservice.security.jwt;
+package com.project_service.bookingservice.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

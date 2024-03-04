@@ -1,7 +1,7 @@
-package com.project_servise.bookingservice.mapper;
+package com.project_service.bookingservice.mapper;
 
-import com.project_servise.bookingservice.dto.UserDto;
-import com.project_servise.bookingservice.entity.User;
+import com.project_service.bookingservice.dto.UserDto;
+import com.project_service.bookingservice.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

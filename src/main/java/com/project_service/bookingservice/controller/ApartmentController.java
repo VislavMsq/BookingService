@@ -1,7 +1,6 @@
 package com.project_service.bookingservice.controller;
 
 import com.project_service.bookingservice.dto.ApartmentDTO;
-import com.project_service.bookingservice.dto.CreateApartmentDTO;
 import com.project_service.bookingservice.service.ApartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,20 +15,20 @@ public class ApartmentController {
     private final ApartmentService apartmentService;
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.OK)
-    public ApartmentDTO createApartment(@RequestBody CreateApartmentDTO apartmentDTO){
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApartmentDTO createApartment(@RequestBody ApartmentDTO apartmentDTO) {
         return apartmentService.createApartment(apartmentDTO);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApartmentDTO findApartment(@PathVariable String id){
+    public ApartmentDTO findApartment(@PathVariable String id) {
         return apartmentService.findApartment(id);
     }
 
-    @GetMapping("/")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ApartmentDTO> findAllApartments(){
+    public List<ApartmentDTO> findAllApartments() {
         return apartmentService.findAllApartments();
     }
 }

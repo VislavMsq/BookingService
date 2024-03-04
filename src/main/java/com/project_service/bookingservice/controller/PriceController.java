@@ -21,6 +21,4 @@ public class PriceController {
     public List<PriceDto> getPricesOfApartment(@RequestBody BookingDto bookingDto) {
         return priceService.getPricesOfApartment(bookingDto);
     }
-
-
 }

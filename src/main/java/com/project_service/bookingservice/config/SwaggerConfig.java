@@ -1,4 +1,4 @@
-package com.project_servise.bookingservice.config;
+package com.project_service.bookingservice.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

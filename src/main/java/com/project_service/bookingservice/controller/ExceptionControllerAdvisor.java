@@ -1,10 +1,10 @@
-package com.project_servise.bookingservice.controller;
+package com.project_service.bookingservice.controller;
 
-import com.project_servise.bookingservice.dto.ErrorData;
-import com.project_servise.bookingservice.exception.AuthenticationException;
-import com.project_servise.bookingservice.exception.EntityNotFoundException;
-import com.project_servise.bookingservice.exception.NotOwnerException;
-import com.project_servise.bookingservice.exception.UserAlreadyExistsException;
+import com.project_service.bookingservice.dto.ErrorData;
+import com.project_service.bookingservice.exception.AuthenticationException;
+import com.project_service.bookingservice.exception.EntityNotFoundException;
+import com.project_service.bookingservice.exception.NotOwnerException;
+import com.project_service.bookingservice.exception.UserAlreadyExistsException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

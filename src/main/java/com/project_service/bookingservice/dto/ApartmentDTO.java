@@ -5,7 +5,13 @@ import lombok.Data;
 @Data
 public class ApartmentDTO {
     private String name;
+    private String type;
+    private String country;
     private String city;
     private String street;
-    private String country;
+    private String floor;
+    private String pet;
+    private String smoking;
+    private String parkingPlace;
+    private String description;
 }

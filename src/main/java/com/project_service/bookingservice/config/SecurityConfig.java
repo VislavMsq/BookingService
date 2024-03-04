@@ -1,6 +1,6 @@
-package com.project_servise.bookingservice.config;
+package com.project_service.bookingservice.config;
 
-import com.project_servise.bookingservice.security.jwt.JwtFilter;
+import com.project_service.bookingservice.security.jwt.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth", "/users/register",
-                                "/swagger-ui/**",  "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                                "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/**").authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtfilter, UsernamePasswordAuthenticationFilter.class);

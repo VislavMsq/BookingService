@@ -1,6 +1,6 @@
-package com.project_servise.bookingservice.security;
+package com.project_service.bookingservice.security;
 
-import com.project_servise.bookingservice.entity.User;
+import com.project_service.bookingservice.entity.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 

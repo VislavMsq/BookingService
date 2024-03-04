@@ -1,16 +1,8 @@
-package com.project_servise.bookingservice.dto;
+package com.project_service.bookingservice.dto;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
-@Getter
-@RequiredArgsConstructor
-public class ErrorData {
-    private final HttpStatus httpStatus;
-    private final LocalDateTime timestamp;
-    private final String message;
-    private final String details;
+public record ErrorData(HttpStatus httpStatus, LocalDateTime timestamp, String message, String details) {
 }
