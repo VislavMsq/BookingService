@@ -16,6 +16,4 @@ public class CreateApartmentDTO {
     private String smoking;
     private String parkingPlace;
     private String description;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
