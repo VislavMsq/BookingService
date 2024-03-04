@@ -1,9 +1,9 @@
 -- PS-13 create currencies table
 CREATE TABLE IF NOT EXISTS currencies
 (
-    id            UUID PRIMARY KEY NOT NULL,
-    name          VARCHAR(50)      NOT NULL,
-    code          VARCHAR(3)       NOT NULL
+    id   UUID PRIMARY KEY NOT NULL,
+    name VARCHAR(50)      NOT NULL,
+    code VARCHAR(3)       NOT NULL
 );
 
 -- PS-13 create table users
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS users
     first_name  VARCHAR(50)      NOT NULL,
     last_name   VARCHAR(50)      NOT NULL,
     country     VARCHAR(30)      NOT NULL,
-    language    VARCHAR(20)       NOT NULL,
+    language    VARCHAR(20)      NOT NULL,
     role        VARCHAR(20)      NOT NULL,
     created_at  TIMESTAMP        NOT NULL,
     updated_at  TIMESTAMP        NOT NULL,
@@ -65,7 +65,6 @@ CREATE TABLE IF NOT EXISTS apartments
     parent_id             UUID,
     owner_id              UUID,
     apartment_category_id UUID,
-    currency_id           UUID,
     name                  VARCHAR(50)      NOT NULL,
     type                  VARCHAR(30)      NOT NULL,
     country               VARCHAR(30)      NOT NULL,
@@ -80,8 +79,7 @@ CREATE TABLE IF NOT EXISTS apartments
     updated_at            TIMESTAMP        NOT NULL,
     CONSTRAINT fk_apartments_owner FOREIGN KEY (owner_id) REFERENCES users (id),
     CONSTRAINT fk_apartments_parent FOREIGN KEY (parent_id) REFERENCES apartments (id),
-    CONSTRAINT fk_apartments_category FOREIGN KEY (apartment_category_id) REFERENCES apartment_categories (id),
-    CONSTRAINT fk_apartments_currency FOREIGN KEY (currency_id) REFERENCES currencies (id)
+    CONSTRAINT fk_apartments_category FOREIGN KEY (apartment_category_id) REFERENCES apartment_categories (id)
 );
 
 -- PS-13 create bookings table
