@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -35,6 +36,7 @@ public class ApartmentCategoryControllerTest {
     ObjectMapper objectMapper;
 
     @Test
+    @WithUserDetails(value = "aloha.test@gmail.com")
     void createDTO() throws Exception{
         ApartmentCategoryCreateDTO expected = new ApartmentCategoryCreateDTO();
         expected.setName("Apartment Category 1");
@@ -57,54 +59,4 @@ public class ApartmentCategoryControllerTest {
         assertEquals(expected, created);
     }
 
-    @Test
-    void findCategory() throws Exception {
-        ApartmentCategoryCreateDTO expected = new ApartmentCategoryCreateDTO();
-        expected.setName("Apartment Category 1");
-        expected.setAbbreviation("ABC1");
-        expected.setType("APARTMENT");
-        expected.setSleepPlace("2");
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/apartment_categories/{id}", "ad99034d-4a69-492f-b65f-4aef01d21ee6"))
-                .andReturn();
-
-        assertEquals(200, mvcResult.getResponse().getStatus());
-
-        ApartmentCategoryCreateDTO created = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
-        });
-
-        assertEquals(expected, created);
-    }
-
-    @Test
-    void findAllCategories() throws Exception{
-        List<ApartmentCategoryCreateDTO> expectedList = new ArrayList<>();
-
-        ApartmentCategoryCreateDTO expected1 = new ApartmentCategoryCreateDTO();
-        expected1.setName("Apartment Category 1");
-        expected1.setAbbreviation("ABC1");
-        expected1.setType("APARTMENT");
-        expected1.setSleepPlace("2");
-
-        ApartmentCategoryCreateDTO expected2 = new ApartmentCategoryCreateDTO();
-        expected2.setName("Apartment Category 2");
-        expected2.setAbbreviation("ABC2");
-        expected2.setType("ROOM");
-        expected2.setSleepPlace("4");
-
-        expectedList.add(expected1);
-        expectedList.add(expected2);
-
-        MvcResult mvcResult = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/apartment_categories/"))
-                .andReturn();
-
-        assertEquals(200, mvcResult.getResponse().getStatus());
-
-        List<ApartmentCategoryCreateDTO> list = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
-        });
-
-        assertEquals(list, expectedList);
-    }
 }

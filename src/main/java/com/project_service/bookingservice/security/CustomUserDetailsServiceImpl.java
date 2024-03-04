@@ -1,6 +1,6 @@
-package com.project_servise.bookingservice.security;
+package com.project_service.bookingservice.security;
 
-import com.project_servise.bookingservice.repository.UserRepository;
+import com.project_service.bookingservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

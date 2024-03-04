@@ -1,5 +1,5 @@
 -- Insert dummy data into currencies table
-INSERT INTO currencies (id, name, currency_code)
+INSERT INTO currencies (id, name, code)
 VALUES ('3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20', 'US Dollar', 'USD'),
        ('6e0727d5-8eb9-438e-8e61-c30e0506a889', 'Euro', 'EUR'),
        ('a78c2d2b-cc71-42e1-a8c2-bc7b42bd6bae', 'British Pound', 'GBP');
@@ -107,7 +107,6 @@ VALUES ('b400166f-65b5-421a-874f-48b6e1d3ad4f', '3f120739-8a84-4e21-84b3-7a66358
        ('04df2b06-2e0c-4149-890c-3ea25fbc9835', '8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2',
         'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'b6e4b3b5-8265-4aeb-bdb7-17f5081e56a2');
 
-insert into currencies (id, name, currency_code)
 insert into currencies (id, name, code)
 values ('db41867b-682b-4121-b84b-830530fe9f2e', 'Peso', 'PHP'),
        ('3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'Yuan Renminbi', 'CNY');

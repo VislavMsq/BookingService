@@ -1,10 +1,10 @@
-package com.project_servise.bookingservice.controller;
+package com.project_service.bookingservice.controller;
 
-import com.project_servise.bookingservice.dto.UserCredentialsDto;
-import com.project_servise.bookingservice.entity.User;
-import com.project_servise.bookingservice.entity.enums.Role;
-import com.project_servise.bookingservice.security.jwt.JwtService;
-import com.project_servise.bookingservice.service.UserService;
+import com.project_service.bookingservice.dto.UserCredentialsDto;
+import com.project_service.bookingservice.entity.User;
+import com.project_service.bookingservice.entity.enums.Role;
+import com.project_service.bookingservice.security.jwt.JwtService;
+import com.project_service.bookingservice.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

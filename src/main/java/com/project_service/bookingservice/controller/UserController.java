@@ -1,7 +1,7 @@
-package com.project_servise.bookingservice.controller;
+package com.project_service.bookingservice.controller;
 
-import com.project_servise.bookingservice.dto.UserDto;
-import com.project_servise.bookingservice.service.UserService;
+import com.project_service.bookingservice.dto.UserDto;
+import com.project_service.bookingservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

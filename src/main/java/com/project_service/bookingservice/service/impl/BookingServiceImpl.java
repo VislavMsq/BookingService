@@ -1,10 +1,7 @@
 package com.project_service.bookingservice.service.impl;
 
 import com.project_service.bookingservice.dto.BookingDto;
-import com.project_service.bookingservice.entity.Apartment;
-import com.project_service.bookingservice.entity.Booking;
-import com.project_service.bookingservice.entity.Client;
-import com.project_service.bookingservice.entity.Currency;
+import com.project_service.bookingservice.entity.*;
 import com.project_service.bookingservice.entity.enums.Status;
 import com.project_service.bookingservice.exception.ApartmentNotFoundException;
 import com.project_service.bookingservice.exception.BookingNotFoundException;
@@ -15,6 +12,7 @@ import com.project_service.bookingservice.repository.ApartmentRepository;
 import com.project_service.bookingservice.repository.BookingRepository;
 import com.project_service.bookingservice.repository.ClientRepository;
 import com.project_service.bookingservice.repository.CurrencyRepository;
+import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

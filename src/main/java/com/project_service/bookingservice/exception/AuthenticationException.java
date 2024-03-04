@@ -1,4 +1,4 @@
-package com.project_servise.bookingservice.exception;
+package com.project_service.bookingservice.exception;
 
 import org.springframework.security.access.AccessDeniedException;
 

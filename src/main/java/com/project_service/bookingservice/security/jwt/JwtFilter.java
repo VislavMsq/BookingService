@@ -1,7 +1,7 @@
-package com.project_servise.bookingservice.security.jwt;
+package com.project_service.bookingservice.security.jwt;
 
-import com.project_servise.bookingservice.security.CustomUserDetails;
-import com.project_servise.bookingservice.security.CustomUserDetailsServiceImpl;
+import com.project_service.bookingservice.security.CustomUserDetails;
+import com.project_service.bookingservice.security.CustomUserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

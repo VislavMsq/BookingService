@@ -1,6 +1,6 @@
-package com.project_servise.bookingservice.repository;
+package com.project_service.bookingservice.repository;
 
-import com.project_servise.bookingservice.entity.User;
+import com.project_service.bookingservice.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

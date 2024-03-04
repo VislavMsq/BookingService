@@ -1,10 +1,10 @@
-package com.project_servise.bookingservice.controller;
+package com.project_service.bookingservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project_servise.bookingservice.dto.UserDto;
-import com.project_servise.bookingservice.entity.User;
-import com.project_servise.bookingservice.entity.enums.Role;
-import com.project_servise.bookingservice.security.CustomUserDetails;
+import com.project_service.bookingservice.dto.UserDto;
+import com.project_service.bookingservice.entity.User;
+import com.project_service.bookingservice.entity.enums.Role;
+import com.project_service.bookingservice.security.CustomUserDetails;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

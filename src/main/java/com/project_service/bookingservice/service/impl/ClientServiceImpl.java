@@ -2,9 +2,11 @@ package com.project_service.bookingservice.service.impl;
 
 import com.project_service.bookingservice.dto.ClientDto;
 import com.project_service.bookingservice.entity.Client;
+import com.project_service.bookingservice.entity.User;
 import com.project_service.bookingservice.exception.ClientNotFoundException;
 import com.project_service.bookingservice.mapper.ClientMapper;
 import com.project_service.bookingservice.repository.ClientRepository;
+import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.project_service.bookingservice.entity;
 
-import com.project_servise.bookingservice.entity.enums.Role;
+import com.project_service.bookingservice.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

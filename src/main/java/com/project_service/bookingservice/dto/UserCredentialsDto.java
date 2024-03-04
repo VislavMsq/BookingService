@@ -1,4 +1,4 @@
-package com.project_servise.bookingservice.dto;
+package com.project_service.bookingservice.dto;
 
 import lombok.Data;
 

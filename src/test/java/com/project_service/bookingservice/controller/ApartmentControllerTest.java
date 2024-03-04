@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mapstruct.MappingConstants.NULL;
 
 @SpringBootTest
 @Sql("/database/schema-cleanup.sql")
@@ -35,6 +35,7 @@ public class ApartmentControllerTest {
     ObjectMapper objectMapper;
 
     @Test
+    @WithUserDetails(value = "aloha.test@gmail.com")
     void createApartmentTest() throws Exception{
         CreateApartmentDTO create = new CreateApartmentDTO();
         create.setName("Apartment 1");
@@ -72,6 +73,7 @@ public class ApartmentControllerTest {
 
 
     @Test
+    @WithUserDetails(value = "aloha.test@gmail.com")
     void findApartment() throws Exception{
         ApartmentDTO expected = new ApartmentDTO();
         expected.setCity("New York");
@@ -92,6 +94,7 @@ public class ApartmentControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = "aloha.test@gmail.com")
     void findAllApartments() {
     }
 }

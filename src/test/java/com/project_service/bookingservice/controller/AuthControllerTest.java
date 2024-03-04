@@ -1,8 +1,8 @@
-package com.project_servise.bookingservice.controller;
+package com.project_service.bookingservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project_servise.bookingservice.dto.UserCredentialsDto;
-import com.project_servise.bookingservice.security.jwt.JwtService;
+import com.project_service.bookingservice.dto.UserCredentialsDto;
+import com.project_service.bookingservice.security.jwt.JwtService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
