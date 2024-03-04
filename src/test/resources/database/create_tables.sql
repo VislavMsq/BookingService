@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS currencies
 (
     id            UUID PRIMARY KEY NOT NULL,
     name          VARCHAR(50)      NOT NULL,
-    currency_code VARCHAR(3)       NOT NULL
+    code          VARCHAR(3)       NOT NULL
 );
 
 -- PS-13 create table users

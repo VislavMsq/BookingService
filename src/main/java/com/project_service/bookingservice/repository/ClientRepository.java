@@ -10,5 +10,5 @@ import java.util.UUID;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, UUID> {
 
-    Optional<Client> findByPhone(String phone);
+    Optional<Client> findByPhoneAndOwner(String phone, User owner);
 }

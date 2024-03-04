@@ -30,12 +30,13 @@ public class BookingServiceImpl implements BookingService {
     private final ClientRepository clientRepository;
     private final CurrencyRepository currencyRepository;
     private final BookingMapper bookingMapper;
+    private final UserProvider userProvider;
 
     @Override
     @Transactional
     public Booking createBooking(BookingDto bookingDto) {
         Booking booking = bookingMapper.mapToEntity(bookingDto);
-        //todo get owner from security
+        User owner = userProvider.getCurrentUser();
         Apartment apartment = apartmentRepository.findById(UUID.fromString(bookingDto.getApartmentId()))
                 .orElseThrow(() -> new ApartmentNotFoundException(String.format("Apartment with id %s not found",
                         bookingDto.getApartmentId())));
@@ -44,7 +45,8 @@ public class BookingServiceImpl implements BookingService {
                         bookingDto.getClientId())));
         Currency currency = currencyRepository.findById(UUID.fromString(bookingDto.getCurrencyId()))
                 .orElseThrow(() -> new CurrencyNotFoundException(String.format("Currency with id %s not found",
-                        bookingDto.getClientId())));
+                        bookingDto.getCurrencyId())));
+        booking.setOwner(owner);
         booking.setApartment(apartment);
         booking.setClient(client);
         booking.setCurrency(currency);

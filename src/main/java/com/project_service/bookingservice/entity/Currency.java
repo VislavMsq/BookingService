@@ -23,8 +23,8 @@ public class Currency {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "currency_code")
-    private String currencyCode;
+    @Column(name = "code")
+    private String code;
 
     @Override
     public boolean equals(Object o) {
@@ -44,7 +44,7 @@ public class Currency {
         return "Currency{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", currencyCode='" + currencyCode + '\'' +
+                ", code='" + code + '\'' +
                 '}';
     }
 }

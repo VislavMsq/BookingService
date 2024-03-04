@@ -17,7 +17,7 @@
             <column name="name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="currency_code" type="varchar(3)">
+            <column name="code" type="varchar(3)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -61,7 +61,7 @@
             <column name="country" type="varchar(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="language" type="varchar(3)">
+            <column name="language" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
             <column name="role" type="varchar(20)">

@@ -24,7 +24,7 @@ public class ClientController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public String createNewClient(@RequestBody ClientDto clientDto) {
-        return clientService.createClient(clientDto).getId().toString();
+    public String create(@RequestBody ClientDto clientDto) {
+        return clientService.create(clientDto).getId().toString();
     }
 }

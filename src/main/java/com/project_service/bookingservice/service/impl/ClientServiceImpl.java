@@ -17,19 +17,22 @@ import java.util.UUID;
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
     private final ClientMapper clientMapper;
+    private final UserProvider userProvider;
 
     @Override
     @Transactional
     public ClientDto findByPhone(String phone) {
-        return clientMapper.mapToDto(clientRepository.findByPhone(phone)
+        User owner = userProvider.getCurrentUser();
+        return clientMapper.mapToDto(clientRepository.findByPhoneAndOwner(phone, owner)
                 .orElseThrow(() -> new ClientNotFoundException(String.format("Client with phone %s not found", phone))));
     }
 
     @Override
     @Transactional
-    public Client createClient(ClientDto clientDto) {
-        //todo getOwner from security
+    public Client create(ClientDto clientDto) {
+        User owner = userProvider.getCurrentUser();
         Client client = clientMapper.mapToEntity(clientDto);
+        client.setOwner(owner);
         clientRepository.save(client);
         return client;
     }

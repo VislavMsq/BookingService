@@ -108,17 +108,24 @@ VALUES ('b400166f-65b5-421a-874f-48b6e1d3ad4f', '3f120739-8a84-4e21-84b3-7a66358
         'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'b6e4b3b5-8265-4aeb-bdb7-17f5081e56a2');
 
 insert into currencies (id, name, currency_code)
+insert into currencies (id, name, code)
 values ('db41867b-682b-4121-b84b-830530fe9f2e', 'Peso', 'PHP'),
        ('3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'Yuan Renminbi', 'CNY');
 
-insert into clients (id, email, phone, first_name, last_name, country, language, comment_text, created_at, updated_at)
-values ('0e288090-280c-489f-8058-bc36d534f3a5', 'bmulvagh0@jigsy.com', '791-689-9576', 'Noëlla', 'Mulvagh', 'Ukraine',
+insert into users (id, owner_id, currency_id, email, phone, password, timezone, first_name, last_name, country,
+                   language, role, created_at, updated_at)
+values ('4a56fe6e-6910-4b0d-863e-ac60262e7a17', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'aloha.test@gmail.com',
+        '+48798456123', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 2, 'Aloha', 'Test', 'Poland',
+        'Russian', 'OWNER', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z');
+
+insert into clients (id, owner_id, email, phone, first_name, last_name, country, language, comment_text, created_at, updated_at)
+values ('0e288090-280c-489f-8058-bc36d534f3a5', '4a56fe6e-6910-4b0d-863e-ac60262e7a17', 'bmulvagh0@jigsy.com', '791-689-9576', 'Nelly', 'Mulvagh', 'Ukraine',
         'Arabic', '05508 Elmside Parkway', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z'),
-       ('3a49ce13-97ea-4942-b0e4-f0b814d2de17', 'mgagan1@nhs.uk', '900-469-3331', 'Stéphanie', 'Gagan', 'Brazil',
+       ('3a49ce13-97ea-4942-b0e4-f0b814d2de17', '4a56fe6e-6910-4b0d-863e-ac60262e7a17', 'mgagan1@nhs.uk', '900-469-3331', 'Stéphanie', 'Gagan', 'Brazil',
         'Hungarian', '4 Birchwood Center', '2023-10-16T03:21:48Z', '2023-07-29T07:10:50Z'),
-       ('47be1383-0f58-4aa3-b0d7-d6786286bc13', 'aploughwright2@spotify.com', '377-672-4823', 'Valérie', 'Ploughwright',
+       ('47be1383-0f58-4aa3-b0d7-d6786286bc13', '4a56fe6e-6910-4b0d-863e-ac60262e7a17', 'aploughwright2@spotify.com', '377-672-4823', 'Valérie', 'Ploughwright',
         'China', 'West Frisian', '68 Parkside Court', '2023-11-23T17:37:26Z', '2023-09-05T15:09:42Z'),
-       ('76104b19-d1ce-4c0f-9641-40b81b07ccbe', 'clehrer3@ebay.com', '516-555-0726', 'Nélie', 'Lehrer', 'Cameroon',
+       ('76104b19-d1ce-4c0f-9641-40b81b07ccbe', '4a56fe6e-6910-4b0d-863e-ac60262e7a17', 'clehrer3@ebay.com', '516-555-0726', 'Nélie', 'Lehrer', 'Cameroon',
         'Maltese', '5 Haas Pass', '2023-05-30T11:08:38Z', '2024-01-28T05:59:31Z');
 
 INSERT INTO apartments (id, parent_id, owner_id, apartment_category_id, name, type, country, city, street,

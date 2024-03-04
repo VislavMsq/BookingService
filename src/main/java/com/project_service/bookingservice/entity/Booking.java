@@ -38,6 +38,7 @@ public class Booking extends BaseEntity {
     private LocalDate endDate;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Column(name = "is_edited_price")
