@@ -1,6 +1,5 @@
 package com.project_service.bookingservice.controller;
 
-import com.project_service.bookingservice.dto.ApartmentCategoryCreateDTO;
 import com.project_service.bookingservice.dto.ApartmentCategoryDTO;
 import com.project_service.bookingservice.service.ApartmentCategoryService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ public class ApartmentCategoryController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
-    public ApartmentCategoryDTO createDTO(@RequestBody ApartmentCategoryCreateDTO dto){
+    public ApartmentCategoryDTO createDTO(@RequestBody ApartmentCategoryDTO dto){
         return apartmentCategoryService.createApartmentCategory(dto);
     }
 

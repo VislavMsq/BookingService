@@ -1,6 +1,5 @@
 package com.project_service.bookingservice.mapper;
 
-import com.project_service.bookingservice.dto.ApartmentCategoryCreateDTO;
 import com.project_service.bookingservice.dto.ApartmentCategoryDTO;
 import com.project_service.bookingservice.entity.ApartmentCategory;
 import org.mapstruct.Mapper;
@@ -15,7 +14,7 @@ public interface ApartmentCategoryMapper {
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
-    ApartmentCategory toEntity(ApartmentCategoryCreateDTO apartmentCategoryCreateDTO);
+    ApartmentCategory toEntity(ApartmentCategoryDTO apartmentCategoryCreateDTO);
 
     List<ApartmentCategoryDTO> toListDTO(List<ApartmentCategory> apartmentCategories);
 }

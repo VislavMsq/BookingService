@@ -1,6 +1,5 @@
 package com.project_service.bookingservice.service.impl;
 
-import com.project_service.bookingservice.dto.ApartmentCategoryCreateDTO;
 import com.project_service.bookingservice.dto.ApartmentCategoryDTO;
 import com.project_service.bookingservice.entity.ApartmentCategory;
 import com.project_service.bookingservice.exception.ApartmentCategoryNotFoundException;
@@ -21,7 +20,7 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
     private final ApartmentCategoryRepository apartmentCategoryRepository;
 
     @Override
-    public ApartmentCategoryDTO createApartmentCategory(ApartmentCategoryCreateDTO apartmentCategoryCreateDTO){
+    public ApartmentCategoryDTO createApartmentCategory(ApartmentCategoryDTO apartmentCategoryCreateDTO){
         ApartmentCategory apartmentCategory = new ApartmentCategory();
         apartmentCategory = apartmentCategoryMapper.toEntity(apartmentCategoryCreateDTO);
         apartmentCategoryRepository.save(apartmentCategory);

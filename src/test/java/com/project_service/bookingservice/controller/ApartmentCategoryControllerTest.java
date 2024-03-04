@@ -2,7 +2,7 @@ package com.project_service.bookingservice.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project_service.bookingservice.dto.ApartmentCategoryCreateDTO;
+import com.project_service.bookingservice.dto.ApartmentCategoryDTO;
 import com.project_service.bookingservice.service.ApartmentCategoryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class ApartmentCategoryControllerTest {
     @Test
     @WithUserDetails(value = "aloha.test@gmail.com")
     void createDTO() throws Exception{
-        ApartmentCategoryCreateDTO expected = new ApartmentCategoryCreateDTO();
+        ApartmentCategoryDTO expected = new ApartmentCategoryDTO();
         expected.setName("Apartment Category 1");
         expected.setAbbreviation("ABC1");
         expected.setType("APARTMENT");
@@ -53,7 +53,7 @@ public class ApartmentCategoryControllerTest {
 
         assertEquals(200, mvcResult.getResponse().getStatus());
 
-        ApartmentCategoryCreateDTO created = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
+        ApartmentCategoryDTO created = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
         });
 
         assertEquals(expected, created);
