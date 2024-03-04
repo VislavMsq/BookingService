@@ -27,7 +27,7 @@ public class ApartmentCategoryController {
         return apartmentCategoryService.getDTO(id);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public List<ApartmentCategoryDTO> findAllCategories(){
         return apartmentCategoryService.getList();

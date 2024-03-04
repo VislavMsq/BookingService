@@ -27,7 +27,7 @@ public class ApartmentController {
         return apartmentService.findApartment(id);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public List<ApartmentDTO> findAllApartments(){
         return apartmentService.findAllApartments();
