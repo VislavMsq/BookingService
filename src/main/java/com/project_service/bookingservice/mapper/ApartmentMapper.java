@@ -1,0 +1,21 @@
+package com.project_service.bookingservice.mapper;
+
+import com.project_service.bookingservice.dto.ApartmentDTO;
+import com.project_service.bookingservice.dto.CreateApartmentDTO;
+import com.project_service.bookingservice.entity.Apartment;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+import java.util.List;
+
+@Mapper(componentModel = "spring")
+public interface ApartmentMapper {
+
+    ApartmentDTO toDTO(Apartment apartment);
+
+    @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
+    Apartment toEntity(CreateApartmentDTO apartmentDTO);
+
+    List<ApartmentDTO> listToDTO(List<Apartment> apartments);
+}

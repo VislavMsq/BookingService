@@ -16,9 +16,9 @@ VALUES ('c205da57-0722-4b5d-9c13-30adfe3b0d72', NULL, '3f4245b3-94cc-4b2d-bc7b-d
 -- Insert dummy data into apartment_categories table
 INSERT INTO apartment_categories (id, owner_id, name, abbreviation, type, sleep_place, created_at, updated_at)
 VALUES ('ad99034d-4a69-492f-b65f-4aef01d21ee6', 'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'Apartment Category 1', 'ABC1',
-        'Studio', 2, '2024-03-03 12:10:00', '2024-03-03 12:10:00'),
+        'APARTMENT', 2, '2024-03-03 12:10:00', '2024-03-03 12:10:00'),
        ('be2f0f46-9e36-4b99-8d62-8e498b783c38', 'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'Apartment Category 2', 'ABC2',
-        'One Bedroom', 4, '2024-03-03 12:11:00', '2024-03-03 12:11:00');
+        'ROOM', 4, '2024-03-03 12:11:00', '2024-03-03 12:11:00');
 
 -- Insert dummy data into clients table
 INSERT INTO clients (id, owner_id, email, phone, first_name, last_name, country, language, comment_text, created_at,
@@ -32,10 +32,10 @@ VALUES ('f9f5e56d-740e-4a37-bcce-1c5c6781d5f8', 'c205da57-0722-4b5d-9c13-30adfe3
 INSERT INTO apartments (id, parent_id, owner_id, apartment_category_id, name, type, country, city, street,
                         floor, pet, smoking, parking_place, description, created_at, updated_at)
 VALUES ('3f120739-8a84-4e21-84b3-7a66358157bf', NULL, 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
-        'ad99034d-4a69-492f-b65f-4aef01d21ee6', 'Apartment 1', 'Studio', 'USA',
+        'ad99034d-4a69-492f-b65f-4aef01d21ee6', 'Apartment 1', 'APARTMENT', 'USA',
         'New York', '123 Main St', 5, true, false, 1, 'Lorem ipsum', '2024-03-03 12:30:00', '2024-03-03 12:30:00'),
        ('8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2', NULL, 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
-        'be2f0f46-9e36-4b99-8d62-8e498b783c38', 'Apartment 2', 'One Bedroom',
+        'be2f0f46-9e36-4b99-8d62-8e498b783c38', 'Apartment 2', 'ROOM',
         'UK', 'London', '456 Oak St', 3, false, true, 2, 'Dolor sit amet', '2024-03-03 12:31:00',
         '2024-03-03 12:31:00');
 
@@ -60,14 +60,14 @@ VALUES ('f050448b-7a16-468c-8183-5f161a83db62', 'c205da57-0722-4b5d-9c13-30adfe3
 
 -- Insert dummy data into price_category_to_apartments_categories table
 INSERT INTO price_category_to_apartments_categories (id, apartment_category_id, price_category_id, owner_id,
-                                                     currency_id, current_year, price, created_at, updated_at)
+                                                     currency_id, period, price, created_at, updated_at)
 VALUES ('7d6f1727-f7aa-48a2-9971-161f30f3b497', 'ad99034d-4a69-492f-b65f-4aef01d21ee6',
         'f050448b-7a16-468c-8183-5f161a83db62', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
-        '3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20', '2024-01-01 00:00:00', 120.00, '2024-03-03 12:55:00',
+        '3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20', '2024', 120.00, '2024-03-03 12:55:00',
         '2024-03-03 12:55:00'),
        ('d525cd10-5aa7-4ba6-8104-52906e77e8fe', 'be2f0f46-9e36-4b99-8d62-8e498b783c38',
         '75235102-dff9-4a66-b576-80f0b017548c', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
-        '6e0727d5-8eb9-438e-8e61-c30e0506a889', '2024-01-01 00:00:00', 180.00, '2024-03-03 12:56:00',
+        '6e0727d5-8eb9-438e-8e61-c30e0506a889', '2024', 180.00, '2024-03-03 12:56:00',
         '2024-03-03 12:56:00');
 
 -- Insert dummy data into price_category_schedule table
@@ -123,7 +123,7 @@ values ('0e288090-280c-489f-8058-bc36d534f3a5', 'bmulvagh0@jigsy.com', '791-689-
 
 INSERT INTO apartments (id, parent_id, owner_id, apartment_category_id, name, type, country, city, street,
                         FLOOR, pet, smoking, parking_place, description, created_at, UPDATED_AT)
-VALUES ('f47ac10b-58cc-4372-a567-0e02b2c3d479', NULL, null, NULL, 'Apartment 1', 'Studio', 'USA', 'New York',
+VALUES ('f47ac10b-58cc-4372-a567-0e02b2c3d479', NULL, null, NULL, 'Apartment 1', 'APARTMENT', 'USA', 'New York',
         'Broadway', 2, true, false, 1, 'Cozy studio apartment in the heart of New York City', '2023-09-01 13:57:40',
         '2023-09-01 13:57:40'),
        ('1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d', NULL, NULL, NULL, 'Apartment 2', 'Apartment', 'USA',

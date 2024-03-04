@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS apartments
     id                    UUID PRIMARY KEY NOT NULL,
     parent_id             UUID,
     owner_id              UUID,
-    apartment_category_id UUID,          ,
+    apartment_category_id UUID,
     name                  VARCHAR(50)      NOT NULL,
     type                  VARCHAR(30)      NOT NULL,
     country               VARCHAR(30)      NOT NULL,
