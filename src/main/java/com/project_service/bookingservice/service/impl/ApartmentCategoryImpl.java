@@ -2,9 +2,11 @@ package com.project_service.bookingservice.service.impl;
 
 import com.project_service.bookingservice.dto.ApartmentCategoryDTO;
 import com.project_service.bookingservice.entity.ApartmentCategory;
+import com.project_service.bookingservice.entity.User;
 import com.project_service.bookingservice.exception.ApartmentCategoryNotFoundException;
 import com.project_service.bookingservice.mapper.ApartmentCategoryMapper;
 import com.project_service.bookingservice.repository.ApartmentCategoryRepository;
+import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.ApartmentCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,10 +20,13 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
 
     private final ApartmentCategoryMapper apartmentCategoryMapper;
     private final ApartmentCategoryRepository apartmentCategoryRepository;
+    private final UserProvider userProvider;
 
     @Override
     public ApartmentCategoryDTO createApartmentCategory(ApartmentCategoryDTO apartmentCategoryCreateDTO){
+        User owner = userProvider.getCurrentUser();
         ApartmentCategory apartmentCategory = apartmentCategoryMapper.toEntity(apartmentCategoryCreateDTO);
+        apartmentCategory.setOwner(owner);
         apartmentCategoryRepository.save(apartmentCategory);
         return apartmentCategoryMapper.toApartmentDTO(apartmentCategory);
     }

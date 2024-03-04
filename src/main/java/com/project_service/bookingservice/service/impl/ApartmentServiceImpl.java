@@ -3,9 +3,11 @@ package com.project_service.bookingservice.service.impl;
 import com.project_service.bookingservice.dto.ApartmentDTO;
 import com.project_service.bookingservice.dto.CreateApartmentDTO;
 import com.project_service.bookingservice.entity.Apartment;
+import com.project_service.bookingservice.entity.User;
 import com.project_service.bookingservice.exception.ApartmentNotFoundException;
 import com.project_service.bookingservice.mapper.ApartmentMapper;
 import com.project_service.bookingservice.repository.ApartmentRepository;
+import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.ApartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,10 +20,13 @@ import java.util.UUID;
 public class ApartmentServiceImpl implements ApartmentService {
     private final ApartmentRepository apartmentRepository;
     private final ApartmentMapper apartmentMapper;
+    private final UserProvider userProvider;
 
     @Override
     public ApartmentDTO createApartment(CreateApartmentDTO apartmentDTO) {
+        User owner = userProvider.getCurrentUser();
         Apartment apartment = apartmentMapper.toEntity(apartmentDTO);
+        apartment.setOwner(owner);
         return apartmentMapper.toDTO(apartmentRepository.save(apartment));
     }
 
