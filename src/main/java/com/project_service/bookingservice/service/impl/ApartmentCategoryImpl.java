@@ -21,8 +21,7 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
 
     @Override
     public ApartmentCategoryDTO createApartmentCategory(ApartmentCategoryDTO apartmentCategoryCreateDTO){
-        ApartmentCategory apartmentCategory = new ApartmentCategory();
-        apartmentCategory = apartmentCategoryMapper.toEntity(apartmentCategoryCreateDTO);
+        ApartmentCategory apartmentCategory = apartmentCategoryMapper.toEntity(apartmentCategoryCreateDTO);
         apartmentCategoryRepository.save(apartmentCategory);
         return apartmentCategoryMapper.toApartmentDTO(apartmentCategory);
     }
