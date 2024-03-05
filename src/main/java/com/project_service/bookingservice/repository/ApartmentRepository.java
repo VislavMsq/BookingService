@@ -11,6 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface ApartmentRepository extends JpaRepository<Apartment, UUID> {
-    @Query("select ac from ApartmentCategory ac where ac.owner.id = :ownerId")
-    List<Apartment> findByOwnerId(@Param("ownerId") String ownerId);
+    @Query("select ac from Apartment ac where ac.owner.id = :ownerId")
+    List<Apartment> findByOwnerId(@Param("ownerId") UUID ownerId);
 }
