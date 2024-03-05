@@ -8,11 +8,9 @@ import com.project_service.bookingservice.exception.BookingNotFoundException;
 import com.project_service.bookingservice.exception.ClientNotFoundException;
 import com.project_service.bookingservice.exception.CurrencyNotFoundException;
 import com.project_service.bookingservice.mapper.BookingMapper;
-import com.project_service.bookingservice.repository.ApartmentRepository;
-import com.project_service.bookingservice.repository.BookingRepository;
-import com.project_service.bookingservice.repository.ClientRepository;
-import com.project_service.bookingservice.repository.CurrencyRepository;
+import com.project_service.bookingservice.repository.*;
 import com.project_service.bookingservice.security.UserProvider;
+import com.project_service.bookingservice.service.BoardDetailService;
 import com.project_service.bookingservice.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,8 @@ public class BookingServiceImpl implements BookingService {
     private final ApartmentRepository apartmentRepository;
     private final ClientRepository clientRepository;
     private final CurrencyRepository currencyRepository;
+    private final BoardDetailService boardDetailService;
+
     private final BookingMapper bookingMapper;
     private final UserProvider userProvider;
 
@@ -50,6 +50,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setCurrency(currency);
         booking.setStatus(Status.NEW);
         bookingRepository.save(booking);
+        boardDetailService.createBoardOfDetail(booking);
         return booking;
     }
 

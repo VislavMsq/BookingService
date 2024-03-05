@@ -22,5 +22,4 @@ public class BookingController {
     public String createBooking(@RequestBody BookingDto bookingDto) {
         return bookingService.createBooking(bookingDto).getId().toString();
     }
-
 }

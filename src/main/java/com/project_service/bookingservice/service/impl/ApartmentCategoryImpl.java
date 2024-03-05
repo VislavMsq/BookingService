@@ -33,11 +33,6 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
         return apartmentCategoryMapper.toApartmentDTO(apartmentCategory);
     }
 
-    public ApartmentCategory getApartmentCategory(String uuid) {
-        return apartmentCategoryRepository.findById(UUID.fromString(uuid))
-                .orElseThrow(() -> new ApartmentCategoryNotFoundException("Category not found!"));
-    }
-
     @Override
     @Transactional
     public ApartmentCategoryDTO getDTO(String uuid) {
@@ -53,4 +48,8 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
         return apartmentCategoryMapper.toListDTO(categories);
     }
 
+    private ApartmentCategory getApartmentCategory(String uuid) {
+        return apartmentCategoryRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new ApartmentCategoryNotFoundException("Category not found!"));
+    }
 }
