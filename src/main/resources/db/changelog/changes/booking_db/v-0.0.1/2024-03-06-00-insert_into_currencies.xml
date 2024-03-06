@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="PS-24 insert into currencies" author="Roman Ledenev">
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="US Dollar"/>
+            <column name="code" value="USD"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Euro"/>
+            <column name="code" value="EUR"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Pound Sterling"/>
+            <column name="code" value="GBP"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Russian ruble"/>
+            <column name="code" value="RUB"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Zloty"/>
+            <column name="code" value="PLN"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Swiss Franc"/>
+            <column name="code" value="CHF"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Forint"/>
+            <column name="code" value="HUF"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Hryvnia"/>
+            <column name="code" value="UAH"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Czech Koruna"/>
+            <column name="code" value="CZK"/>
+        </insert>
+
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Danish Krone"/>
+            <column name="code" value="DKK"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Norwegian Krone"/>
+            <column name="code" value="NOK"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Swedish Krona"/>
+            <column name="code" value="SEK"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Yuan Renminbi"/>
+            <column name="code" value="CNY"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Yen"/>
+            <column name="code" value="JPY"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Iceland Krona"/>
+            <column name="code" value="ISK"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="New Israeli Sheqel"/>
+            <column name="code" value="ILS"/>
+        </insert>
+
+        <insert tableName="currencies">
+            <column name="id" valueComputed="gen_random_uuid()"/>
+            <column name="name" value="Turkish Lira"/>
+            <column name="code" value="TRY"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
