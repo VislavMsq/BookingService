@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/price category")
+@RequestMapping(path = "/price_category")
 public class PriceCategoryController {
     private final PriceCategoryService priceCategoryService;
 
