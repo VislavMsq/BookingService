@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/board details")
+@RequestMapping(path = "/board_details")
 public class BoardDetailController {
     private final BoardDetailService boardDetailService;
 
