@@ -10,17 +10,15 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ApartmentMapper {
 
-    @Mapping(source = "apartmentCategoryId.id", target = "apartmentCategory")
-    @Mapping(source = "parent.id", target = "parent")
+    @Mapping(source = "apartmentCategory.id", target = "apartmentCategoryId")
+    @Mapping(source = "parent.id", target = "parentId")
     ApartmentDTO toDTO(Apartment apartment);
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
-    @Mapping(target = "apartmentCategoryId.id", source = "apartmentCategory")
-    @Mapping(target = "parent.id", source = "parent")
+    @Mapping(target = "apartmentCategory.id", source = "apartmentCategoryId")
+    @Mapping(target = "parent.id", source = "parentId")
     Apartment toEntity(ApartmentDTO apartmentDTO);
 
-    @Mapping(source = "apartmentCategoryId.id", target = "apartmentCategory")
-    @Mapping(source = "parent.id", target = "parent")
     List<ApartmentDTO> listToDTO(List<Apartment> apartments);
 }

@@ -19,7 +19,7 @@ public class Apartment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apartment_category_id", referencedColumnName = "id")
-    private ApartmentCategory apartmentCategoryId;
+    private ApartmentCategory apartmentCategory;
 
     @Column(name = "name")
     private String name;

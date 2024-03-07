@@ -50,8 +50,8 @@ class ApartmentControllerTest {
         expected.setSmoking("false");
         expected.setParkingPlace("1");
         expected.setDescription("Lorem ipsum");
-        expected.setApartmentCategory("be2f0f46-9e36-4b99-8d62-8e498b783c38");
-        expected.setParent("3f120739-8a84-4e21-84b3-7a66358157bf");
+        expected.setApartmentCategoryId("be2f0f46-9e36-4b99-8d62-8e498b783c38");
+        expected.setParentId("3f120739-8a84-4e21-84b3-7a66358157bf");
 
         String toCreate = objectMapper.writeValueAsString(expected);
 
@@ -97,8 +97,8 @@ class ApartmentControllerTest {
         first.setSmoking("false");
         first.setParkingPlace("1");
         first.setDescription("Lorem ipsum");
-        first.setApartmentCategory("ad99034d-4a69-492f-b65f-4aef01d21ee6");
-        first.setParent(null);
+        first.setApartmentCategoryId("ad99034d-4a69-492f-b65f-4aef01d21ee6");
+        first.setParentId(null);
 
         ApartmentDTO second = new ApartmentDTO();
         second.setId("8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2");
@@ -112,7 +112,7 @@ class ApartmentControllerTest {
         second.setSmoking("true");
         second.setParkingPlace("2");
         second.setDescription("Dolor sit amet");
-        second.setApartmentCategory("be2f0f46-9e36-4b99-8d62-8e498b783c38");
+        second.setApartmentCategoryId("be2f0f46-9e36-4b99-8d62-8e498b783c38");
 
         expectedList.add(first);
         expectedList.add(second);

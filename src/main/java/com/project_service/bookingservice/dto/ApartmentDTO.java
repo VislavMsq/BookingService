@@ -15,6 +15,6 @@ public class ApartmentDTO {
     private String smoking;
     private String parkingPlace;
     private String description;
-    private String apartmentCategory;
-    private String parent;
+    private String apartmentCategoryId;
+    private String parentId;
 }
