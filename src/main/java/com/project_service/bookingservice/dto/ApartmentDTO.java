@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ApartmentDTO {
+    private String id;
     private String name;
     private String type;
     private String country;
@@ -14,4 +15,6 @@ public class ApartmentDTO {
     private String smoking;
     private String parkingPlace;
     private String description;
+    private String apartmentCategoryId;
+    private String parentId;
 }
