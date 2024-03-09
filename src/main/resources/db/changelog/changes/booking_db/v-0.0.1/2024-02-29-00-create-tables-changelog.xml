@@ -22,6 +22,7 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create table users ">
         <preConditions onFail="CONTINUE" onFailMessage="Table users already exists">
             <not>
@@ -59,6 +60,7 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create apartment_categories table">
         <preConditions onFail="CONTINUE" onFailMessage="Table apartment_categories already exists">
             <not>
@@ -86,6 +88,7 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create clients table">
         <preConditions onFail="CONTINUE" onFailMessage="Table clients already exists">
             <not>
@@ -117,6 +120,7 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create apartments table">
         <preConditions onFail="CONTINUE" onFailMessage="Table apartments already exists">
             <not>
@@ -146,9 +150,7 @@
             <column name="street" type="varchar(50)"/>
             <column name="floor" type="int(3)"/>
             <column name="pet" type="bool" defaultValue="false"/>
-            <column name="smoking" type="bool">
-                <constraints nullable="false"/>
-            </column>
+            <column name="smoking" type="bool" defaultValue="false"/>
             <column name="parking_place" type="int(3)"/>
             <column name="description" type="text"/>
             <column name="created_at" type="timestamp">
@@ -159,6 +161,7 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create bookings table">
         <preConditions onFail="CONTINUE" onFailMessage="Table bookings already exists">
             <not>
@@ -200,6 +203,7 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create price_categories table">
         <preConditions onFail="CONTINUE" onFailMessage="Table price_categories already exists">
             <not>
@@ -228,6 +232,7 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create price_category_to_apartments_categories table">
         <preConditions onFail="CONTINUE" onFailMessage="Table price_category_to_apartments_categories already exists">
             <not>
@@ -265,6 +270,7 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create price_category_schedule table">
         <preConditions onFail="CONTINUE" onFailMessage="Table price_category_schedule already exists">
             <not>
@@ -295,6 +301,7 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create prices table">
         <preConditions onFail="CONTINUE" onFailMessage="Table prices already exists">
             <not>
