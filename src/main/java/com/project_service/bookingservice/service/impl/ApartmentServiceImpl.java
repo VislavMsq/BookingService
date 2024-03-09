@@ -25,11 +25,20 @@ public class ApartmentServiceImpl implements ApartmentService {
     private final UserProvider userProvider;
     private final ApartmentCategoryService apartmentCategoryService;
 
+
     @Override
     @Transactional
     public ApartmentDTO createApartment(ApartmentDTO apartmentDTO) {
         User owner = userProvider.getCurrentUser();
         Apartment apartment = apartmentMapper.toEntity(apartmentDTO);
+        if (apartmentDTO.getApartmentCategoryId() != null) {
+            ApartmentCategory apartmentCategory = apartmentCategoryService.getApartmentCategory(apartmentDTO.getApartmentCategoryId());
+            apartment.setApartmentCategory(apartmentCategory);
+        }
+        if (apartmentDTO.getParentId() != null) {
+            Apartment parentId = find(apartmentDTO.getParentId());
+            apartment.setParent(parentId);
+        }
         apartment.setOwner(owner);
         return apartmentMapper.toDTO(apartmentRepository.save(apartment));
     }
