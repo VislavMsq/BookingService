@@ -3,7 +3,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <!-- region currencies table -->
+
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create currencies table">
         <preConditions onFail="CONTINUE" onFailMessage="Table currencies already exists">
             <not>
@@ -22,8 +22,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion currencies table -->
-    <!-- region users table -->
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create table users ">
         <preConditions onFail="CONTINUE" onFailMessage="Table users already exists">
             <not>
@@ -35,38 +33,24 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="owner_id" type="uuid">
-                <constraints foreignKeyName="owner_id" references="users(id)" nullable="true"/>
+                <constraints foreignKeyName="owner_id" references="users(id)"/>
             </column>
             <column name="currency_id" type="uuid">
-                <constraints foreignKeyName="currency_id" references="currencies(id)" nullable="true"/>
+                <constraints foreignKeyName="currency_id" references="currencies(id)"/>
             </column>
             <column name="email" type="varchar(80)">
                 <constraints nullable="false"/>
             </column>
-            <column name="phone" type="varchar(20)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="phone" type="varchar(20)"/>
             <column name="password" type="varchar(80)">
                 <constraints nullable="false"/>
             </column>
-            <column name="timezone" type="int(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="first_name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="country" type="varchar(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="language" type="varchar(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="role" type="varchar(20)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="timezone" type="int(20)"/>
+            <column name="first_name" type="varchar(50)"/>
+            <column name="last_name" type="varchar(50)"/>
+            <column name="country" type="varchar(30)"/>
+            <column name="language" type="varchar(20)"/>
+            <column name="role" type="varchar(20)"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -75,8 +59,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion users table -->
-    <!-- region apartment_categories table -->
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create apartment_categories table">
         <preConditions onFail="CONTINUE" onFailMessage="Table apartment_categories already exists">
             <not>
@@ -93,15 +75,9 @@
             <column name="name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="abbreviation" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="type" type="varchar(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="sleep_place" type="decimal(10)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="abbreviation" type="varchar(50)"/>
+            <column name="type" type="varchar(30)"/>
+            <column name="sleep_place" type="decimal(10)"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -110,8 +86,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion apartment_categories table -->
-    <!-- region clients table -->
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create clients table">
         <preConditions onFail="CONTINUE" onFailMessage="Table clients already exists">
             <not>
@@ -126,26 +100,15 @@
                 <constraints foreignKeyName="owner_id" references="users(id)" nullable="false"/>
             </column>
             <column name="email" type="varchar(80)">
-                <constraints nullable="false"/>
             </column>
             <column name="phone" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="first_name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="country" type="varchar(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="language" type="varchar(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="comment_text" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="first_name" type="varchar(50)"/>
+            <column name="last_name" type="varchar(50)"/>
+            <column name="country" type="varchar(30)"/>
+            <column name="language" type="varchar(20)"/>
+            <column name="comment_text" type="varchar(255)"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -154,8 +117,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion clients table -->
-    <!-- region apartments table -->
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create apartments table">
         <preConditions onFail="CONTINUE" onFailMessage="Table apartments already exists">
             <not>
@@ -179,33 +140,17 @@
             <column name="name" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="type" type="varchar(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="country" type="varchar(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="city" type="varchar(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="street" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="floor" type="int(3)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="pet" type="bool">
-                <constraints nullable="false"/>
-            </column>
+            <column name="type" type="varchar(30)"/>
+            <column name="country" type="varchar(30)"/>
+            <column name="city" type="varchar(30)"/>
+            <column name="street" type="varchar(50)"/>
+            <column name="floor" type="int(3)"/>
+            <column name="pet" type="bool" defaultValue="false"/>
             <column name="smoking" type="bool">
                 <constraints nullable="false"/>
             </column>
-            <column name="parking_place" type="int(3)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="description" type="text">
-                <constraints nullable="false"/>
-            </column>
+            <column name="parking_place" type="int(3)"/>
+            <column name="description" type="text"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -214,8 +159,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion apartments table -->
-    <!-- region bookings table -->
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create bookings table">
         <preConditions onFail="CONTINUE" onFailMessage="Table bookings already exists">
             <not>
@@ -238,15 +181,11 @@
             <column name="currency_id" type="uuid">
                 <constraints foreignKeyName="currency_id" references="currencies(id)" nullable="false"/>
             </column>
-            <column name="status" type="varchar(20)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="status" type="varchar(20)"/>
             <column name="price" type="decimal(15,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="is_edited_price" type="bool">
-                <constraints nullable="false"/>
-            </column>
+            <column name="is_edited_price" type="bool" defaultValue="false"/>
             <column name="start_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -261,8 +200,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion bookings table -->
-    <!-- region price_categories table -->
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create price_categories table">
         <preConditions onFail="CONTINUE" onFailMessage="Table price_categories already exists">
             <not>
@@ -279,9 +216,7 @@
             <column name="currency_id" type="uuid">
                 <constraints foreignKeyName="currency_id" references="currencies(id)" nullable="false"/>
             </column>
-            <column name="name" type="varchar(30)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="name" type="varchar(30)"/>
             <column name="priority" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
@@ -293,8 +228,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion price_categories table -->
-    <!-- region price_category_to_apartments_categories table -->
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create price_category_to_apartments_categories table">
         <preConditions onFail="CONTINUE" onFailMessage="Table price_category_to_apartments_categories already exists">
             <not>
@@ -332,8 +265,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion price_category_to_apartments_categories table -->
-    <!-- region price_category_schedule table -->
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create price_category_schedule table">
         <preConditions onFail="CONTINUE" onFailMessage="Table price_category_schedule already exists">
             <not>
@@ -364,8 +295,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion category_price_schedule table -->
-    <!-- region prices table -->
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create prices table">
         <preConditions onFail="CONTINUE" onFailMessage="Table prices already exists">
             <not>
@@ -391,9 +320,7 @@
             <column name="date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="is_edited_price" type="bool">
-                <constraints nullable="false"/>
-            </column>
+            <column name="is_edited_price" type="bool" defaultValue="false"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -402,8 +329,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion prices table -->
-    <!-- region board_details table -->
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create board_details table">
         <preConditions onFail="CONTINUE" onFailMessage="Table board_details already exists">
             <not>
@@ -432,15 +357,9 @@
             <column name="date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="client_name" type="varchar(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="apartments_city" type="varchar(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="apartments_sleeping_places" type="decimal(10)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="client_name" type="varchar(30)"/>
+            <column name="apartments_city" type="varchar(30)"/>
+            <column name="apartments_sleeping_places" type="decimal(10)"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -449,8 +368,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion board_details table -->
-    <!-- region workers_to_appartments -->
     <changeSet author="Vladyslav Mosiuk" id="PS-13 create workers_to_apartments table">
         <preConditions onFail="CONTINUE" onFailMessage="Table workers_to_apartments already exists">
             <not>
@@ -472,6 +389,6 @@
             </column>
         </createTable>
     </changeSet>
-    <!-- endregion board_details table -->
+
 
 </databaseChangeLog>
