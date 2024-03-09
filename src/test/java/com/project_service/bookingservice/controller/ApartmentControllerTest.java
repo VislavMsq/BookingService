@@ -116,7 +116,7 @@ class ApartmentControllerTest {
 
     @Test
     @WithUserDetails(value = "user1@example.com")
-    void findApartmentByCity() throws Exception{
+    void findApartmentByCity() throws Exception {
 
         List<ApartmentDTO> expectedList = expectListFindApartmentsByCity();
 
@@ -133,7 +133,7 @@ class ApartmentControllerTest {
 
     @Test
     @WithUserDetails(value = "user1@example.com")
-    void setApartmentsCategory() throws Exception{
+    void setApartmentsCategory() throws Exception {
         List<String> listApartmentIds = new ArrayList<>();
         listApartmentIds.add("3f120739-8a84-4e21-84b3-7a66358157bf");
         listApartmentIds.add("8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2");
@@ -141,14 +141,40 @@ class ApartmentControllerTest {
         listApartmentIds.add("1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d");
         listApartmentIds.add("eccbc87e-4b5c-4331-a025-6545673431ef");
 
+        String categoryId = "ad99034d-4a69-492f-b65f-4aef01d21ee6";
+
         String listIdsRequest = objectMapper.writeValueAsString(listApartmentIds);
 
-//        MvcResult mvcResultPost = mockMvc.perform(MockMvcRequestBuilders.post("/apartments/setApartme")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(toCreate))
-//                .andReturn();
-//
-//        assertEquals(201, mvcResultPost.getResponse().getStatus());
+        MvcResult mvcResultPost = mockMvc.perform(MockMvcRequestBuilders.post("/apartments/setApartmentCategory/" + categoryId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(listIdsRequest))
+                .andReturn();
+
+        assertEquals(200, mvcResultPost.getResponse().getStatus());
+
+        MvcResult mvcResultFirstGet = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/apartments/3f120739-8a84-4e21-84b3-7a66358157bf"))
+                .andReturn();
+
+        assertEquals(200, mvcResultFirstGet.getResponse().getStatus());
+
+        ApartmentDTO firstReturned = objectMapper.readValue(mvcResultFirstGet.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+        String firstReturnedCategoryId = firstReturned.getApartmentCategoryId();
+
+        assertEquals(categoryId, firstReturnedCategoryId);
+
+        MvcResult mvcResultSecondGet = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/apartments/8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2"))
+                .andReturn();
+
+        assertEquals(200, mvcResultSecondGet.getResponse().getStatus());
+
+        ApartmentDTO secondReturned = objectMapper.readValue(mvcResultSecondGet.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+        String secondReturnedCategoryId = secondReturned.getApartmentCategoryId();
+
+        assertEquals(categoryId, secondReturnedCategoryId);
     }
 
     private List<ApartmentDTO> expectListFindAllApartments() {

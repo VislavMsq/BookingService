@@ -15,12 +15,12 @@ public interface ApartmentRepository extends JpaRepository<Apartment, UUID> {
     List<Apartment> findByOwnerId(@Param("ownerId") UUID ownerId);
 
     @Query("SELECT a FROM Apartment a WHERE a.country = :country AND a.owner.id = :ownerId")
-    List<Apartment> findByCountry(@Param("country") String country,@Param("ownerId") UUID id);
+    List<Apartment> findByCountry(@Param("country") String country, @Param("ownerId") UUID id);
 
     @Query("SELECT a FROM Apartment a WHERE a.city = :city AND a.owner.id = :ownerId")
-    List<Apartment> findByCity(@Param("city") String city,@Param("ownerId") UUID uuid);
+    List<Apartment> findByCity(@Param("city") String city, @Param("ownerId") UUID uuid);
 
-    @Query("SELECT a FROM Apartment a WHERE a.id IN :apartmentIds")
-    List<Apartment> findAllById(List<UUID> apartmentIds);
+    @Query("SELECT a FROM Apartment a WHERE a.id IN :apartmentIds and  a.owner.id = :ownerId")
+    List<Apartment> findAllByIdAndOwner(List<UUID> apartmentIds, @Param("ownerId") UUID ownerId);
 }
 

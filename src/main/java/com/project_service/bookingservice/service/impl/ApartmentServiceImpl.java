@@ -80,7 +80,9 @@ public class ApartmentServiceImpl implements ApartmentService {
         List<UUID> uuids = apartmentIds.stream()
                 .map(UUID::fromString)
                 .toList();
-        List<Apartment> apartments = apartmentRepository.findAllById(uuids);
+        User user = userProvider.getCurrentUser();
+        UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
+        List<Apartment> apartments = apartmentRepository.findAllByIdAndOwner(uuids, id);
         ApartmentCategory apartmentCategory = apartmentCategoryService.getApartmentCategory(apartmentCategoryId);
         for (Apartment apartment : apartments) {
             apartment.setApartmentCategory(apartmentCategory);
