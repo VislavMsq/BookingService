@@ -84,86 +84,7 @@ class ApartmentControllerTest {
     @Test
     @WithUserDetails(value = "user1@example.com")
     void findAllApartments() throws Exception {
-        List<ApartmentDTO> expectedList = new ArrayList<>();
-        ApartmentDTO first = new ApartmentDTO();
-        first.setId("3f120739-8a84-4e21-84b3-7a66358157bf");
-        first.setName("Apartment 1");
-        first.setType("APARTMENT");
-        first.setCountry("USA");
-        first.setCity("New York");
-        first.setStreet("123 Main St");
-        first.setFloor("5");
-        first.setPet("true");
-        first.setSmoking("false");
-        first.setParkingPlace("1");
-        first.setDescription("Lorem ipsum");
-        first.setApartmentCategoryId("ad99034d-4a69-492f-b65f-4aef01d21ee6");
-        first.setParentId(null);
-
-        ApartmentDTO second = new ApartmentDTO();
-        second.setId("8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2");
-        second.setName("Apartment 2");
-        second.setType("ROOM");
-        second.setCountry("UK");
-        second.setCity("London");
-        second.setStreet("456 Oak St");
-        second.setFloor("3");
-        second.setPet("false");
-        second.setSmoking("true");
-        second.setParkingPlace("2");
-        second.setDescription("Dolor sit amet");
-        second.setApartmentCategoryId("be2f0f46-9e36-4b99-8d62-8e498b783c38");
-
-        ApartmentDTO third = new ApartmentDTO();
-        third.setId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        third.setName("Apartment 1");
-        third.setType("APARTMENT");
-        third.setCountry("USA");
-        third.setCity("New York");
-        third.setStreet("Broadway");
-        third.setFloor("2");
-        third.setPet("true");
-        third.setSmoking("false");
-        third.setParkingPlace("1");
-        third.setDescription("Cozy studio apartment in the heart of New York City");
-        third.setApartmentCategoryId(null);
-        third.setParentId(null);
-
-        ApartmentDTO fourth = new ApartmentDTO();
-        fourth.setId("1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d");
-        fourth.setName("Apartment 2");
-        fourth.setType("APARTMENT");
-        fourth.setCountry("USA");
-        fourth.setCity("Los Angeles");
-        fourth.setStreet("Hollywood Blvd");
-        fourth.setFloor("3");
-        fourth.setPet("false");
-        fourth.setSmoking("true");
-        fourth.setParkingPlace("2");
-        fourth.setDescription("Spacious apartment with Hollywood sign view");
-        fourth.setApartmentCategoryId(null);
-        fourth.setParentId(null);
-
-        ApartmentDTO fifth = new ApartmentDTO();
-        fifth.setId("eccbc87e-4b5c-4331-a025-6545673431ef");
-        fifth.setName("Apartment 3");
-        fifth.setType("ROOM");
-        fifth.setCountry("Canada");
-        fifth.setCity("Toronto");
-        fifth.setStreet("Yonge Street");
-        fifth.setFloor("4");
-        fifth.setPet("true");
-        fifth.setSmoking("true");
-        fifth.setParkingPlace("0");
-        fifth.setDescription("Modern house with a beautiful view of Lake Ontario");
-        fifth.setApartmentCategoryId(null);
-        fifth.setParentId(null);
-
-        expectedList.add(first);
-        expectedList.add(second);
-        expectedList.add(third);
-        expectedList.add(fourth);
-        expectedList.add(fifth);
+        List<ApartmentDTO> expectedList = expectListFindAllApartments();
 
         MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments"))
                 .andReturn();
@@ -180,59 +101,9 @@ class ApartmentControllerTest {
     @Test
     @WithUserDetails(value = "user1@example.com")
     void findApartmentByCountry() throws Exception {
-        ApartmentDTO first = new ApartmentDTO();
-        first.setId("3f120739-8a84-4e21-84b3-7a66358157bf");
-        first.setName("Apartment 1");
-        first.setType("APARTMENT");
-        first.setCountry("USA");
-        first.setCity("New York");
-        first.setStreet("123 Main St");
-        first.setFloor("5");
-        first.setPet("true");
-        first.setSmoking("false");
-        first.setParkingPlace("1");
-        first.setDescription("Lorem ipsum");
-        first.setApartmentCategoryId("ad99034d-4a69-492f-b65f-4aef01d21ee6");
-        first.setParentId(null);
+        List<ApartmentDTO> expectedList = expectListFindApartmentsByCountry();
 
-        ApartmentDTO second = new ApartmentDTO();
-        second.setId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        second.setName("Apartment 1");
-        second.setType("APARTMENT");
-        second.setCountry("USA");
-        second.setCity("New York");
-        second.setStreet("Broadway");
-        second.setFloor("2");
-        second.setPet("true");
-        second.setSmoking("false");
-        second.setParkingPlace("1");
-        second.setDescription("Cozy studio apartment in the heart of New York City");
-        second.setApartmentCategoryId(null);
-        second.setParentId(null);
-
-        ApartmentDTO third = new ApartmentDTO();
-        third.setId("1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d");
-        third.setName("Apartment 2");
-        third.setType("APARTMENT");
-        third.setCountry("USA");
-        third.setCity("Los Angeles");
-        third.setStreet("Hollywood Blvd");
-        third.setFloor("3");
-        third.setPet("false");
-        third.setSmoking("true");
-        third.setParkingPlace("2");
-        third.setDescription("Spacious apartment with Hollywood sign view");
-        third.setApartmentCategoryId(null);
-        third.setParentId(null);
-
-        List<ApartmentDTO> expectedList = new ArrayList<>();
-        expectedList.add(first);
-        expectedList.add(second);
-        expectedList.add(third);
-
-        String country = "USA";
-
-        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/country/" + country))
+        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/country/USA"))
                 .andReturn();
 
         assertEquals(200, mvcResultGet.getResponse().getStatus());
@@ -247,43 +118,10 @@ class ApartmentControllerTest {
     @Test
     @WithUserDetails(value = "user1@example.com")
     void findApartmentByCity() throws Exception{
-        ApartmentDTO first = new ApartmentDTO();
-        first.setId("3f120739-8a84-4e21-84b3-7a66358157bf");
-        first.setName("Apartment 1");
-        first.setType("APARTMENT");
-        first.setCountry("USA");
-        first.setCity("New York");
-        first.setStreet("123 Main St");
-        first.setFloor("5");
-        first.setPet("true");
-        first.setSmoking("false");
-        first.setParkingPlace("1");
-        first.setDescription("Lorem ipsum");
-        first.setApartmentCategoryId("ad99034d-4a69-492f-b65f-4aef01d21ee6");
-        first.setParentId(null);
 
-        ApartmentDTO second = new ApartmentDTO();
-        second.setId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        second.setName("Apartment 1");
-        second.setType("APARTMENT");
-        second.setCountry("USA");
-        second.setCity("New York");
-        second.setStreet("Broadway");
-        second.setFloor("2");
-        second.setPet("true");
-        second.setSmoking("false");
-        second.setParkingPlace("1");
-        second.setDescription("Cozy studio apartment in the heart of New York City");
-        second.setApartmentCategoryId(null);
-        second.setParentId(null);
+        List<ApartmentDTO> expectedList = expectListFindApartmentsByCity();
 
-        List<ApartmentDTO> expectedList = new ArrayList<>();
-        expectedList.add(first);
-        expectedList.add(second);
-
-        String city = "New York";
-
-        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/city/" + city))
+        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/city/New York"))
                 .andReturn();
 
         assertEquals(200, mvcResultGet.getResponse().getStatus());
@@ -292,5 +130,54 @@ class ApartmentControllerTest {
         });
 
         assertEquals(expectedList, returnedList);
+    }
+
+    private List<ApartmentDTO> expectListFindAllApartments() {
+        List<ApartmentDTO> apartments = new ArrayList<>();
+
+        apartments.add(createApartment("3f120739-8a84-4e21-84b3-7a66358157bf", "Apartment 1", "APARTMENT", "USA", "New York", "123 Main St", "5", "true", "false", "1", "Lorem ipsum", "ad99034d-4a69-492f-b65f-4aef01d21ee6", null));
+        apartments.add(createApartment("8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2", "Apartment 2", "ROOM", "UK", "London", "456 Oak St", "3", "false", "true", "2", "Dolor sit amet", "be2f0f46-9e36-4b99-8d62-8e498b783c38", null));
+        apartments.add(createApartment("f47ac10b-58cc-4372-a567-0e02b2c3d479", "Apartment 1", "APARTMENT", "USA", "New York", "Broadway", "2", "true", "false", "1", "Cozy studio apartment in the heart of New York City", null, null));
+        apartments.add(createApartment("1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d", "Apartment 2", "APARTMENT", "USA", "Los Angeles", "Hollywood Blvd", "3", "false", "true", "2", "Spacious apartment with Hollywood sign view", null, null));
+        apartments.add(createApartment("eccbc87e-4b5c-4331-a025-6545673431ef", "Apartment 3", "ROOM", "Canada", "Toronto", "Yonge Street", "4", "true", "true", "0", "Modern house with a beautiful view of Lake Ontario", null, null));
+
+        return apartments;
+    }
+
+    private List<ApartmentDTO> expectListFindApartmentsByCountry() {
+        List<ApartmentDTO> apartments = new ArrayList<>();
+
+        apartments.add(createApartment("3f120739-8a84-4e21-84b3-7a66358157bf", "Apartment 1", "APARTMENT", "USA", "New York", "123 Main St", "5", "true", "false", "1", "Lorem ipsum", "ad99034d-4a69-492f-b65f-4aef01d21ee6", null));
+        apartments.add(createApartment("f47ac10b-58cc-4372-a567-0e02b2c3d479", "Apartment 1", "APARTMENT", "USA", "New York", "Broadway", "2", "true", "false", "1", "Cozy studio apartment in the heart of New York City", null, null));
+        apartments.add(createApartment("1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d", "Apartment 2", "APARTMENT", "USA", "Los Angeles", "Hollywood Blvd", "3", "false", "true", "2", "Spacious apartment with Hollywood sign view", null, null));
+
+        return apartments;
+    }
+
+    private List<ApartmentDTO> expectListFindApartmentsByCity() {
+        List<ApartmentDTO> apartments = new ArrayList<>();
+
+        apartments.add(createApartment("3f120739-8a84-4e21-84b3-7a66358157bf", "Apartment 1", "APARTMENT", "USA", "New York", "123 Main St", "5", "true", "false", "1", "Lorem ipsum", "ad99034d-4a69-492f-b65f-4aef01d21ee6", null));
+        apartments.add(createApartment("f47ac10b-58cc-4372-a567-0e02b2c3d479", "Apartment 1", "APARTMENT", "USA", "New York", "Broadway", "2", "true", "false", "1", "Cozy studio apartment in the heart of New York City", null, null));
+
+        return apartments;
+    }
+
+    private ApartmentDTO createApartment(String id, String name, String type, String country, String city, String street, String floor, String pet, String smoking, String parkingPlace, String description, String apartmentCategoryId, String parentId) {
+        ApartmentDTO apartment = new ApartmentDTO();
+        apartment.setId(id);
+        apartment.setName(name);
+        apartment.setType(type);
+        apartment.setCountry(country);
+        apartment.setCity(city);
+        apartment.setStreet(street);
+        apartment.setFloor(floor);
+        apartment.setPet(pet);
+        apartment.setSmoking(smoking);
+        apartment.setParkingPlace(parkingPlace);
+        apartment.setDescription(description);
+        apartment.setApartmentCategoryId(apartmentCategoryId);
+        apartment.setParentId(parentId);
+        return apartment;
     }
 }
