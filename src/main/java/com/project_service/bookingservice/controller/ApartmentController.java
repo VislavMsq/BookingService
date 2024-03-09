@@ -44,7 +44,7 @@ public class ApartmentController {
         return apartmentService.findApartmentByCity(city);
     }
 
-    @GetMapping("/setApartmentCategory/{apartmentCategoryId}")
+    @PostMapping("/setApartmentCategory/{apartmentCategoryId}")
     @ResponseStatus(HttpStatus.OK)
     public void setApartmentsCategory(@RequestBody List<String> apartments, @PathVariable String apartmentCategoryId) {
         apartmentService.setApartmentCategoryToApartments(apartments, apartmentCategoryId);

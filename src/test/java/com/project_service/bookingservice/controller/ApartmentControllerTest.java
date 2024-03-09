@@ -131,6 +131,26 @@ class ApartmentControllerTest {
         assertEquals(expectedList, returnedList);
     }
 
+    @Test
+    @WithUserDetails(value = "user1@example.com")
+    void setApartmentsCategory() throws Exception{
+        List<String> listApartmentIds = new ArrayList<>();
+        listApartmentIds.add("3f120739-8a84-4e21-84b3-7a66358157bf");
+        listApartmentIds.add("8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2");
+        listApartmentIds.add("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        listApartmentIds.add("1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d");
+        listApartmentIds.add("eccbc87e-4b5c-4331-a025-6545673431ef");
+
+        String listIdsRequest = objectMapper.writeValueAsString(listApartmentIds);
+
+//        MvcResult mvcResultPost = mockMvc.perform(MockMvcRequestBuilders.post("/apartments/setApartme")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(toCreate))
+//                .andReturn();
+//
+//        assertEquals(201, mvcResultPost.getResponse().getStatus());
+    }
+
     private List<ApartmentDTO> expectListFindAllApartments() {
         List<ApartmentDTO> apartments = new ArrayList<>();
 
@@ -179,4 +199,6 @@ class ApartmentControllerTest {
         apartment.setParentId(parentId);
         return apartment;
     }
+
+
 }
