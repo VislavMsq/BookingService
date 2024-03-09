@@ -2,11 +2,13 @@ package com.project_service.bookingservice.service.impl;
 
 import com.project_service.bookingservice.dto.ApartmentDTO;
 import com.project_service.bookingservice.entity.Apartment;
+import com.project_service.bookingservice.entity.ApartmentCategory;
 import com.project_service.bookingservice.entity.User;
 import com.project_service.bookingservice.exception.ApartmentNotFoundException;
 import com.project_service.bookingservice.mapper.ApartmentMapper;
 import com.project_service.bookingservice.repository.ApartmentRepository;
 import com.project_service.bookingservice.security.UserProvider;
+import com.project_service.bookingservice.service.ApartmentCategoryService;
 import com.project_service.bookingservice.service.ApartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class ApartmentServiceImpl implements ApartmentService {
     private final ApartmentRepository apartmentRepository;
     private final ApartmentMapper apartmentMapper;
     private final UserProvider userProvider;
+    private final ApartmentCategoryService apartmentCategoryService;
 
     @Override
     @Transactional
@@ -64,11 +67,25 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     @Transactional
-    public List<ApartmentDTO> findApartmentByCity(String city){
+    public List<ApartmentDTO> findApartmentByCity(String city) {
         User user = userProvider.getCurrentUser();
         UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
         List<Apartment> apartments = apartmentRepository.findByCity(city, id);
         return apartmentMapper.listToDTO(apartments);
+    }
+
+    @Override
+    @Transactional
+    public void setApartmentCategoryToApartments(List<String> apartmentIds, String apartmentCategoryId) {
+        List<UUID> uuids = apartmentIds.stream()
+                .map(UUID::fromString)
+                .toList();
+        List<Apartment> apartments = apartmentRepository.findAllById(uuids);
+        ApartmentCategory apartmentCategory = apartmentCategoryService.getApartmentCategory(apartmentCategoryId);
+        for (Apartment apartment : apartments) {
+            apartment.setApartmentCategory(apartmentCategory);
+        }
+        apartmentRepository.saveAll(apartments);
     }
 
 }

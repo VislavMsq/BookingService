@@ -33,6 +33,7 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
         return apartmentCategoryMapper.toApartmentDTO(apartmentCategory);
     }
 
+    @Override
     public ApartmentCategory getApartmentCategory(String uuid) {
         return apartmentCategoryRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new ApartmentCategoryNotFoundException("Category not found!"));

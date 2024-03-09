@@ -19,4 +19,8 @@ public interface ApartmentRepository extends JpaRepository<Apartment, UUID> {
 
     @Query("SELECT a FROM Apartment a WHERE a.city = :city AND a.owner.id = :ownerId")
     List<Apartment> findByCity(@Param("city") String city,@Param("ownerId") UUID uuid);
+
+    @Query("SELECT a FROM Apartment a WHERE a.id IN :apartmentIds")
+    List<Apartment> findAllById(List<UUID> apartmentIds);
 }
+

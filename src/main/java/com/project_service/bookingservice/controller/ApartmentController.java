@@ -34,13 +34,19 @@ public class ApartmentController {
 
     @GetMapping("/country/{country}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ApartmentDTO> findApartmentsByCountry(@PathVariable String country){
+    public List<ApartmentDTO> findApartmentsByCountry(@PathVariable String country) {
         return apartmentService.findApartmentByCountry(country);
     }
 
     @GetMapping("/city/{city}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ApartmentDTO> findApartmentsByCity(@PathVariable String city){
+    public List<ApartmentDTO> findApartmentsByCity(@PathVariable String city) {
         return apartmentService.findApartmentByCity(city);
+    }
+
+    @GetMapping("/setApartmentCategory/{apartmentCategoryId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void setApartmentsCategory(@RequestBody List<String> apartments, @PathVariable String apartmentCategoryId) {
+        apartmentService.setApartmentCategoryToApartments(apartments, apartmentCategoryId);
     }
 }
