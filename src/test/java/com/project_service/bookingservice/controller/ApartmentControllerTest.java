@@ -97,7 +97,6 @@ class ApartmentControllerTest {
         assertEquals(expectedList, returnedList);
     }
 
-
     @Test
     @WithUserDetails(value = "user1@example.com")
     void findApartmentByCountry() throws Exception {
