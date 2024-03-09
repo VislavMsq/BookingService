@@ -10,4 +10,8 @@ public interface ApartmentService {
     ApartmentDTO findApartment(String uuid);
 
     List<ApartmentDTO> findAllApartments();
+
+    List<ApartmentDTO> findApartmentByCountry(String country);
+
+    List<ApartmentDTO> findApartmentByCity(String city);
 }
