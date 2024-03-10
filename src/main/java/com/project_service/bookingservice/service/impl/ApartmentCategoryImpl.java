@@ -43,7 +43,7 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
     @Transactional
     public List<ApartmentCategoryDTO> getList() {
         User user = userProvider.getCurrentUser();
-        String id = user.getOwner() == null ? user.getId().toString() : user.getOwner().getId().toString();
+        UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
         List<ApartmentCategory> categories = apartmentCategoryRepository.findByOwnerId(id);
         return apartmentCategoryMapper.toListDTO(categories);
     }

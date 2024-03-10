@@ -38,7 +38,7 @@
                 <constraints foreignKeyName="owner_id" references="users(id)" nullable="true"/>
             </column>
             <column name="currency_id" type="uuid">
-                <constraints foreignKeyName="currency_id" references="currencies(id)" nullable="false"/>
+                <constraints foreignKeyName="currency_id" references="currencies(id)" nullable="true"/>
             </column>
             <column name="email" type="varchar(80)">
                 <constraints nullable="false"/>

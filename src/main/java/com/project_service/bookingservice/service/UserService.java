@@ -10,7 +10,7 @@ public interface UserService {
 
     Role getAuthorizedUserRole();
 
-    User create(UserDto userDto);
+    void create(UserDto userDto);
 
     UserDto findById(String id);
 }

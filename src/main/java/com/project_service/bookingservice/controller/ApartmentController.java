@@ -31,4 +31,16 @@ public class ApartmentController {
     public List<ApartmentDTO> findAllApartments() {
         return apartmentService.findAllApartments();
     }
+
+    @GetMapping("/country/{country}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ApartmentDTO> findApartmentsByCountry(@PathVariable String country) {
+        return apartmentService.findApartmentByCountry(country);
+    }
+
+    @GetMapping("/city/{city}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ApartmentDTO> findApartmentsByCity(@PathVariable String city) {
+        return apartmentService.findApartmentByCity(city);
+    }
 }

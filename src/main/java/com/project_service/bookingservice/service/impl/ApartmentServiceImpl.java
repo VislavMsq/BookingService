@@ -47,8 +47,27 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Transactional
     public List<ApartmentDTO> findAllApartments() {
         User user = userProvider.getCurrentUser();
-        String id = user.getOwner() == null ? user.getId().toString() : user.getOwner().getId().toString();
+        UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
         List<Apartment> apartments = apartmentRepository.findByOwnerId(id);
+        return apartmentMapper.listToDTO(apartments);
+    }
+
+    @Override
+    @Transactional
+    public List<ApartmentDTO> findApartmentByCountry(String country) {
+        User user = userProvider.getCurrentUser();
+        UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
+        List<Apartment> apartments = apartmentRepository.findByCountry(country, id);
+        return apartmentMapper.listToDTO(apartments);
+    }
+
+
+    @Override
+    @Transactional
+    public List<ApartmentDTO> findApartmentByCity(String city) {
+        User user = userProvider.getCurrentUser();
+        UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
+        List<Apartment> apartments = apartmentRepository.findByCity(city, id);
         return apartmentMapper.listToDTO(apartments);
     }
 
