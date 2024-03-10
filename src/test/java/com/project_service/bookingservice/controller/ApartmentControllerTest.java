@@ -101,8 +101,9 @@ class ApartmentControllerTest {
     @WithUserDetails(value = "user1@example.com")
     void findApartmentByCountry() throws Exception {
         List<ApartmentDTO> expectedList = expectListFindApartmentsByCountry();
+        String country = "USA";
 
-        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/country/USA"))
+        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/country/" + country))
                 .andReturn();
 
         assertEquals(200, mvcResultGet.getResponse().getStatus());
@@ -119,8 +120,9 @@ class ApartmentControllerTest {
     void findApartmentByCity() throws Exception {
 
         List<ApartmentDTO> expectedList = expectListFindApartmentsByCity();
+        String city = "New York";
 
-        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/city/New York"))
+        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/city/" + city))
                 .andReturn();
 
         assertEquals(200, mvcResultGet.getResponse().getStatus());
@@ -145,15 +147,17 @@ class ApartmentControllerTest {
 
         String listIdsRequest = objectMapper.writeValueAsString(listApartmentIds);
 
-        MvcResult mvcResultPost = mockMvc.perform(MockMvcRequestBuilders.post("/apartments/setApartmentCategory/" + categoryId)
+        MvcResult mvcResultPost = mockMvc.perform(MockMvcRequestBuilders.post("/apartments/set-apartment-category/" + categoryId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(listIdsRequest))
                 .andReturn();
 
         assertEquals(200, mvcResultPost.getResponse().getStatus());
 
+        String id = "3f120739-8a84-4e21-84b3-7a66358157bf";
+
         MvcResult mvcResultFirstGet = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/apartments/3f120739-8a84-4e21-84b3-7a66358157bf"))
+                        MockMvcRequestBuilders.get("/apartments/" + id))
                 .andReturn();
 
         assertEquals(200, mvcResultFirstGet.getResponse().getStatus());
@@ -164,8 +168,10 @@ class ApartmentControllerTest {
 
         assertEquals(categoryId, firstReturnedCategoryId);
 
+        String id1 = "8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2";
+
         MvcResult mvcResultSecondGet = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/apartments/8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2"))
+                        MockMvcRequestBuilders.get("/apartments/" + id1))
                 .andReturn();
 
         assertEquals(200, mvcResultSecondGet.getResponse().getStatus());
