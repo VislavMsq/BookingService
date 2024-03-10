@@ -7,5 +7,4 @@ public enum ApartmentType {
     HOUSE,
     COTTAGE,
     VILLA
-
 }

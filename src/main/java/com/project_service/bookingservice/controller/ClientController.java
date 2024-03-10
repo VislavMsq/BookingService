@@ -22,9 +22,9 @@ public class ClientController {
         return clientService.findById(id);
     }
 
-    @PostMapping("/new")
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public String create(@RequestBody ClientDto clientDto) {
-        return clientService.create(clientDto).getId().toString();
+    public ClientDto create(@RequestBody ClientDto clientDto) {
+        return clientService.create(clientDto);
     }
 }

@@ -14,4 +14,6 @@ public interface ApartmentService {
     List<ApartmentDTO> findApartmentByCountry(String country);
 
     List<ApartmentDTO> findApartmentByCity(String city);
+
+    void setApartmentCategoryToApartments(List<String> apartments, String apartmentCategoryId);
 }
