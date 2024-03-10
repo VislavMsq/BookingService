@@ -35,7 +35,7 @@ class CurrencyControllerTest {
     void getAllCurrencyTest() throws Exception {
         List<CurrencyDto> expected = createCurrencyList();
 
-        MvcResult currencyJson = mockMvc.perform(MockMvcRequestBuilders.get("/currencies/all")
+        MvcResult currencyJson = mockMvc.perform(MockMvcRequestBuilders.get("/currencies")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 

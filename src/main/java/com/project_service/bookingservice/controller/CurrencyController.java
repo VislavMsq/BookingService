@@ -16,8 +16,8 @@ public class CurrencyController {
 
     private final CurrencyService currencyService;
 
-    @GetMapping("/all")
-    private List<CurrencyDto> getAllCurrency() {
+    @GetMapping
+    public List<CurrencyDto> getAllCurrency() {
         return currencyService.getAll();
     }
 }

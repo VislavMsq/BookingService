@@ -32,3 +32,4 @@ mvnw.cmd
 mvnw
 ### VS Code ###
 .vscode/
+/*.*.db

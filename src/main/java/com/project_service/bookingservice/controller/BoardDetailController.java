@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class BoardDetailController {
     private final BoardDetailService boardDetailService;
 
-    @GetMapping("/find_all")
+    @GetMapping
     public BoardDetailsOfRangeDto findAllBoardDetailDto(@RequestBody BoardDetailsOfRangeDto boardDetailsOfRangeDto) {
         return boardDetailService.findAllBoardDetailDto(boardDetailsOfRangeDto);
     }
