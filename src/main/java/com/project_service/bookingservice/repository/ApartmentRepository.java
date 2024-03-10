@@ -11,6 +11,12 @@ import java.util.UUID;
 
 @Repository
 public interface ApartmentRepository extends JpaRepository<Apartment, UUID> {
-    @Query("select ac from ApartmentCategory ac where ac.owner.id = :ownerId")
-    List<Apartment> findByOwnerId(@Param("ownerId") String ownerId);
+    @Query("select ac from Apartment ac where ac.owner.id = :ownerId")
+    List<Apartment> findByOwnerId(@Param("ownerId") UUID ownerId);
+
+    @Query("SELECT a FROM Apartment a WHERE a.country = :country AND a.owner.id = :ownerId")
+    List<Apartment> findByCountry(@Param("country") String country, @Param("ownerId") UUID id);
+
+    @Query("SELECT a FROM Apartment a WHERE a.city = :city AND a.owner.id = :ownerId")
+    List<Apartment> findByCity(@Param("city") String city, @Param("ownerId") UUID uuid);
 }

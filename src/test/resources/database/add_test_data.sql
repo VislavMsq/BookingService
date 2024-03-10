@@ -55,13 +55,13 @@ VALUES ('3f120739-8a84-4e21-84b3-7a66358157bf', NULL, 'c205da57-0722-4b5d-9c13-3
         'be2f0f46-9e36-4b99-8d62-8e498b783c38', 'Apartment 2', 'ROOM',
         'UK', 'London', '456 Oak St', 3, false, true, 2, 'Dolor sit amet', '2024-03-03 12:31:00',
         '2024-03-03 12:31:00'),
-       ('f47ac10b-58cc-4372-a567-0e02b2c3d479', NULL, null, 'ad99034d-4a69-492f-b65f-4aef01d21ee6', 'Apartment 1', 'APARTMENT', 'USA', 'New York',
+       ('f47ac10b-58cc-4372-a567-0e02b2c3d479', NULL, 'c205da57-0722-4b5d-9c13-30adfe3b0d72', NULL, 'Apartment 1', 'APARTMENT', 'USA', 'New York',
         'Broadway', 2, true, false, 1, 'Cozy studio apartment in the heart of New York City', '2023-09-01 13:57:40',
         '2023-09-01 13:57:40'),
-       ('1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d', NULL, NULL, NULL, 'Apartment 2', 'Apartment', 'USA',
+       ('1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d', NULL, 'c205da57-0722-4b5d-9c13-30adfe3b0d72', NULL, 'Apartment 2', 'APARTMENT', 'USA',
         'Los Angeles', 'Hollywood Blvd', 3, false, true, 2, 'Spacious apartment with Hollywood sign view',
         '2023-09-01 13:57:40', '2023-09-01 13:57:40'),
-       ('eccbc87e-4b5c-4331-a025-6545673431ef', NULL, NULL, NULL, 'Apartment 3', 'House', 'Canada', 'Toronto',
+       ('eccbc87e-4b5c-4331-a025-6545673431ef', NULL, 'c205da57-0722-4b5d-9c13-30adfe3b0d72', NULL, 'Apartment 3', 'ROOM', 'Canada', 'Toronto',
         'Yonge Street', 4, true, true, 0, 'Modern house with a beautiful view of Lake Ontario', '2023-09-01 13:57:40',
         '2023-09-01 13:57:40');
 

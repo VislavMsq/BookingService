@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,27 +60,22 @@ class ClientControllerTest {
     @WithUserDetails(value = "aloha.test@gmail.com")
     void createNewClient() throws Exception {
         //given
-        ClientDto clientDto = new ClientDto();
-        clientDto.setEmail("ivanov.ivan@gmail.com");
-        clientDto.setPhone("+123456789");
-        clientDto.setFirstName("Ivan");
-        clientDto.setLastName("Ivanov");
-        clientDto.setLanguage("RU");
-        clientDto.setCountry("Belarus");
-        clientDto.setCommentText("comment");
-
+        ClientDto clientDto = getClientDto();
         String clientStr = objectMapper.writeValueAsString(clientDto);
 
         //when
-        MvcResult clientCreationResult = mockMvc.perform(MockMvcRequestBuilders.post("/clients/new")
+        String creationResultJson = mockMvc.perform(MockMvcRequestBuilders.post("/clients/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(clientStr))
                 .andExpect(status().isCreated())
-                .andReturn();
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        String id = clientCreationResult.getResponse().getContentAsString();
+        ClientDto clientDtoCreationResult = objectMapper.readValue(creationResultJson, ClientDto.class);
 
-        String clientJson = mockMvc.perform(MockMvcRequestBuilders.get("/clients/" + id))
+        String clientJson = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/clients/" + clientDtoCreationResult.getId()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -93,5 +87,17 @@ class ClientControllerTest {
         Assertions.assertNotNull(clientDtoResult.getId());
         clientDtoResult.setId(null);
         Assertions.assertEquals(clientDto, clientDtoResult);
+    }
+
+    private static ClientDto getClientDto() {
+        ClientDto clientDto = new ClientDto();
+        clientDto.setEmail("ivanov.ivan@gmail.com");
+        clientDto.setPhone("+123456789");
+        clientDto.setFirstName("Ivan");
+        clientDto.setLastName("Ivanov");
+        clientDto.setLanguage("RU");
+        clientDto.setCountry("Belarus");
+        clientDto.setCommentText("comment");
+        return clientDto;
     }
 }
