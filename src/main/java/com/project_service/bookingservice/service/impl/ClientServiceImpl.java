@@ -31,12 +31,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional
-    public Client create(ClientDto clientDto) {
+    public ClientDto create(ClientDto clientDto) {
         User owner = userProvider.getCurrentUser();
         Client client = clientMapper.mapToEntity(clientDto);
         client.setOwner(owner);
         clientRepository.save(client);
-        return client;
+        return clientMapper.mapToDto(client);
     }
 
     @Override

@@ -15,7 +15,6 @@ public class UserDto {
                     + "at least one uppercase and one lowercase, also one digit and one special character")
     private String password;
 
-    @NotBlank(message = "First name can not be empty")
     @Pattern(regexp = "^\\+?\\d[\\d\\-\\s]{6,14}\\d$", message = "The phone number can starts with '+', "
             + "and contain only numbers, hyphens and spaces")
     private String phone;
@@ -24,6 +23,7 @@ public class UserDto {
     @Min(-12)
     private Integer timezone;
 
+    @NotBlank(message = "First name can not be empty")
     @Pattern(regexp = "^\\p{L}+$", message = "First name must contain only letters")
     private String firstName;
 

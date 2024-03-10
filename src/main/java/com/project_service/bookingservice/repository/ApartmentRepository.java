@@ -23,4 +23,3 @@ public interface ApartmentRepository extends JpaRepository<Apartment, UUID> {
     @Query("SELECT a FROM Apartment a WHERE a.id IN :apartmentIds and  a.owner.id = :ownerId")
     List<Apartment> findAllByIdAndOwner(List<UUID> apartmentIds, @Param("ownerId") UUID ownerId);
 }
-

@@ -33,6 +33,38 @@ class BookingControllerTest {
     @WithUserDetails(value = "aloha.test@gmail.com")
     void createBooking() throws Exception {
         //given
+        BookingDto bookingDto = getBookingDto();
+        String bookingDtoStr = objectMapper.writeValueAsString(bookingDto);
+
+        //when
+        String creationResultJson = mockMvc.perform(MockMvcRequestBuilders.post("/bookings/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(bookingDtoStr))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        BookingDto bookingDtoCreationResult = objectMapper.readValue(creationResultJson, BookingDto.class);
+
+        String bookingJson = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/bookings/" + bookingDtoCreationResult.getId()))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        //then
+        BookingDto bookingDtoActual = objectMapper.readValue(bookingJson, BookingDto.class);
+
+        Assertions.assertNotNull(bookingDtoActual.getId());
+        Assertions.assertEquals("NEW", bookingDtoActual.getStatus());
+        bookingDtoActual.setId(null);
+        bookingDtoActual.setStatus(null);
+        Assertions.assertEquals(bookingDto, bookingDtoActual);
+    }
+
+    private static BookingDto getBookingDto() {
         BookingDto bookingDto = new BookingDto();
         bookingDto.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         bookingDto.setCurrencyId("3b56fe6e-6910-4b0d-863e-ac60262e7a17");
@@ -41,31 +73,6 @@ class BookingControllerTest {
         bookingDto.setStartDate(LocalDate.of(2024, 2, 29));
         bookingDto.setEndDate(LocalDate.of(2024, 3, 2));
         bookingDto.setIsEditedPrice(true);
-
-        String bookingDtoStr = objectMapper.writeValueAsString(bookingDto);
-
-        //when
-        String id = mockMvc.perform(MockMvcRequestBuilders.post("/bookings/new")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(bookingDtoStr))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        String bookingJson = mockMvc.perform(MockMvcRequestBuilders.get("/bookings/" + id))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        //then
-        BookingDto bookingDtoResult = objectMapper.readValue(bookingJson, BookingDto.class);
-
-        Assertions.assertNotNull(bookingDtoResult.getId());
-        Assertions.assertEquals("NEW", bookingDtoResult.getStatus());
-        bookingDtoResult.setId(null);
-        bookingDtoResult.setStatus(null);
-        Assertions.assertEquals(bookingDto, bookingDtoResult);
+        return bookingDto;
     }
 }
