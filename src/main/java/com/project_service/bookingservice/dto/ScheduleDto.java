@@ -4,15 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PriceCategoryDto {
+public class ScheduleDto {
     private String id;
-    private String currencyCode;
-    private String name;
-    private String priority;
-    private List<PriceScheduleDto> periods;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }
