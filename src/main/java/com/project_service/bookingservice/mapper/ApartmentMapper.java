@@ -16,8 +16,6 @@ public interface ApartmentMapper {
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
-    @Mapping(target = "apartmentCategory.id", source = "apartmentCategoryId")
-    @Mapping(target = "parent.id", source = "parentId")
     Apartment toEntity(ApartmentDTO apartmentDTO);
 
     List<ApartmentDTO> listToDTO(List<Apartment> apartments);
