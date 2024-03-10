@@ -64,7 +64,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     @Transactional
-    public List<ApartmentDTO> findApartmentByCity(String city){
+    public List<ApartmentDTO> findApartmentByCity(String city) {
         User user = userProvider.getCurrentUser();
         UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
         List<Apartment> apartments = apartmentRepository.findByCity(city, id);

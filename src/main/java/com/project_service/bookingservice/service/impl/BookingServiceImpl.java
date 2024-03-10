@@ -32,7 +32,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public Booking createBooking(BookingDto bookingDto) {
+    public BookingDto createBooking(BookingDto bookingDto) {
         Booking booking = bookingMapper.mapToEntity(bookingDto);
         User owner = userProvider.getCurrentUser();
         Apartment apartment = apartmentRepository.findById(UUID.fromString(bookingDto.getApartmentId()))
@@ -50,7 +50,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setCurrency(currency);
         booking.setStatus(Status.NEW);
         bookingRepository.save(booking);
-        return booking;
+        return bookingMapper.mapToDto(booking);
     }
 
     @Override

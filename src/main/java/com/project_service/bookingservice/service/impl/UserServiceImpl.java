@@ -6,7 +6,6 @@ import com.project_service.bookingservice.entity.Currency;
 import com.project_service.bookingservice.entity.User;
 import com.project_service.bookingservice.entity.enums.Role;
 import com.project_service.bookingservice.exception.AuthenticationException;
-import com.project_service.bookingservice.exception.CurrencyNotFoundException;
 import com.project_service.bookingservice.exception.UserAlreadyExistsException;
 import com.project_service.bookingservice.exception.UserNotFoundException;
 import com.project_service.bookingservice.mapper.UserMapper;
@@ -53,21 +52,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User create(UserDto userDto) {
+    public void create(UserDto userDto) {
         Currency currency = currencyRepository.findByCode(userDto.getCurrencyCode())
-                .orElseThrow(() -> new CurrencyNotFoundException(String.format("Currency with id %s not found",
-                        userDto.getCurrencyCode())));
+                .orElse(null);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         User user = userMapper.mapToEntity(userDto);
         user.setCurrency(currency);
         user.setRole(Role.OWNER);
-        user.setOwner(null);
         try {
             userRepository.save(user);
         } catch (DataIntegrityViolationException exception) {
             throw new UserAlreadyExistsException(String.format("User with email %s already exists.", user.getEmail()));
         }
-        return user;
     }
 
     @Override
