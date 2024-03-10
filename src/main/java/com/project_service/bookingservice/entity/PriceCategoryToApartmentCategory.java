@@ -13,7 +13,7 @@ import java.time.Year;
 @Setter
 @NoArgsConstructor
 @Table(name = "price_category_to_apartments_categories")
-public class CategoryPriceToApartments extends BaseEntity {
+public class PriceCategoryToApartmentCategory extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apartment_category_id", referencedColumnName = "id")

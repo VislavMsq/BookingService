@@ -59,7 +59,7 @@ class BookingControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String borderDetailsOfRangeJson = mockMvc.perform(MockMvcRequestBuilders.get("/board_details/find_all")
+        String borderDetailsOfRangeJson = mockMvc.perform(MockMvcRequestBuilders.get("/board_details")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(boardDetailsOfRangeDtoStr))
                 .andExpect(status().isOk())
