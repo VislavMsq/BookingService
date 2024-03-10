@@ -8,11 +8,9 @@ import com.project_service.bookingservice.exception.BookingNotFoundException;
 import com.project_service.bookingservice.exception.ClientNotFoundException;
 import com.project_service.bookingservice.exception.CurrencyNotFoundException;
 import com.project_service.bookingservice.mapper.BookingMapper;
-import com.project_service.bookingservice.repository.ApartmentRepository;
-import com.project_service.bookingservice.repository.BookingRepository;
-import com.project_service.bookingservice.repository.ClientRepository;
-import com.project_service.bookingservice.repository.CurrencyRepository;
+import com.project_service.bookingservice.repository.*;
 import com.project_service.bookingservice.security.UserProvider;
+import com.project_service.bookingservice.service.BoardDetailService;
 import com.project_service.bookingservice.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,8 @@ public class BookingServiceImpl implements BookingService {
     private final ApartmentRepository apartmentRepository;
     private final ClientRepository clientRepository;
     private final CurrencyRepository currencyRepository;
+    private final BoardDetailService boardDetailService;
+
     private final BookingMapper bookingMapper;
     private final UserProvider userProvider;
 
@@ -35,10 +35,10 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto createBooking(BookingDto bookingDto) {
         Booking booking = bookingMapper.mapToEntity(bookingDto);
         User owner = userProvider.getCurrentUser();
-        Apartment apartment = apartmentRepository.findById(UUID.fromString(bookingDto.getApartmentId()))
+        Apartment apartment = apartmentRepository.findByIdAndOwner(UUID.fromString(bookingDto.getApartmentId()), owner)
                 .orElseThrow(() -> new ApartmentNotFoundException(String.format("Apartment with id %s not found",
                         bookingDto.getApartmentId())));
-        Client client = clientRepository.findById(UUID.fromString(bookingDto.getClientId()))
+        Client client = clientRepository.findByIdAndOwner(UUID.fromString(bookingDto.getClientId()), owner)
                 .orElseThrow(() -> new ClientNotFoundException(String.format("Client with id %s not found",
                         bookingDto.getClientId())));
         Currency currency = currencyRepository.findById(UUID.fromString(bookingDto.getCurrencyId()))
@@ -50,6 +50,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setCurrency(currency);
         booking.setStatus(Status.NEW);
         bookingRepository.save(booking);
+        boardDetailService.createBoardOfDetail(booking);
         return bookingMapper.mapToDto(booking);
     }
 

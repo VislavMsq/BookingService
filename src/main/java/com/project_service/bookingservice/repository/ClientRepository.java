@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, UUID> {
-
     Optional<Client> findByPhoneAndOwner(String phone, User owner);
+
+    Optional<Client> findByIdAndOwner(UUID uuid, User owner);
 }

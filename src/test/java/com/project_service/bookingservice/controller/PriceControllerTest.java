@@ -37,13 +37,9 @@ class PriceControllerTest {
     @WithUserDetails(value = "aloha.test@gmail.com")
     void getPricesOfApartment() throws Exception {
         //given
-        BookingDto bookingDto = new BookingDto();
-        bookingDto.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        bookingDto.setStartDate(LocalDate.of(2024, 2, 29));
-        bookingDto.setEndDate(LocalDate.of(2024, 3, 2));
-        List<PriceDto> expected = getExpectedPrices();
+        Result result = getResult();
 
-        String bookingDtoStr = objectMapper.writeValueAsString(bookingDto);
+        String bookingDtoStr = objectMapper.writeValueAsString(result.bookingDto());
 
         //when
         String pricesResultStr = mockMvc.perform(MockMvcRequestBuilders.get("/prices")
@@ -57,8 +53,20 @@ class PriceControllerTest {
         //then
         List<PriceDto> actual = objectMapper.readValue(pricesResultStr, new TypeReference<>() {
         });
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(result.expected(), actual);
 
+    }
+
+    private Result getResult() {
+        BookingDto bookingDto = new BookingDto();
+        bookingDto.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        bookingDto.setStartDate(LocalDate.of(2024, 2, 29));
+        bookingDto.setEndDate(LocalDate.of(2024, 3, 2));
+        List<PriceDto> expected = getExpectedPrices();
+        return new Result(bookingDto, expected);
+    }
+
+    private record Result(BookingDto bookingDto, List<PriceDto> expected) {
     }
 
     private List<PriceDto> getExpectedPrices() {
@@ -67,8 +75,8 @@ class PriceControllerTest {
         priceDto1.setDate(LocalDate.of(2024, 2, 29));
         priceDto1.setIsEditedPrice(false);
         priceDto1.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        priceDto1.setCurrencyName("Peso");
-        priceDto1.setCurrencyCode("PHP");
+        priceDto1.setCurrencyName("Yuan Renminbi");
+        priceDto1.setCurrencyCode("CNY");
 
         PriceDto priceDto2 = new PriceDto();
         priceDto2.setPrice(150.00);

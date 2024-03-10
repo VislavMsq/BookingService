@@ -16,19 +16,25 @@ VALUES ('c205da57-0722-4b5d-9c13-30adfe3b0d72', NULL, '3f4245b3-94cc-4b2d-bc7b-d
         'en', 'WORKER', '2024-03-03 12:01:00', '2024-03-03 12:01:00'),
        ('4a56fe6e-6910-4b0d-863e-ac60262e7a17', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'aloha.test@gmail.com',
         '+48798456123', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 2, 'Aloha', 'Test', 'Poland',
-        'Russian', 'OWNER', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z');
+        'Russian', 'OWNER', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z'),
+       ('54ea1478-dee2-11ee-bd3d-0242ac120002', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'appolon12@gmail.com',
+        '+48798456123', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 2, 'Lui', 'Armstrong', 'USA',
+        'English', 'OWNER', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z')
+;
 
 -- Insert dummy data into apartment_categories table
 INSERT INTO apartment_categories (id, owner_id, name, abbreviation, type, sleep_place, created_at, updated_at)
 VALUES ('ad99034d-4a69-492f-b65f-4aef01d21ee6', 'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'Apartment Category 1', 'ABC1',
         'APARTMENT', 2, '2024-03-03 12:10:00', '2024-03-03 12:10:00'),
        ('be2f0f46-9e36-4b99-8d62-8e498b783c38', 'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'Apartment Category 2', 'ABC2',
-        'ROOM', 4, '2024-03-03 12:11:00', '2024-03-03 12:11:00');
+        'ROOM', 4, '2024-03-03 12:11:00', '2024-03-03 12:11:00'),
+       ('d7f3cb48-dee2-11ee-bd3d-0242ac120002', '54ea1478-dee2-11ee-bd3d-0242ac120002', 'Apartment Category 1', 'ABC1',
+        'APARTMENT', 2, '2024-03-03 12:10:00', '2024-03-03 12:10:00');
 
 -- Insert dummy data into clients table
 INSERT INTO clients (id, owner_id, email, phone, first_name, last_name, country, language, comment_text, created_at,
                      updated_at)
-VALUES ('f9f5e56d-740e-4a37-bcce-1c5c6781d5f8', 'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'client1@example.com',
+VALUES ('f9f5e56d-740e-4a37-bcce-1c5c6781d5f8', '54ea1478-dee2-11ee-bd3d-0242ac120002', 'client1@example.com',
         '111222333', 'Client', 'One', 'USA', 'en', 'Lorem ipsum', '2024-03-03 12:20:00', '2024-03-03 12:20:00'),
        ('7f188df1-b63b-41c8-88e9-6050da205a2f', 'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'client2@example.com',
         '444555666', 'Client', 'Two', 'UK', 'en', 'Dolor sit amet', '2024-03-03 12:21:00', '2024-03-03 12:21:00'),
@@ -56,6 +62,9 @@ VALUES ('3f120739-8a84-4e21-84b3-7a66358157bf', NULL, 'c205da57-0722-4b5d-9c13-3
         'UK', 'London', '456 Oak St', 3, false, true, 2, 'Dolor sit amet', '2024-03-03 12:31:00',
         '2024-03-03 12:31:00'),
        ('f47ac10b-58cc-4372-a567-0e02b2c3d479', NULL, 'c205da57-0722-4b5d-9c13-30adfe3b0d72', NULL, 'Apartment 1', 'APARTMENT', 'USA', 'New York',
+        'Broadway', 2, true, false, 1, 'Cozy studio apartment in the heart of New York City', '2023-09-01 13:57:40',
+        '2023-09-01 13:57:40'),
+       ('a47ac10b-58cc-4372-a567-0e02b2c3d479', NULL, '54ea1478-dee2-11ee-bd3d-0242ac120002', 'd7f3cb48-dee2-11ee-bd3d-0242ac120002', 'Apartment 1', 'APARTMENT', 'USA', 'New York',
         'Broadway', 2, true, false, 1, 'Cozy studio apartment in the heart of New York City', '2023-09-01 13:57:40',
         '2023-09-01 13:57:40'),
        ('1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d', NULL, 'c205da57-0722-4b5d-9c13-30adfe3b0d72', NULL, 'Apartment 2', 'APARTMENT', 'USA',
@@ -113,21 +122,27 @@ VALUES ('efa6495e-bf37-4a98-9e7c-7fe3c6929ddc', '3f120739-8a84-4e21-84b3-7a66358
        ('5e00c3e0-58a0-4c1e-b749-d95ac308813d', '8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2',
         'c205da57-0722-4b5d-9c13-30adfe3b0d72', '6e0727d5-8eb9-438e-8e61-c30e0506a889', 200.00, '2024-03-03 13:11:00',
         true, '2024-03-03 13:11:00', '2024-03-03 13:11:00'),
-       ('f47ac10b-58cc-4372-a567-0e02b2c3d479', 'f47ac10b-58cc-4372-a567-0e02b2c3d479', NULL,
-        'db41867b-682b-4121-b84b-830530fe9f2e', 100.00, '2024-02-29 12:00:00', FALSE, '2024-03-02 12:00:00',
+       ('f47ac10b-58cc-4372-a567-0e02b2c3d479', 'f47ac10b-58cc-4372-a567-0e02b2c3d479', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
+        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 100.00, '2024-02-29', FALSE, '2024-03-02 12:00:00',
         '2024-03-02 12:00:00'),
-       ('f47ac10b-58cc-4372-a567-1232b2c3d479', 'f47ac10b-58cc-4372-a567-0e02b2c3d479', NULL,
-        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 150.00, '2024-03-01 12:00:00', FALSE, '2024-03-02 12:00:00',
+       ('f47ac10b-58cc-4372-a567-1232b2c3d479', 'f47ac10b-58cc-4372-a567-0e02b2c3d479', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
+        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 150.00, '2024-03-01', FALSE, '2024-03-02 12:00:00',
         '2024-03-02 12:00:00'),
-       ('f47ac10b-58cc-4372-a567-3212b2c3d479', 'f47ac10b-58cc-4372-a567-0e02b2c3d479', NULL,
-        'db41867b-682b-4121-b84b-830530fe9f2e', 200.00, '2024-03-02 12:00:00', FALSE, '2024-03-02 12:00:00',
+       ('f47ac10b-58cc-4372-a567-3212b2c3d479', 'f47ac10b-58cc-4372-a567-0e02b2c3d479', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
+        'db41867b-682b-4121-b84b-830530fe9f2e', 200.00, '2024-03-02', FALSE, '2024-03-02 12:00:00',
+        '2024-03-02 12:00:00'),
+       ('6ab80a14-dee0-11ee-bd3d-0242ac120002', 'a47ac10b-58cc-4372-a567-0e02b2c3d479', '54ea1478-dee2-11ee-bd3d-0242ac120002',
+        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 100.00, '2024-02-29', FALSE, '2024-03-02 12:00:00',
+        '2024-03-02 12:00:00'),
+       ('7dcc75b8-dee0-11ee-bd3d-0242ac120002', 'a47ac10b-58cc-4372-a567-0e02b2c3d479', '54ea1478-dee2-11ee-bd3d-0242ac120002',
+        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 150.00, '2024-03-01', FALSE, '2024-03-02 12:00:00',
         '2024-03-02 12:00:00');
 
 -- Insert dummy data into board_details table
 INSERT INTO board_details (id, booking_id, apartment_id, owner_id, currency_id, price, date, client_name,
                            apartments_city, apartments_sleeping_places, created_at, updated_at)
 VALUES ('a82c865a-844d-4a25-a9c9-1f853f1f419a', 'bc79bf93-2493-40e6-9c92-7a0da27a3d85',
-        '3f120739-8a84-4e21-84b3-7a66358157bf', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
+        'f47ac10b-58cc-4372-a567-0e02b2c3d479', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
         '3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20', 150.00, '2024-03-03 13:20:00', 'Client One', 'New York', 2,
         '2024-03-03 13:20:00', '2024-03-03 13:20:00'),
        ('5c773cd7-bdf8-4e0d-8b7d-06e8792e7d16', '75250852-158a-4bb2-bd7d-87a56d48c4b5',
