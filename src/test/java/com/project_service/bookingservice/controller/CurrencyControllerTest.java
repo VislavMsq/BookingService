@@ -33,12 +33,29 @@ class CurrencyControllerTest {
     @Test
     @WithUserDetails(value = "aloha.test@gmail.com")
     void getAllCurrencyTest() throws Exception {
+        List<CurrencyDto> expected = createCurrencyList();
+
+        MvcResult currencyJson = mockMvc.perform(MockMvcRequestBuilders.get("/currencies/all")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        String currencyResultJson = currencyJson.getResponse().getContentAsString();
+
+        List<CurrencyDto> actual = objectMapper.readValue(currencyResultJson, new TypeReference<>() {
+        });
+
+        Assertions.assertEquals(200, currencyJson.getResponse().getStatus());
+        Assertions.assertEquals(expected, actual);
+    }
+
+    private List<CurrencyDto> createCurrencyList() {
         List<CurrencyDto> currencyDtoList = new ArrayList<>();
-        CurrencyDto currencyDto = new CurrencyDto();
-        currencyDto.setId("3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20");
-        currencyDto.setName("US Dollar");
-        currencyDto.setCode("USD");
-        currencyDtoList.add(currencyDto);
+
+        CurrencyDto currencyDto1 = new CurrencyDto();
+        currencyDto1.setId("3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20");
+        currencyDto1.setName("US Dollar");
+        currencyDto1.setCode("USD");
+        currencyDtoList.add(currencyDto1);
 
         CurrencyDto currencyDto2 = new CurrencyDto();
         currencyDto2.setId("6e0727d5-8eb9-438e-8e61-c30e0506a889");
@@ -64,16 +81,6 @@ class CurrencyControllerTest {
         currencyDto5.setCode("CNY");
         currencyDtoList.add(currencyDto5);
 
-        MvcResult currencyJson = mockMvc.perform(MockMvcRequestBuilders.get("/currency/all")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-
-        String currencyResultJson = currencyJson.getResponse().getContentAsString();
-
-        List<CurrencyDto> actual = objectMapper.readValue(currencyResultJson, new TypeReference<>() {
-        });
-
-        Assertions.assertEquals(200, currencyJson.getResponse().getStatus());
-        Assertions.assertEquals(currencyDtoList, actual);
+        return currencyDtoList;
     }
 }

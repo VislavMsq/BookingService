@@ -11,7 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/currency")
+@RequestMapping(path = "/currencies")
 public class CurrencyController {
 
     private final CurrencyService currencyService;
