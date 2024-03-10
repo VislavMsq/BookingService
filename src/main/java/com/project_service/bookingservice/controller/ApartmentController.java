@@ -4,6 +4,7 @@ import com.project_service.bookingservice.dto.ApartmentDTO;
 import com.project_service.bookingservice.service.ApartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,5 +43,12 @@ public class ApartmentController {
     @ResponseStatus(HttpStatus.OK)
     public List<ApartmentDTO> findApartmentsByCity(@PathVariable String city) {
         return apartmentService.findApartmentByCity(city);
+    }
+
+    @PostMapping("/set-apartment-category/{apartmentCategoryId}")
+    @PreAuthorize("hasAuthority('OWNER')")
+    @ResponseStatus(HttpStatus.OK)
+    public void setApartmentsCategory(@RequestBody List<String> apartmentIds, @PathVariable String apartmentCategoryId) {
+        apartmentService.setApartmentCategoryToApartments(apartmentIds, apartmentCategoryId);
     }
 }
