@@ -35,10 +35,10 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto createBooking(BookingDto bookingDto) {
         Booking booking = bookingMapper.mapToEntity(bookingDto);
         User owner = userProvider.getCurrentUser();
-        Apartment apartment = apartmentRepository.findById(UUID.fromString(bookingDto.getApartmentId()))
+        Apartment apartment = apartmentRepository.findByIdAndOwner(UUID.fromString(bookingDto.getApartmentId()), owner)
                 .orElseThrow(() -> new ApartmentNotFoundException(String.format("Apartment with id %s not found",
                         bookingDto.getApartmentId())));
-        Client client = clientRepository.findById(UUID.fromString(bookingDto.getClientId()))
+        Client client = clientRepository.findByIdAndOwner(UUID.fromString(bookingDto.getClientId()), owner)
                 .orElseThrow(() -> new ClientNotFoundException(String.format("Client with id %s not found",
                         bookingDto.getClientId())));
         Currency currency = currencyRepository.findById(UUID.fromString(bookingDto.getCurrencyId()))

@@ -75,7 +75,7 @@ public class BoardDetailServiceImpl implements BoardDetailService {
         boardDetail.setClientName(String.format("%s %s", booking.getClient().getFirstName(), booking.getClient()
                 .getLastName()));
         boardDetail.setApartmentCity(booking.getApartment().getCity());
-        boardDetail.setApartmentSleepingPlace(booking.getApartment().getApartmentCategoryId().getSleepPlace());
+        boardDetail.setApartmentSleepingPlace(booking.getApartment().getApartmentCategory().getSleepPlace());
         boardDetail.setOwner(booking.getOwner());
         boardDetail.setCreatedAt(LocalDateTime.now());
         boardDetail.setUpdatedAt(LocalDateTime.now());

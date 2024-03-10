@@ -33,7 +33,7 @@ class BookingControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    @WithUserDetails(value = "aloha.test@gmail.com")
+    @WithUserDetails(value = "appolon12@gmail.com")
     void createBooking() throws Exception {
         //given
         BookingDto bookingDto = getBookingDto();
@@ -43,7 +43,7 @@ class BookingControllerTest {
         String bookingDtoStr = objectMapper.writeValueAsString(bookingDto);
 
         //when
-        String id = mockMvc.perform(MockMvcRequestBuilders.post("/bookings/new")
+        String bookingCreationJson = mockMvc.perform(MockMvcRequestBuilders.post("/bookings/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bookingDtoStr))
                 .andExpect(status().isCreated())
@@ -51,13 +51,15 @@ class BookingControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String bookingJson = mockMvc.perform(MockMvcRequestBuilders.get("/bookings/" + id))
+        BookingDto bookingDtoCreation = objectMapper.readValue(bookingCreationJson, BookingDto.class);
+
+        String bookingJson = mockMvc.perform(MockMvcRequestBuilders.get("/bookings/" + bookingDtoCreation.getId()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        String borderDetailsOfRangeJson = mockMvc.perform(MockMvcRequestBuilders.get("/board details/find_all")
+        String borderDetailsOfRangeJson = mockMvc.perform(MockMvcRequestBuilders.get("/board_details/find_all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(boardDetailsOfRangeDtoStr))
                 .andExpect(status().isOk())
@@ -93,10 +95,10 @@ class BookingControllerTest {
 
     private static BookingDto getBookingDto() {
         BookingDto bookingDto = new BookingDto();
-        bookingDto.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        bookingDto.setCurrencyId("3b56fe6e-6910-4b0d-863e-ac60262e7a17");
-        bookingDto.setClientId("0e288090-280c-489f-8058-bc36d534f3a5");
-        bookingDto.setPrice(300.0);
+        bookingDto.setApartmentId("a47ac10b-58cc-4372-a567-0e02b2c3d479");
+        bookingDto.setCurrencyId("3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20");
+        bookingDto.setClientId("f9f5e56d-740e-4a37-bcce-1c5c6781d5f8");
+        bookingDto.setPrice(150.0);
         bookingDto.setStartDate(LocalDate.of(2024, 2, 29));
         bookingDto.setEndDate(LocalDate.of(2024, 3, 2));
         bookingDto.setIsEditedPrice(true);
@@ -116,12 +118,12 @@ class BookingControllerTest {
         BoardDetailDto boardDetailDto1 = new BoardDetailDto();
         boardDetailDto1.setBookingId(id);
         boardDetailDto1.setDate(LocalDate.of(2024, month, dayOfMonth));
-        boardDetailDto1.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        boardDetailDto1.setApartmentId("a47ac10b-58cc-4372-a567-0e02b2c3d479");
         boardDetailDto1.setPrice(price);
-        boardDetailDto1.setCurrencyId("3b56fe6e-6910-4b0d-863e-ac60262e7a17");
+        boardDetailDto1.setCurrencyId("3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20");
         boardDetailDto1.setApartmentSleepingPlace(2.0);
         boardDetailDto1.setApartmentCity("New York");
-        boardDetailDto1.setClientName("Nelly Mulvagh");
+        boardDetailDto1.setClientName("Client One");
         return boardDetailDto1;
     }
 }

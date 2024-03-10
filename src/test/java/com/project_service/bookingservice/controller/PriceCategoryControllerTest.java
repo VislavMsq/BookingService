@@ -40,7 +40,7 @@ class PriceCategoryControllerTest {
         String priceCategoryDtoStr = objectMapper.writeValueAsString(priceCategoryDto);
 
         // when
-        String priceCategoryDtoJson = mockMvc.perform(MockMvcRequestBuilders.post("/price category/new")
+        String priceCategoryDtoJson = mockMvc.perform(MockMvcRequestBuilders.post("/price_category/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(priceCategoryDtoStr))
                 .andExpect(status().isCreated())
@@ -52,7 +52,7 @@ class PriceCategoryControllerTest {
 
         String id = priceCategoryDtoCreated.getId();
 
-        String actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.get("/price category/" + id))
+        String actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.get("/price_category/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
