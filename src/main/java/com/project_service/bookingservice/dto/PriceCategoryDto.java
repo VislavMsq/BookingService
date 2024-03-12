@@ -14,5 +14,5 @@ public class PriceCategoryDto {
     private String currencyCode;
     private String name;
     private String priority;
-    private List<PriceScheduleDto> periods;
+    private List<ScheduleDto> periods;
 }

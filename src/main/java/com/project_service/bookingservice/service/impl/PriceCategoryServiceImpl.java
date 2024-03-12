@@ -1,6 +1,7 @@
 package com.project_service.bookingservice.service.impl;
 
 import com.project_service.bookingservice.dto.PriceCategoryDto;
+import com.project_service.bookingservice.entity.CategoryPriceSchedule;
 import com.project_service.bookingservice.entity.Currency;
 import com.project_service.bookingservice.entity.PriceCategory;
 import com.project_service.bookingservice.exception.CurrencyNotFoundException;
@@ -10,6 +11,7 @@ import com.project_service.bookingservice.repository.CurrencyRepository;
 import com.project_service.bookingservice.repository.PriceCategoryRepository;
 import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.PriceCategoryService;
+import com.project_service.bookingservice.service.PriceScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
 
     private final CurrencyRepository currencyRepository;
     private final PriceCategoryRepository priceCategoryRepository;
-
+    private final PriceScheduleService priceScheduleService;
     private final PriceCategoryMapper priceCategoryMapper;
     private final UserProvider userProvider;
 
@@ -39,7 +41,8 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
         priceCategory.setCurrency(currency);
         priceCategory.setOwner(userProvider.getCurrentUser());
         priceCategoryRepository.save(priceCategory);
-        return priceCategoryMapper.mapToDto(priceCategory);
+
+        return priceScheduleService.createPriceSchedule(priceCategory, priceCategoryDto.getPeriods());
     }
 
     @Override
