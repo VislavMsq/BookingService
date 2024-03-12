@@ -7,7 +7,5 @@ import com.project_service.bookingservice.entity.PriceCategory;
 import java.util.List;
 
 public interface PriceScheduleService {
-    PriceCategoryDto createPriceSchedule(PriceCategory priceCategory, List<ScheduleDto> priceScheduleDtoList);
-
-    List<ScheduleDto> findAll();
+    PriceCategoryDto createPriceSchedule(PriceCategory priceCategory, List<ScheduleDto> scheduleDtoList);
 }

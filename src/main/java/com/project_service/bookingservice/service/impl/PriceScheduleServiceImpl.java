@@ -15,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,30 +32,23 @@ public class PriceScheduleServiceImpl implements PriceScheduleService {
     public PriceCategoryDto createPriceSchedule(PriceCategory priceCategory, List<ScheduleDto> scheduleDtoList) {
         User owner = userProvider.getCurrentUser();
 
-        PriceCategoryDto priceCategoryDto =  priceCategoryMapper.mapToDto(priceCategory);
+        PriceCategoryDto priceCategoryDto = priceCategoryMapper.mapToDto(priceCategory);
 
         List<CategoryPriceSchedule> categoryPriceScheduleList = new ArrayList<>();
         if (scheduleDtoList == null || scheduleDtoList.isEmpty()) {
             return priceCategoryDto;
         }
         for (ScheduleDto priceScheduleDto : scheduleDtoList) {
-            CategoryPriceSchedule categoryPriceSchedule = new CategoryPriceSchedule();
-            categoryPriceSchedule.setOwner(owner);
-            categoryPriceSchedule.setPriceCategory(priceCategory);
-            categoryPriceSchedule.setStartDate(priceScheduleDto.getStartDate().atStartOfDay());
-            categoryPriceSchedule.setEndDate(priceScheduleDto.getEndDate().atStartOfDay());
-            categoryPriceSchedule.setCreatedAt(LocalDateTime.now());
-            categoryPriceSchedule.setUpdatedAt(LocalDateTime.now());
+
+            CategoryPriceSchedule categoryPriceSchedule = priceScheduleMapper.toEntity(
+                    priceCategory, owner, priceScheduleDto);
 
             categoryPriceScheduleList.add(categoryPriceSchedule);
         }
         priceScheduleRepository.saveAll(categoryPriceScheduleList);
 
-        return priceCategoryDto;
-    }
+        priceCategoryDto.setPeriods(priceScheduleMapper.toScheduleDto(categoryPriceScheduleList));
 
-    @Override
-    public List<ScheduleDto> findAll() {
-        return priceScheduleMapper.toScheduleDto(priceScheduleRepository.findAllByOwner(userProvider.getCurrentUser()));
+        return priceCategoryDto;
     }
 }

@@ -2,6 +2,7 @@ package com.project_service.bookingservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project_service.bookingservice.dto.PriceCategoryDto;
+import com.project_service.bookingservice.dto.ScheduleDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,6 +41,12 @@ class PriceCategoryControllerTest {
         priceCategoryDto.setPriority("DEFAULT");
         priceCategoryDto.setCurrencyCode("EUR");
 
+        ScheduleDto period = new ScheduleDto();
+        period.setStartDate(LocalDate.of(2024, 1, 1));
+        period.setEndDate(LocalDate.of(2025, 1, 1).minusDays(1));
+
+        priceCategoryDto.setPeriods(List.of(period));
+
         String priceCategoryDtoStr = objectMapper.writeValueAsString(priceCategoryDto);
 
         // when
@@ -51,6 +61,7 @@ class PriceCategoryControllerTest {
         PriceCategoryDto priceCategoryDtoCreated = objectMapper.readValue(priceCategoryDtoJson, PriceCategoryDto.class);
 
         String id = priceCategoryDtoCreated.getId();
+        priceCategoryDto.setId(id);
 
         String actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.get("/price_category/" + id))
                 .andExpect(status().isOk())
@@ -62,7 +73,9 @@ class PriceCategoryControllerTest {
 
         PriceCategoryDto actualPriceCategoryDto = objectMapper.readValue(actualPriceCategoryJson, PriceCategoryDto.class);
         Assertions.assertNotNull(actualPriceCategoryDto.getId());
-        actualPriceCategoryDto.setId(null);
-        Assertions.assertEquals(priceCategoryDto,actualPriceCategoryDto);
+
+        actualPriceCategoryDto.setPeriods(actualPriceCategoryDto.getPeriods());
+
+        Assertions.assertEquals(priceCategoryDto, actualPriceCategoryDto);
     }
 }
