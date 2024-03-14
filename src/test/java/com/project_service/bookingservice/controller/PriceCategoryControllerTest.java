@@ -1,5 +1,6 @@
 package com.project_service.bookingservice.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project_service.bookingservice.dto.PriceCategoryDto;
 import com.project_service.bookingservice.dto.ScheduleDto;
@@ -49,7 +50,7 @@ class PriceCategoryControllerTest {
 
         String priceCategoryDtoStr = objectMapper.writeValueAsString(priceCategoryDto);
 
-        // when
+        // when: phase 1
         String priceCategoryDtoJson = mockMvc.perform(MockMvcRequestBuilders.post("/price_category/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(priceCategoryDtoStr))
@@ -74,8 +75,39 @@ class PriceCategoryControllerTest {
         PriceCategoryDto actualPriceCategoryDto = objectMapper.readValue(actualPriceCategoryJson, PriceCategoryDto.class);
         Assertions.assertNotNull(actualPriceCategoryDto.getId());
 
-        actualPriceCategoryDto.setPeriods(actualPriceCategoryDto.getPeriods());
-
         Assertions.assertEquals(priceCategoryDto, actualPriceCategoryDto);
+
+        // phase 2
+        actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.get("/price_category"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        List<PriceCategoryDto> priceCategoryDtoList = objectMapper.readValue(actualPriceCategoryJson, new TypeReference<>(){});
+
+        Assertions.assertFalse(priceCategoryDtoList.isEmpty());
+
+        // phase 3
+        PriceCategoryDto priceCategoryDtoUpdate = priceCategoryDtoList.get(0);
+
+        priceCategoryDtoUpdate
+                .getPeriods()
+                .get(0)
+                .setEndDate(LocalDate.of(2025, 10, 1).minusDays(1));
+
+        priceCategoryDtoStr = objectMapper.writeValueAsString(priceCategoryDtoList.get(0));
+
+        actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.post("/price_category/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(priceCategoryDtoStr))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        PriceCategoryDto actual = objectMapper.readValue(actualPriceCategoryJson, new TypeReference<>(){});
+
+        Assertions.assertEquals(priceCategoryDtoUpdate, actual);
     }
 }

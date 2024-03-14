@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/price_category")
@@ -22,5 +24,17 @@ public class PriceCategoryController {
     @ResponseStatus(HttpStatus.OK)
     public PriceCategoryDto findById(@PathVariable("id") String id) {
         return priceCategoryService.findById(id);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<PriceCategoryDto> findAll() {
+        return priceCategoryService.findAll();
+    }
+
+    @PostMapping("/update")
+    @ResponseStatus(HttpStatus.OK)
+    public PriceCategoryDto update(@RequestBody PriceCategoryDto priceCategoryDto) {
+        return priceCategoryService.update(priceCategoryDto);
     }
 }

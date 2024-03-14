@@ -1,9 +1,11 @@
 package com.project_service.bookingservice.service.impl;
 
 import com.project_service.bookingservice.dto.PriceCategoryDto;
+import com.project_service.bookingservice.dto.ScheduleDto;
 import com.project_service.bookingservice.entity.CategoryPriceSchedule;
 import com.project_service.bookingservice.entity.Currency;
 import com.project_service.bookingservice.entity.PriceCategory;
+import com.project_service.bookingservice.entity.User;
 import com.project_service.bookingservice.exception.CurrencyNotFoundException;
 import com.project_service.bookingservice.exception.PriceCategoryNotFoundException;
 import com.project_service.bookingservice.mapper.PriceCategoryMapper;
@@ -19,8 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -52,14 +53,13 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAuthority('OWNER')")
     public PriceCategoryDto findById(String id) {
-
         PriceCategory priceCategory = priceCategoryRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new PriceCategoryNotFoundException(
                                 String.format("Price category with id %s not found", id)
                         )
                 );
-
         PriceCategoryDto priceCategoryDto = priceCategoryMapper.mapToDto(priceCategory);
 
         List<CategoryPriceSchedule> categoryPriceSchedules = priceScheduleRepository.
@@ -68,5 +68,62 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
         priceCategoryDto.setPeriods(priceScheduleMapper.toScheduleDto(categoryPriceSchedules));
 
         return priceCategoryDto;
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasAuthority('OWNER')")
+    public PriceCategoryDto update(PriceCategoryDto priceCategoryDto) {
+        User owner = userProvider.getCurrentUser();
+
+        PriceCategory priceCategory = priceCategoryRepository.findById(UUID.fromString(priceCategoryDto.getId()))
+                .orElseThrow(() -> new PriceCategoryNotFoundException(
+                                String.format("Price category with id %s not found", priceCategoryDto.getId())
+                        )
+                );
+
+        List<CategoryPriceSchedule> categoryPriceSchedules = priceScheduleRepository.
+                findAllByPriceCategoryAndOwner(priceCategory, owner);
+
+        Map<ScheduleDto, CategoryPriceSchedule> map = new HashMap<>();
+
+        categoryPriceSchedules
+                .forEach(c -> map.put(priceScheduleMapper.toScheduleDto(c), c));
+
+        List<CategoryPriceSchedule> saveList = new ArrayList<>();
+
+        Map<ScheduleDto, CategoryPriceSchedule> mapForRemove = new HashMap<>(map);
+
+        for (ScheduleDto scheduleDto : priceCategoryDto.getPeriods()) {
+            if ((map.get(scheduleDto)) == null) {
+                saveList.add(priceScheduleMapper.toEntity(priceCategory, owner, scheduleDto));
+            } else {
+                mapForRemove.remove(scheduleDto);
+            }
+        }
+
+        priceScheduleRepository.deleteAll(mapForRemove.values());
+        priceScheduleRepository.saveAll(saveList);
+
+        categoryPriceSchedules = priceScheduleRepository.
+                findAllByPriceCategoryAndOwner(priceCategory, owner);
+
+        PriceCategoryDto result = priceCategoryMapper.mapToDto(priceCategory);
+
+        result.setPeriods(priceScheduleMapper.toScheduleDto(categoryPriceSchedules));
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasAuthority('OWNER')")
+    public List<PriceCategoryDto> findAll() {
+
+        List<PriceCategory> priceCategoryList = priceCategoryRepository.findAllByOwner(userProvider.getCurrentUser());
+
+        return priceCategoryList.stream()
+                .map(p -> findById(p.getId().toString()))
+                .toList();
     }
 }
