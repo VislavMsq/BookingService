@@ -14,13 +14,13 @@ public class PriceCategoryController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public PriceCategoryDto createPriceOfCategory(@RequestBody PriceCategoryDto priceCategoryDto){
+    public PriceCategoryDto createPriceOfCategory(@RequestBody PriceCategoryDto priceCategoryDto) {
         return priceCategoryService.createPriceOfCategory(priceCategoryDto);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PriceCategoryDto findById(@PathVariable("id") String id){
+    public PriceCategoryDto findById(@PathVariable("id") String id) {
         return priceCategoryService.findById(id);
     }
 }

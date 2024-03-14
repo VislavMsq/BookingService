@@ -1,9 +1,15 @@
 package com.project_service.bookingservice.controller;
 
-import com.project_service.bookingservice.dto.BoardDetailsOfRangeDto;
+import com.project_service.bookingservice.dto.BoardDetailDto;
+import com.project_service.bookingservice.dto.BoardDetailsFilterDto;
 import com.project_service.bookingservice.service.BoardDetailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -12,7 +18,7 @@ public class BoardDetailController {
     private final BoardDetailService boardDetailService;
 
     @GetMapping
-    public BoardDetailsOfRangeDto findAllBoardDetailDto(@RequestBody BoardDetailsOfRangeDto boardDetailsOfRangeDto) {
-        return boardDetailService.findAllBoardDetailDto(boardDetailsOfRangeDto);
+    public List<BoardDetailDto> findAllBoardDetailDto(@RequestBody BoardDetailsFilterDto boardDetailsFilterDto) {
+        return boardDetailService.findAllBoardDetailDto(boardDetailsFilterDto);
     }
 }
