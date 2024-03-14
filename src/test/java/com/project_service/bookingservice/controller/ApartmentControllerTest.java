@@ -140,14 +140,13 @@ class ApartmentControllerTest {
         listApartmentIds.add("3f120739-8a84-4e21-84b3-7a66358157bf");
         listApartmentIds.add("8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2");
         listApartmentIds.add("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        listApartmentIds.add("1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d");
-        listApartmentIds.add("eccbc87e-4b5c-4331-a025-6545673431ef");
 
-        String categoryId = "ad99034d-4a69-492f-b65f-4aef01d21ee6";
+        String categoryId = "d7f3cb48-dee2-11ee-bd3d-0242ac120002";
 
         String listIdsRequest = objectMapper.writeValueAsString(listApartmentIds);
 
-        MvcResult mvcResultPost = mockMvc.perform(MockMvcRequestBuilders.post("/apartments/set-apartment-category/" + categoryId)
+        MvcResult mvcResultPost =
+                mockMvc.perform(MockMvcRequestBuilders.put("/apartments/set-apartment-category/" + categoryId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(listIdsRequest))
                 .andReturn();

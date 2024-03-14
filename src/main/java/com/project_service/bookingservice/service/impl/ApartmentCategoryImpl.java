@@ -8,6 +8,7 @@ import com.project_service.bookingservice.mapper.ApartmentCategoryMapper;
 import com.project_service.bookingservice.repository.ApartmentCategoryRepository;
 import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.ApartmentCategoryService;
+import com.project_service.bookingservice.service.UtilsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +53,15 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
         UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
         List<ApartmentCategory> categories = apartmentCategoryRepository.findByOwnerId(id);
         return apartmentCategoryMapper.toListDTO(categories);
+    }
+
+    @Override
+    @Transactional
+    public void deleteApartmentCategory(String id) {
+        User user = userProvider.getCurrentUser();
+        ApartmentCategory apartmentCategory = getApartmentCategory(id);
+        UtilsService.checkOwner(apartmentCategory, user);
+        apartmentCategory.setIsDeleted(true);
     }
 
 }

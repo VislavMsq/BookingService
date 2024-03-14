@@ -16,6 +16,7 @@ public interface BoardDetailMapper {
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "isDeleted" , expression = "java(false)")
     BoardDetail mapToEntity (BoardDetailDto boardDetailDto);
 
     List<BoardDetailDto> toList(List<BoardDetail> boardDetailList);

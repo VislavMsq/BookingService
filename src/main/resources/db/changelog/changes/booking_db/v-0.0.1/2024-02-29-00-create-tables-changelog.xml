@@ -52,6 +52,7 @@
             <column name="country" type="varchar(30)"/>
             <column name="language" type="varchar(20)"/>
             <column name="role" type="varchar(20)"/>
+            <column name="is_deleted" type="bool" defaultValue="false"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -80,6 +81,7 @@
             <column name="abbreviation" type="varchar(50)"/>
             <column name="type" type="varchar(30)"/>
             <column name="sleep_place" type="decimal(10)"/>
+            <column name="is_deleted" type="bool" defaultValue="false"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -112,6 +114,7 @@
             <column name="country" type="varchar(30)"/>
             <column name="language" type="varchar(20)"/>
             <column name="comment_text" type="varchar(255)"/>
+            <column name="is_deleted" type="bool" defaultValue="false"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -153,6 +156,7 @@
             <column name="smoking" type="bool" defaultValue="false"/>
             <column name="parking_place" type="int(3)"/>
             <column name="description" type="text"/>
+            <column name="is_deleted" type="bool" defaultValue="false"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -195,6 +199,7 @@
             <column name="end_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="is_deleted" type="bool" defaultValue="false"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -224,6 +229,7 @@
             <column name="priority" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
+            <column name="is_deleted" type="bool" defaultValue="false"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -262,6 +268,7 @@
             <column name="price" type="decimal(15,2)">
                 <constraints nullable="false"/>
             </column>
+            <column name="is_deleted" type="bool" defaultValue="false"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -293,6 +300,7 @@
             <column name="end_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="is_deleted" type="bool" defaultValue="false"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -328,6 +336,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="is_edited_price" type="bool" defaultValue="false"/>
+            <column name="is_deleted" type="bool" defaultValue="false"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -367,6 +376,7 @@
             <column name="client_name" type="varchar(30)"/>
             <column name="apartments_city" type="varchar(30)"/>
             <column name="apartments_sleeping_places" type="decimal(10)"/>
+            <column name="is_deleted" type="bool" defaultValue="false"/>
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -394,6 +404,7 @@
             <column name="worker_id" type="uuid">
                 <constraints foreignKeyName="worker_id" references="users(id)" nullable="false"/>
             </column>
+            <column name="is_deleted" type="bool" defaultValue="false"/>
         </createTable>
     </changeSet>
 
