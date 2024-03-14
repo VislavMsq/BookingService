@@ -5,7 +5,6 @@ import com.project_service.bookingservice.entity.*;
 import com.project_service.bookingservice.exception.ApartmentNotFoundException;
 import com.project_service.bookingservice.mapper.ApartmentMapper;
 import com.project_service.bookingservice.repository.ApartmentRepository;
-import com.project_service.bookingservice.repository.CategoryPriceScheduleRepository;
 import com.project_service.bookingservice.repository.PriceCategoryToApartmentCategoryRepository;
 import com.project_service.bookingservice.repository.PriceRepository;
 import com.project_service.bookingservice.security.UserProvider;
@@ -30,7 +29,6 @@ public class ApartmentServiceImpl implements ApartmentService {
     private final ApartmentCategoryService apartmentCategoryService;
     private final PriceCategoryToApartmentCategoryRepository priceCategoryToApartmentCategoryRepository;
     private final PriceRepository priceRepository;
-    private final CategoryPriceScheduleRepository categoryPriceScheduleRepository;
 
     @Override
     @Transactional
@@ -110,10 +108,6 @@ public class ApartmentServiceImpl implements ApartmentService {
         } else {
             priceCategoryToApartmentCategories.sort(Comparator.comparing(priceCategoryToApartmentCategory
                     -> priceCategoryToApartmentCategory.getPriceCategory().getPriority()));
-            for (Apartment apartment : apartments) {
-                apartment.setApartmentCategory(apartmentCategory);
-            }
-
             for (PriceCategoryToApartmentCategory priceCategoryToApartmentCategory : priceCategoryToApartmentCategories) {
                 BigDecimal price = priceCategoryToApartmentCategory.getPrice();
 

@@ -3,8 +3,11 @@ package com.project_service.bookingservice.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project_service.bookingservice.dto.ApartmentDTO;
+import com.project_service.bookingservice.dto.BookingDto;
+import com.project_service.bookingservice.dto.PriceDto;
 import com.project_service.bookingservice.service.ApartmentService;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,19 +44,7 @@ class ApartmentControllerTest {
     @Test
     @WithUserDetails(value = "aloha.test@gmail.com")
     void createApartmentTest() throws Exception {
-        ApartmentDTO expected = new ApartmentDTO();
-        expected.setName("Apartment 1");
-        expected.setType("APARTMENT");
-        expected.setCountry("USA");
-        expected.setCity("New York");
-        expected.setStreet("123 Main St");
-        expected.setFloor("5");
-        expected.setPet("true");
-        expected.setSmoking("false");
-        expected.setParkingPlace("1");
-        expected.setDescription("Lorem ipsum");
-        expected.setApartmentCategoryId("be2f0f46-9e36-4b99-8d62-8e498b783c38");
-        expected.setParentId("3f120739-8a84-4e21-84b3-7a66358157bf");
+        ApartmentDTO expected = getApartmentDTO();
 
         String toCreate = objectMapper.writeValueAsString(expected);
 
@@ -141,36 +134,22 @@ class ApartmentControllerTest {
         listApartmentIds.add("8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2");
         listApartmentIds.add("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 
-        String categoryId = "d7f3cb48-dee2-11ee-bd3d-0242ac120002";
+        String categoryId = "ad99034d-4a69-492f-b65f-4aef01d21ee6";
 
         String listIdsRequest = objectMapper.writeValueAsString(listApartmentIds);
 
         MvcResult mvcResultPost =
                 mockMvc.perform(MockMvcRequestBuilders.put("/apartments/set-apartment-category/" + categoryId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(listIdsRequest))
-                .andReturn();
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(listIdsRequest))
+                        .andReturn();
 
         assertEquals(200, mvcResultPost.getResponse().getStatus());
 
-        String id = "3f120739-8a84-4e21-84b3-7a66358157bf";
-
-        MvcResult mvcResultFirstGet = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/apartments/" + id))
-                .andReturn();
-
-        assertEquals(200, mvcResultFirstGet.getResponse().getStatus());
-
-        ApartmentDTO firstReturned = objectMapper.readValue(mvcResultFirstGet.getResponse().getContentAsString(), new TypeReference<>() {
-        });
-        String firstReturnedCategoryId = firstReturned.getApartmentCategoryId();
-
-        assertEquals(categoryId, firstReturnedCategoryId);
-
-        String id1 = "8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2";
+        String id3 = "8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2";
 
         MvcResult mvcResultSecondGet = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/apartments/" + id1))
+                        MockMvcRequestBuilders.get("/apartments/" + id3))
                 .andReturn();
 
         assertEquals(200, mvcResultSecondGet.getResponse().getStatus());
@@ -180,16 +159,130 @@ class ApartmentControllerTest {
         String secondReturnedCategoryId = secondReturned.getApartmentCategoryId();
 
         assertEquals(categoryId, secondReturnedCategoryId);
+
+        BookingDto request = new BookingDto();
+        request.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        request.setStartDate(LocalDate.of(2024, 1, 1));
+        request.setEndDate(LocalDate.of(2025, 1, 1).minusDays(1));
+
+        String json = objectMapper.writeValueAsString(request);
+
+        MvcResult checkPrices = mockMvc.perform(MockMvcRequestBuilders.get("/prices")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andReturn();
+        LoggerFactory.getLogger(this.getClass()).info(checkPrices.getResponse().getContentAsString());
+
+        assertEquals(200, checkPrices.getResponse().getStatus());
+
+        List<PriceDto> returned = objectMapper.readValue(checkPrices.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+
+        List<PriceDto> expected = setApartmentCategory();
+        assertEquals(expected, returned);
+    }
+
+    private List<PriceDto> setApartmentCategory() {
+        PriceDto priceDto1 = new PriceDto();
+        priceDto1.setPrice(120.00);
+        priceDto1.setDate(LocalDate.of(2024, 2, 29));
+        priceDto1.setIsEditedPrice(false);
+        priceDto1.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        priceDto1.setCurrencyName("Yuan Renminbi");
+        priceDto1.setCurrencyCode("CNY");
+
+        PriceDto priceDto2 = new PriceDto();
+        priceDto2.setPrice(120.00);
+        priceDto2.setDate(LocalDate.of(2024, 3, 1));
+        priceDto2.setIsEditedPrice(false);
+        priceDto2.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        priceDto2.setCurrencyName("Yuan Renminbi");
+        priceDto2.setCurrencyCode("CNY");
+
+        PriceDto priceDto3 = new PriceDto();
+        priceDto3.setPrice(120.00);
+        priceDto3.setDate(LocalDate.of(2024, 3, 2));
+        priceDto3.setIsEditedPrice(false);
+        priceDto3.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        priceDto3.setCurrencyName("Peso");
+        priceDto3.setCurrencyCode("PHP");
+
+        return Arrays.asList(priceDto1, priceDto2, priceDto3);
     }
 
     private List<ApartmentDTO> expectListFindAllApartments() {
         List<ApartmentDTO> apartments = new ArrayList<>();
 
-        apartments.add(createApartment("3f120739-8a84-4e21-84b3-7a66358157bf", "Apartment 1", "APARTMENT", "USA", "New York", "123 Main St", "5", "true", "false", "1", "Lorem ipsum", "ad99034d-4a69-492f-b65f-4aef01d21ee6", null));
-        apartments.add(createApartment("8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2", "Apartment 2", "ROOM", "UK", "London", "456 Oak St", "3", "false", "true", "2", "Dolor sit amet", "be2f0f46-9e36-4b99-8d62-8e498b783c38", null));
-        apartments.add(createApartment("f47ac10b-58cc-4372-a567-0e02b2c3d479", "Apartment 1", "APARTMENT", "USA", "New York", "Broadway", "2", "true", "false", "1", "Cozy studio apartment in the heart of New York City", null, null));
-        apartments.add(createApartment("1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d", "Apartment 2", "APARTMENT", "USA", "Los Angeles", "Hollywood Blvd", "3", "false", "true", "2", "Spacious apartment with Hollywood sign view", null, null));
-        apartments.add(createApartment("eccbc87e-4b5c-4331-a025-6545673431ef", "Apartment 3", "ROOM", "Canada", "Toronto", "Yonge Street", "4", "true", "true", "0", "Modern house with a beautiful view of Lake Ontario", null, null));
+        apartments.add(createApartment(
+                "3f120739-8a84-4e21-84b3-7a66358157bf",
+                "Apartment 1",
+                "APARTMENT",
+                "USA",
+                "New York",
+                "123 Main St",
+                "5",
+                "true",
+                "false",
+                "1",
+                "Lorem ipsum",
+                "ad99034d-4a69-492f-b65f-4aef01d21ee6",
+                null));
+        apartments.add(createApartment(
+                "8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2",
+                "Apartment 2",
+                "ROOM",
+                "UK",
+                "London",
+                "456 Oak St",
+                "3",
+                "false",
+                "true",
+                "2",
+                "Dolor sit amet",
+                "be2f0f46-9e36-4b99-8d62-8e498b783c38",
+                null));
+        apartments.add(createApartment(
+                "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "Apartment 1",
+                "APARTMENT",
+                "USA",
+                "New York",
+                "Broadway",
+                "2",
+                "true",
+                "false",
+                "1",
+                "Cozy studio apartment in the heart of New York City",
+                null,
+                null));
+        apartments.add(createApartment(
+                "1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d",
+                "Apartment 2",
+                "APARTMENT",
+                "USA",
+                "Los Angeles",
+                "Hollywood Blvd",
+                "3",
+                "false",
+                "true",
+                "2",
+                "Spacious apartment with Hollywood sign view",
+                null,
+                null));
+        apartments.add(createApartment(
+                "eccbc87e-4b5c-4331-a025-6545673431ef",
+                "Apartment 3",
+                "ROOM",
+                "Canada",
+                "Toronto",
+                "Yonge Street",
+                "4",
+                "true",
+                "true",
+                "0",
+                "Modern house with a beautiful view of Lake Ontario",
+                null,
+                null));
 
         return apartments;
     }
@@ -197,9 +290,48 @@ class ApartmentControllerTest {
     private List<ApartmentDTO> expectListFindApartmentsByCountry() {
         List<ApartmentDTO> apartments = new ArrayList<>();
 
-        apartments.add(createApartment("3f120739-8a84-4e21-84b3-7a66358157bf", "Apartment 1", "APARTMENT", "USA", "New York", "123 Main St", "5", "true", "false", "1", "Lorem ipsum", "ad99034d-4a69-492f-b65f-4aef01d21ee6", null));
-        apartments.add(createApartment("f47ac10b-58cc-4372-a567-0e02b2c3d479", "Apartment 1", "APARTMENT", "USA", "New York", "Broadway", "2", "true", "false", "1", "Cozy studio apartment in the heart of New York City", null, null));
-        apartments.add(createApartment("1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d", "Apartment 2", "APARTMENT", "USA", "Los Angeles", "Hollywood Blvd", "3", "false", "true", "2", "Spacious apartment with Hollywood sign view", null, null));
+        apartments.add(createApartment(
+                "3f120739-8a84-4e21-84b3-7a66358157bf",
+                "Apartment 1",
+                "APARTMENT",
+                "USA",
+                "New York",
+                "123 Main St",
+                "5",
+                "true",
+                "false",
+                "1",
+                "Lorem ipsum",
+                "ad99034d-4a69-492f-b65f-4aef01d21ee6",
+                null));
+        apartments.add(createApartment(
+                "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "Apartment 1",
+                "APARTMENT",
+                "USA",
+                "New York",
+                "Broadway",
+                "2",
+                "true",
+                "false",
+                "1",
+                "Cozy studio apartment in the heart of New York City",
+                null,
+                null));
+        apartments.add(createApartment(
+                "1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d",
+                "Apartment 2",
+                "APARTMENT",
+                "USA",
+                "Los Angeles",
+                "Hollywood Blvd",
+                "3",
+                "false",
+                "true",
+                "2",
+                "Spacious apartment with Hollywood sign view",
+                null,
+                null));
 
         return apartments;
     }
@@ -207,8 +339,34 @@ class ApartmentControllerTest {
     private List<ApartmentDTO> expectListFindApartmentsByCity() {
         List<ApartmentDTO> apartments = new ArrayList<>();
 
-        apartments.add(createApartment("3f120739-8a84-4e21-84b3-7a66358157bf", "Apartment 1", "APARTMENT", "USA", "New York", "123 Main St", "5", "true", "false", "1", "Lorem ipsum", "ad99034d-4a69-492f-b65f-4aef01d21ee6", null));
-        apartments.add(createApartment("f47ac10b-58cc-4372-a567-0e02b2c3d479", "Apartment 1", "APARTMENT", "USA", "New York", "Broadway", "2", "true", "false", "1", "Cozy studio apartment in the heart of New York City", null, null));
+        apartments.add(createApartment(
+                "3f120739-8a84-4e21-84b3-7a66358157bf",
+                "Apartment 1",
+                "APARTMENT",
+                "USA",
+                "New York",
+                "123 Main St",
+                "5",
+                "true",
+                "false",
+                "1",
+                "Lorem ipsum",
+                "ad99034d-4a69-492f-b65f-4aef01d21ee6",
+                null));
+        apartments.add(createApartment(
+                "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                "Apartment 1",
+                "APARTMENT",
+                "USA",
+                "New York",
+                "Broadway",
+                "2",
+                "true",
+                "false",
+                "1",
+                "Cozy studio apartment in the heart of New York City",
+                null,
+                null));
 
         return apartments;
     }
@@ -229,6 +387,23 @@ class ApartmentControllerTest {
         apartment.setApartmentCategoryId(apartmentCategoryId);
         apartment.setParentId(parentId);
         return apartment;
+    }
+
+    private static ApartmentDTO getApartmentDTO() {
+        ApartmentDTO expected = new ApartmentDTO();
+        expected.setName("Apartment 1");
+        expected.setType("APARTMENT");
+        expected.setCountry("USA");
+        expected.setCity("New York");
+        expected.setStreet("123 Main St");
+        expected.setFloor("5");
+        expected.setPet("true");
+        expected.setSmoking("false");
+        expected.setParkingPlace("1");
+        expected.setDescription("Lorem ipsum");
+        expected.setApartmentCategoryId("be2f0f46-9e36-4b99-8d62-8e498b783c38");
+        expected.setParentId("3f120739-8a84-4e21-84b3-7a66358157bf");
+        return expected;
     }
 
 
