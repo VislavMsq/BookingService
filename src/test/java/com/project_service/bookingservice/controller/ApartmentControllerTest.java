@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Sql("/database/schema-cleanup.sql")
@@ -220,8 +221,7 @@ class ApartmentControllerTest {
         List<PriceDto> returned = objectMapper.readValue(getPrices.getResponse().getContentAsString(), new TypeReference<>() {
         });
 
-        List<PriceDto> expected = new ArrayList<>();
-        assertEquals(expected, returned);
+        assertTrue(returned.isEmpty());
     }
 
     private List<PriceDto> getPriceDtos() {
