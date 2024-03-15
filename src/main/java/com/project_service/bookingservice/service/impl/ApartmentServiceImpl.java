@@ -102,7 +102,7 @@ public class ApartmentServiceImpl implements ApartmentService {
             apartment.setApartmentCategory(apartmentCategory);
         }
         List<PriceCategoryToApartmentCategory> priceCategoryToApartmentCategories =
-                priceCategoryToApartmentCategoryRepository.findByApartmentCategory(apartmentCategory);
+                priceCategoryToApartmentCategoryRepository.findByApartmentCategoryAndOwner(apartmentCategory, user);
         if (priceCategoryToApartmentCategories.isEmpty()) {
             priceRepository.deleteByApartmentIn(apartments);
         } else {
