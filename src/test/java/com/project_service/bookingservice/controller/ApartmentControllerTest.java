@@ -209,15 +209,15 @@ class ApartmentControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        MvcResult checkPrices = mockMvc.perform(MockMvcRequestBuilders.get("/prices")
+        MvcResult getPrices = mockMvc.perform(MockMvcRequestBuilders.get("/prices")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andReturn();
-        LoggerFactory.getLogger(this.getClass()).info(checkPrices.getResponse().getContentAsString());
+        LoggerFactory.getLogger(this.getClass()).info(getPrices.getResponse().getContentAsString());
 
-        assertEquals(200, checkPrices.getResponse().getStatus());
+        assertEquals(200, getPrices.getResponse().getStatus());
 
-        List<PriceDto> returned = objectMapper.readValue(checkPrices.getResponse().getContentAsString(), new TypeReference<>() {
+        List<PriceDto> returned = objectMapper.readValue(getPrices.getResponse().getContentAsString(), new TypeReference<>() {
         });
 
         List<PriceDto> expected = new ArrayList<>();
