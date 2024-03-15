@@ -142,7 +142,7 @@
             </column>
             <column name="apartment_category_id" type="uuid">
                 <constraints foreignKeyName="apartment_category_id" references="apartment_categories(id)"
-                             nullable="false"/>
+                             nullable="true"/>
             </column>
             <column name="name" type="varchar(50)">
                 <constraints nullable="false"/>
