@@ -12,6 +12,7 @@ public interface PriceCategoryMapper {
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "isDeleted" , expression = "java(false)")
     PriceCategory mapToEntity(PriceCategoryDto priceCategoryDto);
 
 }

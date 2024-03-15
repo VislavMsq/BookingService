@@ -28,7 +28,7 @@ VALUES ('ad99034d-4a69-492f-b65f-4aef01d21ee6', 'c205da57-0722-4b5d-9c13-30adfe3
         'APARTMENT', 2, '2024-03-03 12:10:00', '2024-03-03 12:10:00'),
        ('be2f0f46-9e36-4b99-8d62-8e498b783c38', 'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'Apartment Category 2', 'ABC2',
         'ROOM', 4, '2024-03-03 12:11:00', '2024-03-03 12:11:00'),
-       ('d7f3cb48-dee2-11ee-bd3d-0242ac120002', '54ea1478-dee2-11ee-bd3d-0242ac120002', 'Apartment Category 1', 'ABC1',
+       ('d7f3cb48-dee2-11ee-bd3d-0242ac120002', 'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'Apartment Category 1', 'ABC1',
         'APARTMENT', 2, '2024-03-03 12:10:00', '2024-03-03 12:10:00');
 
 -- Insert dummy data into clients table
@@ -156,4 +156,3 @@ VALUES ('b400166f-65b5-421a-874f-48b6e1d3ad4f', '3f120739-8a84-4e21-84b3-7a66358
         'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'b6e4b3b5-8265-4aeb-bdb7-17f5081e56a2'),
        ('04df2b06-2e0c-4149-890c-3ea25fbc9835', '8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2',
         'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'b6e4b3b5-8265-4aeb-bdb7-17f5081e56a2');
-
