@@ -178,7 +178,7 @@ class ApartmentControllerTest {
         List<PriceDto> returned = objectMapper.readValue(checkPrices.getResponse().getContentAsString(), new TypeReference<>() {
         });
 
-        List<PriceDto> expected = setApartmentCategory();
+        List<PriceDto> expected = getPriceDtos();
         assertEquals(expected, returned);
     }
 
@@ -224,7 +224,7 @@ class ApartmentControllerTest {
         assertEquals(expected, returned);
     }
 
-    private List<PriceDto> setApartmentCategory() {
+    private List<PriceDto> getPriceDtos() {
         PriceDto priceDto1 = new PriceDto();
         priceDto1.setPrice(120.00);
         priceDto1.setDate(LocalDate.of(2024, 2, 29));
