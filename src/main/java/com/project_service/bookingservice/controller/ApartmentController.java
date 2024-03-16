@@ -45,7 +45,7 @@ public class ApartmentController {
         return apartmentService.findApartmentByCity(city);
     }
 
-    @PostMapping("/set-apartment-category/{apartmentCategoryId}")
+    @PutMapping("/set-apartment-category/{apartmentCategoryId}")
     @PreAuthorize("hasAuthority('OWNER')")
     @ResponseStatus(HttpStatus.OK)
     public void setApartmentsCategory(@RequestBody List<String> apartmentIds, @PathVariable String apartmentCategoryId) {

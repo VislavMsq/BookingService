@@ -24,6 +24,9 @@ public abstract class BaseEntity {
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;
 
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

@@ -1,6 +1,7 @@
 package com.project_service.bookingservice.service.impl;
 
-import com.project_service.bookingservice.dto.BoardDetailsOfRangeDto;
+import com.project_service.bookingservice.dto.BoardDetailDto;
+import com.project_service.bookingservice.dto.BoardDetailsFilterDto;
 import com.project_service.bookingservice.entity.*;
 import com.project_service.bookingservice.exception.PriceNotFoundException;
 import com.project_service.bookingservice.mapper.BoardDetailMapper;
@@ -36,16 +37,15 @@ public class BoardDetailServiceImpl implements BoardDetailService {
     }
 
     @Override
-    public BoardDetailsOfRangeDto findAllBoardDetailDto(BoardDetailsOfRangeDto boardDetailsOfRangeDto) {
+    public List<BoardDetailDto> findAllBoardDetailDto(BoardDetailsFilterDto boardDetailsFilterDto) {
         User user = userProvider.getCurrentUser();
         UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
-        List<BoardDetail> boardDetailList = boardDetailsOfRangeDto.getApartmentId() == null ?
-                boardDetailRepository.findAllByOwnerInDateRange(id, boardDetailsOfRangeDto.getStart(),
-                        boardDetailsOfRangeDto.getFinish()) :
-                boardDetailRepository.findAllByApartmentInDateRange(id, boardDetailsOfRangeDto.getApartmentId(),
-                        boardDetailsOfRangeDto.getStart(), boardDetailsOfRangeDto.getFinish());
-        boardDetailsOfRangeDto.setBoardDetailDto(boardDetailMapper.toList(boardDetailList));
-        return boardDetailsOfRangeDto;
+        List<BoardDetail> boardDetailList = boardDetailsFilterDto.getApartmentId() == null ?
+                boardDetailRepository.findAllByOwnerInDateRange(id, boardDetailsFilterDto.getStart(),
+                        boardDetailsFilterDto.getFinish()) :
+                boardDetailRepository.findAllByApartmentInDateRange(id, boardDetailsFilterDto.getApartmentId(),
+                        boardDetailsFilterDto.getStart(), boardDetailsFilterDto.getFinish());
+        return boardDetailMapper.toList(boardDetailList);
     }
 
     private List<BoardDetail> getBoardDetailList(Booking booking) {

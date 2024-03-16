@@ -13,4 +13,6 @@ public interface ApartmentCategoryService {
     ApartmentCategoryDTO getDTO(String uuid);
 
     List<ApartmentCategoryDTO> getList();
+
+    void deleteApartmentCategory(String id);
 }

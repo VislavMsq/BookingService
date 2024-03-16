@@ -31,4 +31,5 @@ public class ApartmentCategoryController {
     public List<ApartmentCategoryDTO> findAllCategories() {
         return apartmentCategoryService.getList();
     }
+
 }
