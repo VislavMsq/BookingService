@@ -1,6 +1,7 @@
 package com.project_service.bookingservice.repository;
 
 import com.project_service.bookingservice.entity.Apartment;
+import com.project_service.bookingservice.entity.ApartmentCategory;
 import com.project_service.bookingservice.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +27,6 @@ public interface ApartmentRepository extends JpaRepository<Apartment, UUID> {
     List<Apartment> findAllByIdAndOwner(List<UUID> apartmentIds, @Param("ownerId") UUID ownerId);
 
     Optional<Apartment> findByIdAndOwner(UUID uuid, User owner);
+
+    List<Apartment> findAllByApartmentCategoryAndOwner(ApartmentCategory apartmentCategory, User owner);
 }

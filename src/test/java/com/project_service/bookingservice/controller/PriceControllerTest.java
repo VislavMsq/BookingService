@@ -74,14 +74,16 @@ class PriceControllerTest {
         priceDto1.setPrice(100.00);
         priceDto1.setDate(LocalDate.of(2024, 2, 29));
         priceDto1.setIsEditedPrice(false);
+        priceDto1.setPriority("LOW");
         priceDto1.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto1.setCurrencyName("Yuan Renminbi");
         priceDto1.setCurrencyCode("CNY");
 
         PriceDto priceDto2 = new PriceDto();
-        priceDto2.setPrice(150.00);
+        priceDto2.setPrice(100.00);
         priceDto2.setDate(LocalDate.of(2024, 3, 1));
         priceDto2.setIsEditedPrice(false);
+        priceDto2.setPriority("HOLIDAY");
         priceDto2.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto2.setCurrencyName("Yuan Renminbi");
         priceDto2.setCurrencyCode("CNY");

@@ -2,7 +2,7 @@ package com.project_service.bookingservice.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project_service.bookingservice.dto.ApartmentDTO;
+import com.project_service.bookingservice.dto.ApartmentDto;
 import com.project_service.bookingservice.dto.BookingDto;
 import com.project_service.bookingservice.dto.PriceDto;
 import com.project_service.bookingservice.service.ApartmentService;
@@ -45,7 +45,7 @@ class ApartmentControllerTest {
     @Test
     @WithUserDetails(value = "aloha.test@gmail.com")
     void createApartmentTest() throws Exception {
-        ApartmentDTO expected = getApartmentDTO();
+        ApartmentDto expected = getApartmentDTO();
 
         String toCreate = objectMapper.writeValueAsString(expected);
 
@@ -57,7 +57,7 @@ class ApartmentControllerTest {
         assertEquals(201, mvcResultPost.getResponse().getStatus());
 
 
-        ApartmentDTO created = objectMapper.readValue(mvcResultPost.getResponse().getContentAsString(), new TypeReference<>() {
+        ApartmentDto created = objectMapper.readValue(mvcResultPost.getResponse().getContentAsString(), new TypeReference<>() {
         });
         String id = created.getId();
         expected.setId(id);
@@ -69,7 +69,7 @@ class ApartmentControllerTest {
 
         assertEquals(200, mvcResultGet.getResponse().getStatus());
 
-        ApartmentDTO returned = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
+        ApartmentDto returned = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
         });
 
         assertEquals(expected, returned);
@@ -78,14 +78,14 @@ class ApartmentControllerTest {
     @Test
     @WithUserDetails(value = "user1@example.com")
     void findAllApartments() throws Exception {
-        List<ApartmentDTO> expectedList = expectListFindAllApartments();
+        List<ApartmentDto> expectedList = expectListFindAllApartments();
 
         MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments"))
                 .andReturn();
 
         assertEquals(200, mvcResultGet.getResponse().getStatus());
 
-        List<ApartmentDTO> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
+        List<ApartmentDto> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
         });
 
         assertEquals(expectedList, returnedList);
@@ -94,7 +94,7 @@ class ApartmentControllerTest {
     @Test
     @WithUserDetails(value = "user1@example.com")
     void findApartmentByCountry() throws Exception {
-        List<ApartmentDTO> expectedList = expectListFindApartmentsByCountry();
+        List<ApartmentDto> expectedList = expectListFindApartmentsByCountry();
         String country = "USA";
 
         MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/country/" + country))
@@ -102,7 +102,7 @@ class ApartmentControllerTest {
 
         assertEquals(200, mvcResultGet.getResponse().getStatus());
 
-        List<ApartmentDTO> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
+        List<ApartmentDto> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
         });
 
         assertEquals(expectedList, returnedList);
@@ -113,7 +113,7 @@ class ApartmentControllerTest {
     @WithUserDetails(value = "user1@example.com")
     void findApartmentByCity() throws Exception {
 
-        List<ApartmentDTO> expectedList = expectListFindApartmentsByCity();
+        List<ApartmentDto> expectedList = expectListFindApartmentsByCity();
         String city = "New York";
 
         MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/city/" + city))
@@ -121,7 +121,7 @@ class ApartmentControllerTest {
 
         assertEquals(200, mvcResultGet.getResponse().getStatus());
 
-        List<ApartmentDTO> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
+        List<ApartmentDto> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
         });
 
         assertEquals(expectedList, returnedList);
@@ -155,7 +155,7 @@ class ApartmentControllerTest {
 
         assertEquals(200, mvcResultSecondGet.getResponse().getStatus());
 
-        ApartmentDTO secondReturned = objectMapper.readValue(mvcResultSecondGet.getResponse().getContentAsString(), new TypeReference<>() {
+        ApartmentDto secondReturned = objectMapper.readValue(mvcResultSecondGet.getResponse().getContentAsString(), new TypeReference<>() {
         });
         String secondReturnedCategoryId = secondReturned.getApartmentCategoryId();
 
@@ -229,6 +229,7 @@ class ApartmentControllerTest {
         priceDto1.setPrice(120.00);
         priceDto1.setDate(LocalDate.of(2024, 2, 29));
         priceDto1.setIsEditedPrice(false);
+        priceDto1.setPriority("LOW");
         priceDto1.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto1.setCurrencyName("Yuan Renminbi");
         priceDto1.setCurrencyCode("CNY");
@@ -237,6 +238,7 @@ class ApartmentControllerTest {
         priceDto2.setPrice(120.00);
         priceDto2.setDate(LocalDate.of(2024, 3, 1));
         priceDto2.setIsEditedPrice(false);
+        priceDto2.setPriority("HOLIDAY");
         priceDto2.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto2.setCurrencyName("Yuan Renminbi");
         priceDto2.setCurrencyCode("CNY");
@@ -245,6 +247,7 @@ class ApartmentControllerTest {
         priceDto3.setPrice(120.00);
         priceDto3.setDate(LocalDate.of(2024, 3, 2));
         priceDto3.setIsEditedPrice(false);
+        priceDto3.setPriority("LOW");
         priceDto3.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto3.setCurrencyName("Peso");
         priceDto3.setCurrencyCode("PHP");
@@ -252,8 +255,8 @@ class ApartmentControllerTest {
         return Arrays.asList(priceDto1, priceDto2, priceDto3);
     }
 
-    private List<ApartmentDTO> expectListFindAllApartments() {
-        List<ApartmentDTO> apartments = new ArrayList<>();
+    private List<ApartmentDto> expectListFindAllApartments() {
+        List<ApartmentDto> apartments = new ArrayList<>();
 
         apartments.add(createApartment(
                 "3f120739-8a84-4e21-84b3-7a66358157bf",
@@ -329,8 +332,8 @@ class ApartmentControllerTest {
         return apartments;
     }
 
-    private List<ApartmentDTO> expectListFindApartmentsByCountry() {
-        List<ApartmentDTO> apartments = new ArrayList<>();
+    private List<ApartmentDto> expectListFindApartmentsByCountry() {
+        List<ApartmentDto> apartments = new ArrayList<>();
 
         apartments.add(createApartment(
                 "3f120739-8a84-4e21-84b3-7a66358157bf",
@@ -378,8 +381,8 @@ class ApartmentControllerTest {
         return apartments;
     }
 
-    private List<ApartmentDTO> expectListFindApartmentsByCity() {
-        List<ApartmentDTO> apartments = new ArrayList<>();
+    private List<ApartmentDto> expectListFindApartmentsByCity() {
+        List<ApartmentDto> apartments = new ArrayList<>();
 
         apartments.add(createApartment(
                 "3f120739-8a84-4e21-84b3-7a66358157bf",
@@ -413,8 +416,10 @@ class ApartmentControllerTest {
         return apartments;
     }
 
-    private ApartmentDTO createApartment(String id, String name, String type, String country, String city, String street, String floor, String pet, String smoking, String parkingPlace, String description, String apartmentCategoryId, String parentId) {
-        ApartmentDTO apartment = new ApartmentDTO();
+    private ApartmentDto createApartment(String id, String name, String type, String country, String city, String street,
+                                         String floor, String pet, String smoking, String parkingPlace, String description,
+                                         String apartmentCategoryId, String parentId) {
+        ApartmentDto apartment = new ApartmentDto();
         apartment.setId(id);
         apartment.setName(name);
         apartment.setType(type);
@@ -431,8 +436,8 @@ class ApartmentControllerTest {
         return apartment;
     }
 
-    private static ApartmentDTO getApartmentDTO() {
-        ApartmentDTO expected = new ApartmentDTO();
+    private static ApartmentDto getApartmentDTO() {
+        ApartmentDto expected = new ApartmentDto();
         expected.setName("Apartment 1");
         expected.setType("APARTMENT");
         expected.setCountry("USA");

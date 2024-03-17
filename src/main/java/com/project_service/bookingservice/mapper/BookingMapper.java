@@ -10,7 +10,7 @@ public interface BookingMapper {
 
     @Mapping(source = "apartment.id", target = "apartmentId")
     @Mapping(source = "client.id", target = "clientId")
-    @Mapping(source = "currency.id", target = "currencyId")
+    @Mapping(source = "currency.code", target = "currencyCode")
     BookingDto mapToDto(Booking booking);
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")

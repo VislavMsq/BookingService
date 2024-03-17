@@ -1,5 +1,6 @@
 package com.project_service.bookingservice.entity;
 
+import com.project_service.bookingservice.entity.enums.Priority;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,12 +33,17 @@ public class Price extends BaseEntity {
     @Column(name = "is_edited_price")
     private Boolean isEditedPrice;
 
+    @Enumerated
+    @Column(name = "priority")
+    private Priority priority;
+
     @Override
     public String toString() {
         return "Price{" +
                 "pricePerDay=" + pricePerDay +
                 ", date=" + date +
                 ", isEditedPrice=" + isEditedPrice +
+                ", priority=" + priority +
                 '}';
     }
 }

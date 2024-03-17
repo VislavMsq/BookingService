@@ -36,6 +36,7 @@ public class BoardDetailServiceImpl implements BoardDetailService {
         boardDetailRepository.saveAll(boardDetailList);
     }
 
+    @Transactional
     @Override
     public List<BoardDetailDto> findAllBoardDetailDto(BoardDetailsFilterDto boardDetailsFilterDto) {
         User user = userProvider.getCurrentUser();

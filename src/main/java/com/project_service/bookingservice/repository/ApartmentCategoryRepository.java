@@ -14,4 +14,5 @@ public interface ApartmentCategoryRepository extends JpaRepository<ApartmentCate
 
     @Query("select ac from ApartmentCategory ac where ac.owner.id = :ownerId")
     List<ApartmentCategory> findByOwnerId(@Param("ownerId") UUID ownerId);
+
 }

@@ -1,19 +1,19 @@
 package com.project_service.bookingservice.service;
 
-import com.project_service.bookingservice.dto.ApartmentDTO;
+import com.project_service.bookingservice.dto.ApartmentDto;
 
 import java.util.List;
 
 public interface ApartmentService {
-    ApartmentDTO createApartment(ApartmentDTO apartmentDTO);
+    ApartmentDto createApartment(ApartmentDto apartmentDTO);
 
-    ApartmentDTO findApartment(String uuid);
+    ApartmentDto findApartment(String uuid);
 
-    List<ApartmentDTO> findAllApartments();
+    List<ApartmentDto> findAllApartments();
 
-    List<ApartmentDTO> findApartmentByCountry(String country);
+    List<ApartmentDto> findApartmentByCountry(String country);
 
-    List<ApartmentDTO> findApartmentByCity(String city);
+    List<ApartmentDto> findApartmentByCity(String city);
 
     void setApartmentCategoryToApartments(List<String> apartments, String apartmentCategoryId);
 }

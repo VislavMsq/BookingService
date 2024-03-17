@@ -20,7 +20,7 @@ public class PriceCategory extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     @Column(name = "priority")
     private Priority priority;
 

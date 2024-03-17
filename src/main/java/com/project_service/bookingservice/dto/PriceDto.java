@@ -10,6 +10,7 @@ public class PriceDto {
     private LocalDate date;
     private Boolean isEditedPrice;
     private String apartmentId;
+    private String priority;
     private String currencyCode;
     private String currencyName;
 }
