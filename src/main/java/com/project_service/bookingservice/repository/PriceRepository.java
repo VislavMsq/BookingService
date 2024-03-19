@@ -3,6 +3,7 @@ package com.project_service.bookingservice.repository;
 import com.project_service.bookingservice.entity.Apartment;
 import com.project_service.bookingservice.entity.Price;
 import com.project_service.bookingservice.entity.PriceCategory;
+import com.project_service.bookingservice.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +29,10 @@ public interface PriceRepository extends JpaRepository<Price, UUID> {
     @Query("select p from Price p join CategoryPriceSchedule cps on p.date between cps.startDate and cps.endDate " +
             "where cps.priceCategory = :priceCategory and p.apartment in :apartments")
     List<Price> findPricesOfApartmentsBetweenDates(List<Apartment> apartments, PriceCategory priceCategory);
+
+    @Query("select p from Price p where p.owner = :owner " +
+            "and p.apartment in :apartments and p.date between :startDate and :endDate")
+    List<Price> findPricesByApartmentsAndYearAndBetweenDates(List<Apartment> apartments, LocalDate startDate, LocalDate endDate, User owner);
 
     void deleteByApartmentIn(List<Apartment> apartments);
 

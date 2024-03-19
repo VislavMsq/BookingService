@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -20,9 +22,12 @@ public class PriceCategory extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "priority")
+    @Enumerated
     private Priority priority;
+
+    @OneToMany(mappedBy = "priceCategory")
+    private Set<CategoryPriceSchedule> categoryPriceScheduleList;
 
     @Override
     public String toString() {

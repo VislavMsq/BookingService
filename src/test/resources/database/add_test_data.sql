@@ -19,8 +19,10 @@ VALUES ('c205da57-0722-4b5d-9c13-30adfe3b0d72', NULL, '3f4245b3-94cc-4b2d-bc7b-d
         'Russian', 'OWNER', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z'),
        ('54ea1478-dee2-11ee-bd3d-0242ac120002', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'appolon12@gmail.com',
         '+48798456123', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 2, 'Lui', 'Armstrong', 'USA',
-        'English', 'OWNER', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z')
-;
+        'English', 'OWNER', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z'),
+       ('72ea1478-dee2-11ee-bd3d-0242ac120002', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'leonardo@gmail.com',
+        '+41198456123', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 2, 'Leo', 'Turtle', 'USA',
+        'English', 'OWNER', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z');
 
 -- Insert dummy data into apartment_categories table
 INSERT INTO apartment_categories (id, owner_id, name, abbreviation, type, sleep_place, created_at, updated_at)
@@ -29,7 +31,9 @@ VALUES ('ad99034d-4a69-492f-b65f-4aef01d21ee6', 'c205da57-0722-4b5d-9c13-30adfe3
        ('be2f0f46-9e36-4b99-8d62-8e498b783c38', 'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'Apartment Category 2', 'ABC2',
         'ROOM', 4, '2024-03-03 12:11:00', '2024-03-03 12:11:00'),
        ('d7f3cb48-dee2-11ee-bd3d-0242ac120002', 'c205da57-0722-4b5d-9c13-30adfe3b0d72', 'Apartment Category 1', 'ABC1',
-        'APARTMENT', 2, '2024-03-03 12:10:00', '2024-03-03 12:10:00');
+        'APARTMENT', 2, '2024-03-03 12:10:00', '2024-03-03 12:10:00'),
+       ('d8f3cb48-dee2-11ee-bd3d-0242ac120002', '72ea1478-dee2-11ee-bd3d-0242ac120002', 'Apartment Category 3', 'ABC3',
+        'ROOM', 4, '2024-03-03 13:11:00', '2024-03-03 13:11:00');
 
 -- Insert dummy data into clients table
 INSERT INTO clients (id, owner_id, email, phone, first_name, last_name, country, language, comment_text, created_at,
@@ -89,9 +93,13 @@ VALUES ('bc79bf93-2493-40e6-9c92-7a0da27a3d85', '3f120739-8a84-4e21-84b3-7a66358
 -- Insert dummy data into price_categories table
 INSERT INTO price_categories (id, owner_id, currency_id, name, priority, created_at, updated_at)
 VALUES ('f050448b-7a16-468c-8183-5f161a83db62', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
-        '3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20', 'Standard', 'High', '2024-03-03 12:50:00', '2024-03-03 12:50:00'),
+        '3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20', 'Standard', '3', '2024-03-03 12:50:00', '2024-03-03 12:50:00'),
        ('75235102-dff9-4a66-b576-80f0b017548c', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
-        '6e0727d5-8eb9-438e-8e61-c30e0506a889', 'Premium', 'Low', '2024-03-03 12:51:00', '2024-03-03 12:51:00');
+        '6e0727d5-8eb9-438e-8e61-c30e0506a889', 'Premium', '1', '2024-03-03 12:51:00', '2024-03-03 12:51:00'),
+       ('75335102-dff9-4a66-b576-80f0b017548c', '72ea1478-dee2-11ee-bd3d-0242ac120002',
+        '6e0727d5-8eb9-438e-8e61-c30e0506a889', 'Standard', '2', '2024-03-03 12:52:00', '2024-03-03 12:52:00'),
+       ('75435102-dff9-4a66-b576-80f0b017548c', '72ea1478-dee2-11ee-bd3d-0242ac120002',
+        '6e0727d5-8eb9-438e-8e61-c30e0506a889', 'Standard', '0', '2024-03-03 12:53:00', '2024-03-03 12:53:00');
 
 -- Insert dummy data into price_category_to_apartments_categories table
 INSERT INTO price_category_to_apartments_categories (id, apartment_category_id, price_category_id, owner_id,
@@ -103,7 +111,15 @@ VALUES ('7d6f1727-f7aa-48a2-9971-161f30f3b497', 'ad99034d-4a69-492f-b65f-4aef01d
        ('d525cd10-5aa7-4ba6-8104-52906e77e8fe', 'be2f0f46-9e36-4b99-8d62-8e498b783c38',
         '75235102-dff9-4a66-b576-80f0b017548c', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
         '6e0727d5-8eb9-438e-8e61-c30e0506a889', '2024', 180.00, '2024-03-03 12:56:00',
-        '2024-03-03 12:56:00');
+        '2024-03-03 12:56:00'),
+       ('d625cd10-5aa7-4ba6-8104-52906e77e8fe', 'd8f3cb48-dee2-11ee-bd3d-0242ac120002',
+        '75335102-dff9-4a66-b576-80f0b017548c', '72ea1478-dee2-11ee-bd3d-0242ac120002',
+        '6e0727d5-8eb9-438e-8e61-c30e0506a889', '2024', 180.00, '2024-03-03 13:00:00',
+        '2024-03-03 13:00:00'),
+       ('d635cd10-5aa7-4ba6-8104-52906e77e8fe', 'd8f3cb48-dee2-11ee-bd3d-0242ac120002',
+        '75435102-dff9-4a66-b576-80f0b017548c', '72ea1478-dee2-11ee-bd3d-0242ac120002',
+        '6e0727d5-8eb9-438e-8e61-c30e0506a889', '2024', 100.00, '2024-03-03 13:01:00',
+        '2024-03-03 13:01:00');
 
 -- Insert dummy data into price_category_schedule table
 INSERT INTO price_category_schedule (id, owner_id, price_category_id, start_date, end_date, created_at, updated_at)
@@ -112,30 +128,36 @@ VALUES ('d4a39447-14d1-49d1-b18e-4d78ce11c193', 'c205da57-0722-4b5d-9c13-30adfe3
         '2024-03-03 13:00:00'),
        ('d7a3ce4e-8b31-4bf3-bd14-9ba4a53121d2', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
         '75235102-dff9-4a66-b576-80f0b017548c', '2024-01-01 00:00:00', '2024-12-31 23:59:59', '2024-03-03 13:01:00',
-        '2024-03-03 13:01:00');
+        '2024-03-03 13:01:00'),
+       ('d8a3ce4e-8b31-4bf3-bd14-9ba4a53121d2', '72ea1478-dee2-11ee-bd3d-0242ac120002',
+        '75335102-dff9-4a66-b576-80f0b017548c', '2024-06-015 00:00:00', '2024-8-31 00:00:00', '2024-03-03 13:02:00',
+        '2024-03-03 13:02:00'),
+       ('d8b3ce4e-8b31-4bf3-bd14-9ba4a53121d2', '72ea1478-dee2-11ee-bd3d-0242ac120002',
+        '75435102-dff9-4a66-b576-80f0b017548c', '2024-01-01 00:00:00', '2024-12-31 00:00:00', '2024-03-03 13:02:00',
+        '2024-03-03 13:02:00');
 
 -- Insert dummy data into prices table
-INSERT INTO prices (id, apartment_id, owner_id, currency_id, price, date, is_edited_price, created_at, updated_at)
+INSERT INTO prices (id, apartment_id, owner_id, currency_id, price, date, is_edited_price, priority, created_at, updated_at)
 VALUES ('efa6495e-bf37-4a98-9e7c-7fe3c6929ddc', '3f120739-8a84-4e21-84b3-7a66358157bf',
         'c205da57-0722-4b5d-9c13-30adfe3b0d72', '3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20', 150.00, '2024-03-03 13:10:00',
-        false, '2024-03-03 13:10:00', '2024-03-03 13:10:00'),
+        false, '1', '2024-03-03 13:10:00', '2024-03-03 13:10:00'),
        ('5e00c3e0-58a0-4c1e-b749-d95ac308813d', '8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2',
         'c205da57-0722-4b5d-9c13-30adfe3b0d72', '6e0727d5-8eb9-438e-8e61-c30e0506a889', 200.00, '2024-03-03 13:11:00',
-        true, '2024-03-03 13:11:00', '2024-03-03 13:11:00'),
+        true, '1', '2024-03-03 13:11:00', '2024-03-03 13:11:00'),
        ('f47ac10b-58cc-4372-a567-0e02b2c3d479', 'f47ac10b-58cc-4372-a567-0e02b2c3d479', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
-        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 100.00, '2024-02-29', FALSE, '2024-03-02 12:00:00',
+        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 100.00, '2024-02-29', FALSE, '1', '2024-03-02 12:00:00',
         '2024-03-02 12:00:00'),
        ('f47ac10b-58cc-4372-a567-1232b2c3d479', 'f47ac10b-58cc-4372-a567-0e02b2c3d479', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
-        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 150.00, '2024-03-01', FALSE, '2024-03-02 12:00:00',
+        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 150.00, '2024-03-01', FALSE, '1', '2024-03-02 12:00:00',
         '2024-03-02 12:00:00'),
        ('f47ac10b-58cc-4372-a567-3212b2c3d479', 'f47ac10b-58cc-4372-a567-0e02b2c3d479', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
-        'db41867b-682b-4121-b84b-830530fe9f2e', 200.00, '2024-03-02', FALSE, '2024-03-02 12:00:00',
+        'db41867b-682b-4121-b84b-830530fe9f2e', 200.00, '2024-03-02', FALSE, '1', '2024-03-02 12:00:00',
         '2024-03-02 12:00:00'),
-       ('6ab80a14-dee0-11ee-bd3d-0242ac120002', 'a47ac10b-58cc-4372-a567-0e02b2c3d479', '54ea1478-dee2-11ee-bd3d-0242ac120002',
-        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 100.00, '2024-02-29', FALSE, '2024-03-02 12:00:00',
+       ('6ab80a14-dee0-11ee-bd3d-0242ac120002', 'a47ac10b-58cc-4372-a567-0e02b2c3d479', '72ea1478-dee2-11ee-bd3d-0242ac120002',
+        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 100.00, '2024-02-29', FALSE, '1', '2024-03-02 12:00:00',
         '2024-03-02 12:00:00'),
-       ('7dcc75b8-dee0-11ee-bd3d-0242ac120002', 'a47ac10b-58cc-4372-a567-0e02b2c3d479', '54ea1478-dee2-11ee-bd3d-0242ac120002',
-        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 150.00, '2024-03-01', FALSE, '2024-03-02 12:00:00',
+       ('7dcc75b8-dee0-11ee-bd3d-0242ac120002', 'a47ac10b-58cc-4372-a567-0e02b2c3d479', '72ea1478-dee2-11ee-bd3d-0242ac120002',
+        '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 150.00, '2024-03-01', FALSE, '1', '2024-03-02 12:00:00',
         '2024-03-02 12:00:00');
 
 -- Insert dummy data into board_details table

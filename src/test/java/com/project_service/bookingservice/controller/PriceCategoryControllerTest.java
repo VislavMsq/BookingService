@@ -34,7 +34,7 @@ class PriceCategoryControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    @WithUserDetails(value = "aloha.test@gmail.com")
+    @WithUserDetails(value = "user1@example.com")
     void createPriceOfCategory() throws Exception {
         // given
         PriceCategoryDto priceCategoryDto = new PriceCategoryDto();
@@ -43,14 +43,14 @@ class PriceCategoryControllerTest {
         priceCategoryDto.setCurrencyCode("EUR");
 
         ScheduleDto period = new ScheduleDto();
-        period.setStartDate(LocalDate.of(2024, 1, 1));
-        period.setEndDate(LocalDate.of(2025, 1, 1).minusDays(1));
+        period.setStartDate(LocalDate.of(2024, 7, 1));
+        period.setEndDate(LocalDate.of(2024, 8, 15));
 
         priceCategoryDto.setPeriods(List.of(period));
 
         String priceCategoryDtoStr = objectMapper.writeValueAsString(priceCategoryDto);
 
-        // when: phase 1
+        // when
         String priceCategoryDtoJson = mockMvc.perform(MockMvcRequestBuilders.post("/price_category/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(priceCategoryDtoStr))
@@ -76,9 +76,13 @@ class PriceCategoryControllerTest {
         Assertions.assertNotNull(actualPriceCategoryDto.getId());
 
         Assertions.assertEquals(priceCategoryDto, actualPriceCategoryDto);
+    }
 
-        // phase 2
-        actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.get("/price_category"))
+    @Test
+    @WithUserDetails(value = "leonardo@gmail.com")
+    void updatePriceCategory() throws Exception {
+
+        String actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.get("/price_category"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -88,15 +92,19 @@ class PriceCategoryControllerTest {
 
         Assertions.assertFalse(priceCategoryDtoList.isEmpty());
 
-        // phase 3
+
         PriceCategoryDto priceCategoryDtoUpdate = priceCategoryDtoList.get(0);
 
         priceCategoryDtoUpdate
                 .getPeriods()
                 .get(0)
-                .setEndDate(LocalDate.of(2025, 10, 1).minusDays(1));
+                .setEndDate(LocalDate.of(2024, 9, 1).minusDays(1));
+        priceCategoryDtoUpdate
+                .getPeriods()
+                .get(0)
+                .setStartDate(LocalDate.of(2024, 7, 1));
 
-        priceCategoryDtoStr = objectMapper.writeValueAsString(priceCategoryDtoList.get(0));
+        String priceCategoryDtoStr = objectMapper.writeValueAsString(priceCategoryDtoUpdate);
 
         actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.post("/price_category/update")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -108,6 +116,18 @@ class PriceCategoryControllerTest {
 
         PriceCategoryDto actual = objectMapper.readValue(actualPriceCategoryJson, new TypeReference<>(){});
 
-        Assertions.assertEquals(priceCategoryDtoUpdate, actual);
+        PriceCategoryDto expected = new PriceCategoryDto();
+        expected.setId(actual.getId());
+        expected.setName("Standard");
+        expected.setPriority("HIGH");
+        expected.setCurrencyCode("EUR");
+
+        ScheduleDto expectedPeriod = new ScheduleDto();
+        expectedPeriod.setStartDate(LocalDate.of(2024, 7, 1));
+        expectedPeriod.setEndDate(LocalDate.of(2024, 9, 1).minusDays(1));
+
+        expected.setPeriods(List.of(expectedPeriod));
+
+        Assertions.assertEquals(expected, actual);
     }
 }

@@ -23,5 +23,6 @@ public interface PriceScheduleMapper {
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "isDeleted", expression = "java(false)")
     CategoryPriceSchedule toEntity(PriceCategory priceCategory, User owner, ScheduleDto priceScheduleDto);
 }
