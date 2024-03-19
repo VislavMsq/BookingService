@@ -2,7 +2,7 @@ package com.project_service.bookingservice.dto;
 
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class PriceCategoryDto {
@@ -10,5 +10,5 @@ public class PriceCategoryDto {
     private String currencyCode;
     private String name;
     private String priority;
-    private List<ScheduleDto> periods;
+    private Set<ScheduleDto> periods;
 }

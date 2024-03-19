@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
+import static jakarta.persistence.CascadeType.*;
+
 @Entity
 @Getter
 @Setter
@@ -20,9 +24,12 @@ public class PriceCategory extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "priority")
+    @Enumerated
     private Priority priority;
+
+    @OneToMany(mappedBy = "priceCategory", cascade = {MERGE, PERSIST, REFRESH}, fetch = FetchType.LAZY)
+    private Set<PriceCategorySchedule> priceCategoryScheduleList;
 
     @Override
     public String toString() {

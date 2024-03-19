@@ -17,6 +17,7 @@ public interface PriceMapper {
     @Mapping(source = "apartment.id", target = "apartmentId")
     @Mapping(source = "currency.name", target = "currencyName")
     @Mapping(source = "currency.code", target = "currencyCode")
+    @Mapping(target = "priority", expression = "java(price.getPriority().getValue())")
     PriceDto mapToDto(Price price);
 
     @IterableMapping(qualifiedByName = "toPriceDto")

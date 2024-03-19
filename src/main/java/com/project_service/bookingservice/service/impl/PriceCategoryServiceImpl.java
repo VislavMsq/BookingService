@@ -1,25 +1,22 @@
 package com.project_service.bookingservice.service.impl;
 
 import com.project_service.bookingservice.dto.PriceCategoryDto;
-import com.project_service.bookingservice.dto.ScheduleDto;
-import com.project_service.bookingservice.entity.CategoryPriceSchedule;
+import com.project_service.bookingservice.entity.*;
 import com.project_service.bookingservice.entity.Currency;
-import com.project_service.bookingservice.entity.PriceCategory;
-import com.project_service.bookingservice.entity.User;
 import com.project_service.bookingservice.exception.CurrencyNotFoundException;
 import com.project_service.bookingservice.exception.PriceCategoryNotFoundException;
 import com.project_service.bookingservice.mapper.PriceCategoryMapper;
 import com.project_service.bookingservice.mapper.PriceScheduleMapper;
-import com.project_service.bookingservice.repository.CurrencyRepository;
-import com.project_service.bookingservice.repository.PriceCategoryRepository;
-import com.project_service.bookingservice.repository.PriceScheduleRepository;
+import com.project_service.bookingservice.repository.*;
 import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.PriceCategoryService;
-import com.project_service.bookingservice.service.PriceScheduleService;
+import com.project_service.bookingservice.service.UtilsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.temporal.ChronoUnit;
 
 import java.util.*;
 
@@ -30,8 +27,6 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
     private final CurrencyRepository currencyRepository;
     private final PriceCategoryRepository priceCategoryRepository;
     private final PriceCategoryMapper priceCategoryMapper;
-    private final PriceScheduleRepository priceScheduleRepository;
-    private final PriceScheduleService priceScheduleService;
     private final PriceScheduleMapper priceScheduleMapper;
     private final UserProvider userProvider;
 
@@ -40,15 +35,19 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
     @Transactional
     @PreAuthorize("hasAuthority('OWNER')")
     public PriceCategoryDto createPriceOfCategory(PriceCategoryDto priceCategoryDto) {
+        User owner = userProvider.getCurrentUser();
         PriceCategory priceCategory = priceCategoryMapper.mapToEntity(priceCategoryDto);
         Currency currency = currencyRepository.findByCode(priceCategoryDto.getCurrencyCode())
                 .orElseThrow(() -> new CurrencyNotFoundException(String.format("Currency with code %s not found",
                         priceCategoryDto.getCurrencyCode())));
         priceCategory.setCurrency(currency);
-        priceCategory.setOwner(userProvider.getCurrentUser());
+        priceCategory.setOwner(owner);
+        priceCategory.getPriceCategoryScheduleList().stream()
+                .peek(c -> c.setOwner(owner))
+                .forEach(c -> c.setPriceCategory(priceCategory));
         priceCategoryRepository.save(priceCategory);
 
-        return priceScheduleService.createPriceSchedule(priceCategory, priceCategoryDto.getPeriods());
+        return priceCategoryMapper.mapToDto(priceCategory);
     }
 
     @Override
@@ -62,10 +61,9 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
                 );
         PriceCategoryDto priceCategoryDto = priceCategoryMapper.mapToDto(priceCategory);
 
-        List<CategoryPriceSchedule> categoryPriceSchedules = priceScheduleRepository.
-                findAllByPriceCategoryAndOwner(priceCategory, userProvider.getCurrentUser());
+        List<PriceCategorySchedule> priceCategorySchedules = priceCategory.getPriceCategoryScheduleList().stream().toList();
 
-        priceCategoryDto.setPeriods(priceScheduleMapper.toScheduleDto(categoryPriceSchedules));
+        priceCategoryDto.setPeriods(priceScheduleMapper.toScheduleDto(priceCategorySchedules));
 
         return priceCategoryDto;
     }
@@ -74,6 +72,7 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
     @Transactional
     @PreAuthorize("hasAuthority('OWNER')")
     public PriceCategoryDto update(PriceCategoryDto priceCategoryDto) {
+
         User owner = userProvider.getCurrentUser();
 
         PriceCategory priceCategory = priceCategoryRepository.findById(UUID.fromString(priceCategoryDto.getId()))
@@ -82,37 +81,17 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
                         )
                 );
 
-        List<CategoryPriceSchedule> categoryPriceSchedules = priceScheduleRepository.
-                findAllByPriceCategoryAndOwner(priceCategory, owner);
+        UtilsService.checkOwner(priceCategory, owner);
 
-        Map<ScheduleDto, CategoryPriceSchedule> map = new HashMap<>();
+        priceCategoryMapper.update(priceCategoryDto, priceCategory);
 
-        categoryPriceSchedules
-                .forEach(c -> map.put(priceScheduleMapper.toScheduleDto(c), c));
+        priceCategory.getPriceCategoryScheduleList().stream()
+                .peek(c -> c.setPriceCategory(priceCategory))
+                .forEach(c -> c.setOwner(owner));
 
-        List<CategoryPriceSchedule> saveList = new ArrayList<>();
+        priceCategoryRepository.save(priceCategory);
 
-        Map<ScheduleDto, CategoryPriceSchedule> mapForRemove = new HashMap<>(map);
-
-        for (ScheduleDto scheduleDto : priceCategoryDto.getPeriods()) {
-            if ((map.get(scheduleDto)) == null) {
-                saveList.add(priceScheduleMapper.toEntity(priceCategory, owner, scheduleDto));
-            } else {
-                mapForRemove.remove(scheduleDto);
-            }
-        }
-
-        priceScheduleRepository.deleteAll(mapForRemove.values());
-        priceScheduleRepository.saveAll(saveList);
-
-        categoryPriceSchedules = priceScheduleRepository.
-                findAllByPriceCategoryAndOwner(priceCategory, owner);
-
-        PriceCategoryDto result = priceCategoryMapper.mapToDto(priceCategory);
-
-        result.setPeriods(priceScheduleMapper.toScheduleDto(categoryPriceSchedules));
-
-        return result;
+        return priceCategoryMapper.mapToDto(priceCategory);
     }
 
     @Override

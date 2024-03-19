@@ -5,6 +5,7 @@ import com.project_service.bookingservice.exception.AuthenticationException;
 import com.project_service.bookingservice.exception.EntityNotFoundException;
 import com.project_service.bookingservice.exception.NotOwnerException;
 import com.project_service.bookingservice.exception.UserAlreadyExistsException;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Profile("!debug")
 @RestControllerAdvice
 public class ExceptionControllerAdvisor {
 

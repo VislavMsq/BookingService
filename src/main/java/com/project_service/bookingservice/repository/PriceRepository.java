@@ -25,7 +25,7 @@ public interface PriceRepository extends JpaRepository<Price, UUID> {
 
     List<Price> findByApartment(Apartment apartment);
 
-    @Query("select p from Price p join CategoryPriceSchedule cps on p.date between cps.startDate and cps.endDate " +
+    @Query("select p from Price p join PriceCategorySchedule cps on p.date between cps.startDate and cps.endDate " +
             "where cps.priceCategory = :priceCategory and p.apartment in :apartments")
     List<Price> findPricesOfApartmentsBetweenDates(List<Apartment> apartments, PriceCategory priceCategory);
 

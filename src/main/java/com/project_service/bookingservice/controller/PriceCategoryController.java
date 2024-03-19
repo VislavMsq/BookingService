@@ -14,7 +14,7 @@ import java.util.List;
 public class PriceCategoryController {
     private final PriceCategoryService priceCategoryService;
 
-    @PostMapping("/new")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PriceCategoryDto createPriceOfCategory(@RequestBody PriceCategoryDto priceCategoryDto) {
         return priceCategoryService.createPriceOfCategory(priceCategoryDto);
@@ -32,7 +32,7 @@ public class PriceCategoryController {
         return priceCategoryService.findAll();
     }
 
-    @PostMapping("/update")
+    @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public PriceCategoryDto update(@RequestBody PriceCategoryDto priceCategoryDto) {
         return priceCategoryService.update(priceCategoryDto);

@@ -77,6 +77,7 @@ class PriceControllerTest {
         priceDto1.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto1.setCurrencyName("Yuan Renminbi");
         priceDto1.setCurrencyCode("CNY");
+        priceDto1.setPriority(1);
 
         PriceDto priceDto2 = new PriceDto();
         priceDto2.setPrice(150.00);
@@ -85,6 +86,7 @@ class PriceControllerTest {
         priceDto2.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto2.setCurrencyName("Yuan Renminbi");
         priceDto2.setCurrencyCode("CNY");
+        priceDto2.setPriority(1);
 
         return Arrays.asList(priceDto1, priceDto2);
     }
