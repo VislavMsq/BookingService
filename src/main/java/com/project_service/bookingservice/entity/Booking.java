@@ -44,7 +44,6 @@ public class Booking extends BaseEntity {
     @Column(name = "is_edited_price")
     private Boolean isEditedPrice;
 
-
     @Override
     public String toString() {
         return "Booking{" +

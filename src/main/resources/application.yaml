@@ -3,9 +3,9 @@ spring:
     banner-mode: off
 
   datasource:
-    password: ${spring.datasource.password}
-    url: ${spring.datasource.url}
-    username: ${spring.datasource.username}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USER}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -16,5 +16,5 @@ spring:
     change-log: classpath:db/changelog/changelog-master.xml
     drop-first: true
 jwt:
-  secret: 456ba88f089978bc757f6cfebf7e790d1fe268ff876302e576ee23e82b31e89c
+  secret: ${JWT_SECRET_KEY}
 

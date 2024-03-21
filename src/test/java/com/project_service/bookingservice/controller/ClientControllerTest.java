@@ -58,13 +58,13 @@ class ClientControllerTest {
 
     @Test
     @WithUserDetails(value = "aloha.test@gmail.com")
-    void createNewClient() throws Exception {
+    void createClient() throws Exception {
         //given
         ClientDto clientDto = getClientDto();
         String clientStr = objectMapper.writeValueAsString(clientDto);
 
         //when
-        String creationResultJson = mockMvc.perform(MockMvcRequestBuilders.post("/clients/create")
+        String creationResultJson = mockMvc.perform(MockMvcRequestBuilders.post("/clients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(clientStr))
                 .andExpect(status().isCreated())
@@ -92,7 +92,7 @@ class ClientControllerTest {
     private static ClientDto getClientDto() {
         ClientDto clientDto = new ClientDto();
         clientDto.setEmail("ivanov.ivan@gmail.com");
-        clientDto.setPhone("+123456789");
+        clientDto.setPhone("123456789");
         clientDto.setFirstName("Ivan");
         clientDto.setLastName("Ivanov");
         clientDto.setLanguage("RU");

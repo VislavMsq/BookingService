@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/board_details")
+@RequestMapping(path = "/board-details")
 public class BoardDetailController {
     private final BoardDetailService boardDetailService;
 

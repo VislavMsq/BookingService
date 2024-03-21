@@ -15,7 +15,7 @@ import java.util.List;
 public class ApartmentController {
     private final ApartmentService apartmentService;
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ApartmentDto createApartment(@RequestBody ApartmentDto apartmentDTO) {
         return apartmentService.createApartment(apartmentDTO);

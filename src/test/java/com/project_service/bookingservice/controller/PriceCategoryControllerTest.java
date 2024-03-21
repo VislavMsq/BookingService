@@ -14,11 +14,11 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -44,8 +44,8 @@ class PriceCategoryControllerTest {
         priceCategoryDto.setCurrencyCode("EUR");
 
         ScheduleDto period = new ScheduleDto();
-        period.setStartDate(LocalDate.of(2024, 7, 1));
-        period.setEndDate(LocalDate.of(2024, 8, 15));
+        period.setStartDate("7-1");
+        period.setEndDate("8-15");
 
         priceCategoryDto.setPeriods(Set.of(period));
 
@@ -72,7 +72,6 @@ class PriceCategoryControllerTest {
                 .getContentAsString();
 
         // then
-
         PriceCategoryDto actualPriceCategoryDto = objectMapper.readValue(actualPriceCategoryJson, PriceCategoryDto.class);
         assertNotNull(actualPriceCategoryDto.getId());
 
@@ -92,8 +91,8 @@ class PriceCategoryControllerTest {
         expected.setName("Socks");
 
         ScheduleDto scheduleDto = new ScheduleDto();
-        scheduleDto.setStartDate(LocalDate.of(2024, 7, 1));
-        scheduleDto.setEndDate(LocalDate.of(2024, 9, 1).minusDays(1));
+        scheduleDto.setStartDate("7-1");
+        scheduleDto.setEndDate("8-31");
 
         expected.setPeriods(Set.of(scheduleDto));
 
@@ -126,8 +125,8 @@ class PriceCategoryControllerTest {
         priceCategoryDto1.setName("Standard");
         priceCategoryDto1.setPriority("HIGH");
         ScheduleDto scheduleDto1 = new ScheduleDto();
-        scheduleDto1.setStartDate(LocalDate.of(2024, 6, 15));
-        scheduleDto1.setEndDate(LocalDate.of(2024, 8, 31));
+        scheduleDto1.setStartDate("6-15");
+        scheduleDto1.setEndDate("8-31");
         priceCategoryDto1.setPeriods(Set.of(scheduleDto1));
 
         PriceCategoryDto priceCategoryDto2 = new PriceCategoryDto();
@@ -136,8 +135,8 @@ class PriceCategoryControllerTest {
         priceCategoryDto2.setName("Standard");
         priceCategoryDto2.setPriority("DEFAULT");
         ScheduleDto scheduleDto2 = new ScheduleDto();
-        scheduleDto2.setStartDate(LocalDate.of(2024, 1, 1));
-        scheduleDto2.setEndDate(LocalDate.of(2024, 12, 31));
+        scheduleDto2.setStartDate("1-1");
+        scheduleDto2.setEndDate("12-31");
         priceCategoryDto2.setPeriods(Set.of(scheduleDto2));
 
         List<PriceCategoryDto> expected = List.of(priceCategoryDto1, priceCategoryDto2);
@@ -152,7 +151,5 @@ class PriceCategoryControllerTest {
         });
 
         assertEquals(expected, actual);
-
-
     }
 }

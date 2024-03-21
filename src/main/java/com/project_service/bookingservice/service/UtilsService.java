@@ -9,9 +9,9 @@ public final class UtilsService {
     private UtilsService() {
     }
 
-    public  static void checkOwner(BaseEntity entity, User user){
-            if(!entity.getOwner().equals(user)){
-                throw new NotOwnerException("Access denied!");
-            }
+    public static void checkOwner(BaseEntity entity, User user) {
+        if (!entity.getOwner().equals(user)) {
+            throw new NotOwnerException("Access denied!");
+        }
     }
 }

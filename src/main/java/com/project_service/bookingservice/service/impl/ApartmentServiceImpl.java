@@ -1,7 +1,9 @@
 package com.project_service.bookingservice.service.impl;
 
 import com.project_service.bookingservice.dto.ApartmentDto;
-import com.project_service.bookingservice.entity.*;
+import com.project_service.bookingservice.entity.Apartment;
+import com.project_service.bookingservice.entity.ApartmentCategory;
+import com.project_service.bookingservice.entity.User;
 import com.project_service.bookingservice.exception.ApartmentNotFoundException;
 import com.project_service.bookingservice.mapper.ApartmentMapper;
 import com.project_service.bookingservice.repository.ApartmentRepository;
@@ -89,9 +91,9 @@ public class ApartmentServiceImpl implements ApartmentService {
                 .toList();
 
         ApartmentCategory apartmentCategory = apartmentCategoryService.getApartmentCategory(apartmentCategoryId);
-        User user = userProvider.getCurrentUser();
-        UtilsService.checkOwner(apartmentCategory, user);
-        List<Apartment> apartments = apartmentRepository.findAllByIdAndOwner(uuids, user.getId());
+        User owner = userProvider.getCurrentUser();
+        UtilsService.checkOwner(apartmentCategory, owner);
+        List<Apartment> apartments = apartmentRepository.findAllByIdAndOwner(uuids, owner);
         for (Apartment apartment : apartments) {
             apartment.setApartmentCategory(apartmentCategory);
         }

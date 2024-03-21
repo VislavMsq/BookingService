@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/apartment_categories")
+@RequestMapping("/apartment-categories")
 @RequiredArgsConstructor
 public class ApartmentCategoryController {
     private final ApartmentCategoryService apartmentCategoryService;
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ApartmentCategoryDto createDTO(@RequestBody ApartmentCategoryDto dto) {
         return apartmentCategoryService.createApartmentCategory(dto);

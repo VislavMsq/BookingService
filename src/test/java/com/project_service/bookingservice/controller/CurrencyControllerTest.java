@@ -12,11 +12,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,16 +36,15 @@ class CurrencyControllerTest {
     void getAllCurrencyTest() throws Exception {
         List<CurrencyDto> expected = createCurrencyList();
 
-        MvcResult currencyJson = mockMvc.perform(MockMvcRequestBuilders.get("/currencies")
+        String currencyJson = mockMvc.perform(MockMvcRequestBuilders.get("/currencies")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        String currencyResultJson = currencyJson.getResponse().getContentAsString();
-
-        List<CurrencyDto> actual = objectMapper.readValue(currencyResultJson, new TypeReference<>() {
+        List<CurrencyDto> actual = objectMapper.readValue(currencyJson, new TypeReference<>() {
         });
-
-        Assertions.assertEquals(200, currencyJson.getResponse().getStatus());
         Assertions.assertEquals(expected, actual);
     }
 

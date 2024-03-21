@@ -3,6 +3,7 @@ package com.project_service.bookingservice.service.impl;
 import com.project_service.bookingservice.dto.ApartmentCategoryDto;
 import com.project_service.bookingservice.entity.ApartmentCategory;
 import com.project_service.bookingservice.entity.User;
+import com.project_service.bookingservice.entity.enums.Role;
 import com.project_service.bookingservice.exception.ApartmentCategoryNotFoundException;
 import com.project_service.bookingservice.mapper.ApartmentCategoryMapper;
 import com.project_service.bookingservice.repository.ApartmentCategoryRepository;
@@ -19,7 +20,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ApartmentCategoryImpl implements ApartmentCategoryService {
-
     private final ApartmentCategoryMapper apartmentCategoryMapper;
     private final ApartmentCategoryRepository apartmentCategoryRepository;
     private final UserProvider userProvider;
@@ -50,8 +50,8 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
     @Transactional
     public List<ApartmentCategoryDto> getList() {
         User user = userProvider.getCurrentUser();
-        UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
-        List<ApartmentCategory> categories = apartmentCategoryRepository.findByOwnerId(id);
+        User owner = user.getRole().equals(Role.OWNER) ? user : user.getOwner();
+        List<ApartmentCategory> categories = apartmentCategoryRepository.findByOwner(owner);
         return apartmentCategoryMapper.toListDTO(categories);
     }
 

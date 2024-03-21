@@ -2,6 +2,7 @@ package com.project_service.bookingservice.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project_service.bookingservice.dto.BoardDetailsFilterDto;
 import com.project_service.bookingservice.dto.BookingDto;
 import com.project_service.bookingservice.dto.PriceDto;
 import org.junit.jupiter.api.Assertions;
@@ -37,8 +38,8 @@ class PriceControllerTest {
     @WithUserDetails(value = "aloha.test@gmail.com")
     void getPricesOfApartment() throws Exception {
         //given
-        BookingDto request = getResult();
-
+        String apartmentId = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+        BookingDto request = getBookingDto(apartmentId);
         String bookingDtoStr = objectMapper.writeValueAsString(request);
 
         //when
@@ -53,39 +54,119 @@ class PriceControllerTest {
         //then
         List<PriceDto> actual = objectMapper.readValue(pricesResultStr, new TypeReference<>() {
         });
-
         actual.forEach(p -> p.setId(null));
 
-        Assertions.assertEquals(getExpectedPrices(), actual);
-
+        Assertions.assertEquals(getExpectedPrices(apartmentId), actual);
     }
 
-    private BookingDto getResult() {
+    @Test
+    @WithUserDetails(value = "aloha.test@gmail.com")
+    void updatePrices() throws Exception {
+        //given
+        String apartmentId1 = "e419d844-c317-4bf2-aa9b-e2d62cfafa31";
+        String apartmentId2 = "1e9377bd-9083-4804-9ef8-c93acb999c01";
+        String apartmentId3 = "eaa6efa1-9260-472d-88bb-832a9be95ce5";
+        BoardDetailsFilterDto boardDetailsFilterDto = getBoardDetailsFilterDto(apartmentId1, apartmentId2, apartmentId3);
+        BookingDto bookingDto = getBookingDto(apartmentId1);
+        String bookingDtoStr = objectMapper.writeValueAsString(bookingDto);
+        String filterDetailsJson = objectMapper.writeValueAsString(boardDetailsFilterDto);
+
+        //when
+        String pricesBeforeUpdateStr = mockMvc.perform(MockMvcRequestBuilders.get("/prices")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(bookingDtoStr))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/prices")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(filterDetailsJson))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String pricesAfterUpdateStr = mockMvc.perform(MockMvcRequestBuilders.get("/prices")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(bookingDtoStr))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        //then
+        List<PriceDto> pricesBeforeUpdate = objectMapper.readValue(pricesBeforeUpdateStr, new TypeReference<>() {});
+        List<PriceDto> pricesAfterUpdate = objectMapper.readValue(pricesAfterUpdateStr, new TypeReference<>() {});
+
+        Assertions.assertTrue(pricesBeforeUpdate.isEmpty());
+        Assertions.assertFalse(pricesAfterUpdate.isEmpty());
+        pricesAfterUpdate.forEach(p -> p.setId(null));
+        Assertions.assertEquals(getExpectedUpdatedPrices(apartmentId1), pricesAfterUpdate);
+    }
+
+    private static BoardDetailsFilterDto getBoardDetailsFilterDto(String apartmentId1, String apartmentId2,
+                                                                  String apartmentId3) {
+        List<String> apartmentIds = List.of(apartmentId1, apartmentId2, apartmentId3);
+        LocalDate startDate = LocalDate.of(2024,1,1);
+        LocalDate endDate = LocalDate.of(2024,12,31);
+        BoardDetailsFilterDto boardDetailsFilterDto = new BoardDetailsFilterDto();
+        boardDetailsFilterDto.setApartmentIds(apartmentIds);
+        boardDetailsFilterDto.setStartDate(startDate);
+        boardDetailsFilterDto.setEndDate(endDate);
+        return boardDetailsFilterDto;
+    }
+
+
+    private BookingDto getBookingDto(String apartmentId) {
         BookingDto bookingDto = new BookingDto();
-        bookingDto.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        bookingDto.setApartmentId(apartmentId);
         bookingDto.setStartDate(LocalDate.of(2024, 2, 29));
         bookingDto.setEndDate(LocalDate.of(2024, 3, 2));
         return bookingDto;
     }
 
-    private List<PriceDto> getExpectedPrices() {
+    private List<PriceDto> getExpectedPrices(String apartmentId) {
         PriceDto priceDto1 = new PriceDto();
         priceDto1.setPrice(100.00);
         priceDto1.setDate(LocalDate.of(2024, 2, 29));
-        priceDto1.setIsEditedPrice(false);
+        priceDto1.setIsEditedPrice(true);
         priceDto1.setPriority("LOW");
-        priceDto1.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        priceDto1.setApartmentId(apartmentId);
         priceDto1.setCurrencyName("Yuan Renminbi");
         priceDto1.setCurrencyCode("CNY");
 
         PriceDto priceDto2 = new PriceDto();
         priceDto2.setPrice(100.00);
         priceDto2.setDate(LocalDate.of(2024, 3, 1));
-        priceDto2.setIsEditedPrice(false);
+        priceDto2.setIsEditedPrice(true);
         priceDto2.setPriority("HOLIDAY");
-        priceDto2.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+        priceDto2.setApartmentId(apartmentId);
         priceDto2.setCurrencyName("Yuan Renminbi");
         priceDto2.setCurrencyCode("CNY");
+
+        return Arrays.asList(priceDto1, priceDto2);
+    }
+
+    private List<PriceDto> getExpectedUpdatedPrices(String apartmentId) {
+        PriceDto priceDto1 = new PriceDto();
+        priceDto1.setPrice(300.00);
+        priceDto1.setDate(LocalDate.of(2024, 2, 29));
+        priceDto1.setIsEditedPrice(false);
+        priceDto1.setPriority("LOW");
+        priceDto1.setApartmentId(apartmentId);
+        priceDto1.setCurrencyName("Euro");
+        priceDto1.setCurrencyCode("EUR");
+
+        PriceDto priceDto2 = new PriceDto();
+        priceDto2.setPrice(400.00);
+        priceDto2.setDate(LocalDate.of(2024, 3, 1));
+        priceDto2.setIsEditedPrice(false);
+        priceDto2.setPriority("DEFAULT");
+        priceDto2.setApartmentId(apartmentId);
+        priceDto2.setCurrencyName("Euro");
+        priceDto2.setCurrencyCode("EUR");
 
         return Arrays.asList(priceDto1, priceDto2);
     }

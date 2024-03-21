@@ -12,22 +12,22 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = PriceScheduleMapper.class)
 public interface PriceCategoryMapper {
     @Mapping(source = "currency.code", target = "currencyCode")
-    @Mapping(source = "priceCategoryScheduleList", target = "periods", qualifiedByName = "toScheduleDtoList")
+    @Mapping(source = "priceCategoryScheduleSet", target = "periods", qualifiedByName = "toScheduleDtoSet")
     PriceCategoryDto mapToDto(PriceCategory priceCategory);
-
-    List<PriceCategoryDto> mapToDto(List<PriceCategory> priceCategories);
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "isDeleted" , expression = "java(false)")
-    @Mapping(target = "priceCategoryScheduleList", source = "periods", qualifiedByName = "toScheduleEntityList")
+    @Mapping(target = "priceCategoryScheduleSet", source = "periods", qualifiedByName = "toScheduleEntitySet")
     PriceCategory mapToEntity(PriceCategoryDto priceCategoryDto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "priority", source = "priority", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "name", source = "name", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "priceCategoryScheduleList", source = "periods", qualifiedByName = "toScheduleEntityList",
+    @Mapping(target = "priceCategoryScheduleSet", source = "periods", qualifiedByName = "toScheduleEntitySet",
             nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(PriceCategoryDto priceCategoryDto, @MappingTarget PriceCategory priceCategory);
+
+    List<PriceCategoryDto> mapToListDto(List<PriceCategory> priceCategories);
 }

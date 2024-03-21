@@ -12,13 +12,13 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @Sql("/database/schema-cleanup.sql")
@@ -38,35 +38,34 @@ class ApartmentControllerTest {
 
     @Test
     @WithUserDetails(value = "aloha.test@gmail.com")
-    void createApartmentTest() throws Exception {
+    void createApartment() throws Exception {
         ApartmentDto expected = getApartmentDTO();
 
         String toCreate = objectMapper.writeValueAsString(expected);
 
-        MvcResult mvcResultPost = mockMvc.perform(MockMvcRequestBuilders.post("/apartments/create")
+        String apartmentDtoCreatedJson = mockMvc.perform(MockMvcRequestBuilders.post("/apartments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toCreate))
-                .andReturn();
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        assertEquals(201, mvcResultPost.getResponse().getStatus());
-
-
-        ApartmentDto created = objectMapper.readValue(mvcResultPost.getResponse().getContentAsString(), new TypeReference<>() {
-        });
+        ApartmentDto created = objectMapper.readValue(apartmentDtoCreatedJson, ApartmentDto.class);
         String id = created.getId();
         expected.setId(id);
         assertEquals(expected, created);
 
-        MvcResult mvcResultGet = mockMvc.perform(
+        String apartmentDtoJson = mockMvc.perform(
                         MockMvcRequestBuilders.get("/apartments/" + id))
-                .andReturn();
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        assertEquals(200, mvcResultGet.getResponse().getStatus());
+        ApartmentDto actual = objectMapper.readValue(apartmentDtoJson, ApartmentDto.class);
 
-        ApartmentDto returned = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
-        });
-
-        assertEquals(expected, returned);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -74,15 +73,16 @@ class ApartmentControllerTest {
     void findAllApartments() throws Exception {
         List<ApartmentDto> expectedList = expectListFindAllApartments();
 
-        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments"))
-                .andReturn();
+        String apartmentsListJson = mockMvc.perform(MockMvcRequestBuilders.get("/apartments"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        assertEquals(200, mvcResultGet.getResponse().getStatus());
-
-        List<ApartmentDto> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
+        List<ApartmentDto> actualList = objectMapper.readValue(apartmentsListJson, new TypeReference<>() {
         });
 
-        assertEquals(expectedList, returnedList);
+        assertEquals(expectedList, actualList);
     }
 
     @Test
@@ -91,15 +91,16 @@ class ApartmentControllerTest {
         List<ApartmentDto> expectedList = expectListFindApartmentsByCountry();
         String country = "USA";
 
-        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/country/" + country))
-                .andReturn();
+        String apartmentsListJson = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/country/" + country))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        assertEquals(200, mvcResultGet.getResponse().getStatus());
-
-        List<ApartmentDto> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
+        List<ApartmentDto> actualList = objectMapper.readValue(apartmentsListJson, new TypeReference<>() {
         });
 
-        assertEquals(expectedList, returnedList);
+        assertEquals(expectedList, actualList);
     }
 
 
@@ -110,50 +111,45 @@ class ApartmentControllerTest {
         List<ApartmentDto> expectedList = expectListFindApartmentsByCity();
         String city = "New York";
 
-        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/city/" + city))
-                .andReturn();
+        String apartmentsListJson = mockMvc.perform(MockMvcRequestBuilders.get("/apartments/city/" + city))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        assertEquals(200, mvcResultGet.getResponse().getStatus());
-
-        List<ApartmentDto> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
+        List<ApartmentDto> actualList = objectMapper.readValue(apartmentsListJson, new TypeReference<>() {
         });
 
-        assertEquals(expectedList, returnedList);
+        assertEquals(expectedList, actualList);
     }
 
     @Test
     @WithUserDetails(value = "user1@example.com")
     void setApartmentsCategory() throws Exception {
-        List<String> listApartmentIds = new ArrayList<>();
-        listApartmentIds.add("3f120739-8a84-4e21-84b3-7a66358157bf");
-        listApartmentIds.add("8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2");
-        listApartmentIds.add("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-
+        //given
         String categoryId = "ad99034d-4a69-492f-b65f-4aef01d21ee6";
+        String apartmentId1 = "3f120739-8a84-4e21-84b3-7a66358157bf";
+        String apartmentId2 = "8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2";
+        String apartmentId3 = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+        List<String> listApartmentIds = List.of(apartmentId1, apartmentId2, apartmentId3);
 
-        String listIdsRequest = objectMapper.writeValueAsString(listApartmentIds);
+        String listApartmentIdsJson = objectMapper.writeValueAsString(listApartmentIds);
 
-        MvcResult mvcResultPost =
-                mockMvc.perform(MockMvcRequestBuilders.put("/apartments/set-apartment-category/" + categoryId)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(listIdsRequest))
-                        .andReturn();
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.put("/apartments/set-apartment-category/" + categoryId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(listApartmentIdsJson))
+                .andExpect(status().isOk());
 
-        assertEquals(200, mvcResultPost.getResponse().getStatus());
+        String apartmentDtoResponseJson = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/apartments/" + apartmentId2))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        String id3 = "8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2";
-
-        MvcResult mvcResultSecondGet = mockMvc.perform(
-                        MockMvcRequestBuilders.get("/apartments/" + id3))
-                .andReturn();
-
-        assertEquals(200, mvcResultSecondGet.getResponse().getStatus());
-
-        ApartmentDto secondReturned = objectMapper.readValue(mvcResultSecondGet.getResponse().getContentAsString(), new TypeReference<>() {
-        });
-        String secondReturnedCategoryId = secondReturned.getApartmentCategoryId();
-
-        assertEquals(categoryId, secondReturnedCategoryId);
+        ApartmentDto apartmentDtoResponse = objectMapper.readValue(apartmentDtoResponseJson, ApartmentDto.class);
+        assertEquals(categoryId, apartmentDtoResponse.getApartmentCategoryId());
     }
 
     private List<ApartmentDto> expectListFindAllApartments() {
@@ -171,8 +167,8 @@ class ApartmentControllerTest {
                 "false",
                 "1",
                 "Lorem ipsum",
-                "ad99034d-4a69-492f-b65f-4aef01d21ee6",
-                null));
+                "ad99034d-4a69-492f-b65f-4aef01d21ee6"
+        ));
         apartments.add(createApartment(
                 "8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2",
                 "Apartment 2",
@@ -185,8 +181,8 @@ class ApartmentControllerTest {
                 "true",
                 "2",
                 "Dolor sit amet",
-                "be2f0f46-9e36-4b99-8d62-8e498b783c38",
-                null));
+                "be2f0f46-9e36-4b99-8d62-8e498b783c38"
+        ));
         apartments.add(createApartment(
                 "f47ac10b-58cc-4372-a567-0e02b2c3d479",
                 "Apartment 1",
@@ -199,8 +195,8 @@ class ApartmentControllerTest {
                 "false",
                 "1",
                 "Cozy studio apartment in the heart of New York City",
-                null,
-                null));
+                null
+        ));
         apartments.add(createApartment(
                 "1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d",
                 "Apartment 2",
@@ -213,8 +209,8 @@ class ApartmentControllerTest {
                 "true",
                 "2",
                 "Spacious apartment with Hollywood sign view",
-                null,
-                null));
+                null
+        ));
         apartments.add(createApartment(
                 "eccbc87e-4b5c-4331-a025-6545673431ef",
                 "Apartment 3",
@@ -227,8 +223,8 @@ class ApartmentControllerTest {
                 "true",
                 "0",
                 "Modern house with a beautiful view of Lake Ontario",
-                null,
-                null));
+                null
+        ));
 
         return apartments;
     }
@@ -248,8 +244,8 @@ class ApartmentControllerTest {
                 "false",
                 "1",
                 "Lorem ipsum",
-                "ad99034d-4a69-492f-b65f-4aef01d21ee6",
-                null));
+                "ad99034d-4a69-492f-b65f-4aef01d21ee6"
+        ));
         apartments.add(createApartment(
                 "f47ac10b-58cc-4372-a567-0e02b2c3d479",
                 "Apartment 1",
@@ -262,8 +258,8 @@ class ApartmentControllerTest {
                 "false",
                 "1",
                 "Cozy studio apartment in the heart of New York City",
-                null,
-                null));
+                null
+        ));
         apartments.add(createApartment(
                 "1ac2ab88-4efc-4ea7-a6d7-9738c7b0ca5d",
                 "Apartment 2",
@@ -276,8 +272,8 @@ class ApartmentControllerTest {
                 "true",
                 "2",
                 "Spacious apartment with Hollywood sign view",
-                null,
-                null));
+                null
+        ));
 
         return apartments;
     }
@@ -297,8 +293,8 @@ class ApartmentControllerTest {
                 "false",
                 "1",
                 "Lorem ipsum",
-                "ad99034d-4a69-492f-b65f-4aef01d21ee6",
-                null));
+                "ad99034d-4a69-492f-b65f-4aef01d21ee6"
+        ));
         apartments.add(createApartment(
                 "f47ac10b-58cc-4372-a567-0e02b2c3d479",
                 "Apartment 1",
@@ -311,15 +307,15 @@ class ApartmentControllerTest {
                 "false",
                 "1",
                 "Cozy studio apartment in the heart of New York City",
-                null,
-                null));
+                null
+        ));
 
         return apartments;
     }
 
     private ApartmentDto createApartment(String id, String name, String type, String country, String city, String street,
                                          String floor, String pet, String smoking, String parkingPlace, String description,
-                                         String apartmentCategoryId, String parentId) {
+                                         String apartmentCategoryId) {
         ApartmentDto apartment = new ApartmentDto();
         apartment.setId(id);
         apartment.setName(name);
@@ -333,7 +329,7 @@ class ApartmentControllerTest {
         apartment.setParkingPlace(parkingPlace);
         apartment.setDescription(description);
         apartment.setApartmentCategoryId(apartmentCategoryId);
-        apartment.setParentId(parentId);
+        apartment.setParentId(null);
         return apartment;
     }
 
@@ -353,5 +349,6 @@ class ApartmentControllerTest {
         expected.setParentId("3f120739-8a84-4e21-84b3-7a66358157bf");
         return expected;
     }
+
 
 }

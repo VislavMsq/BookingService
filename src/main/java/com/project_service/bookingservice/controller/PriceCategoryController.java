@@ -2,6 +2,7 @@ package com.project_service.bookingservice.controller;
 
 import com.project_service.bookingservice.dto.PriceCategoryDto;
 import com.project_service.bookingservice.service.PriceCategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class PriceCategoryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PriceCategoryDto createPriceOfCategory(@RequestBody PriceCategoryDto priceCategoryDto) {
+    public PriceCategoryDto createPriceOfCategory(@RequestBody @Valid PriceCategoryDto priceCategoryDto) {
         return priceCategoryService.createPriceOfCategory(priceCategoryDto);
     }
 

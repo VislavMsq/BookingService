@@ -11,13 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @Sql("/database/schema-cleanup.sql")
@@ -33,7 +33,7 @@ class ApartmentCategoryControllerTest {
 
     @Test
     @WithUserDetails(value = "user1@example.com")
-    void createDTO() throws Exception {
+    void createApartmentCategory() throws Exception {
         ApartmentCategoryDto expected = new ApartmentCategoryDto();
         expected.setName("test apartment 1");
         expected.setAbbreviation("ta1");
@@ -42,25 +42,28 @@ class ApartmentCategoryControllerTest {
 
         String toCreate = objectMapper.writeValueAsString(expected);
 
-        MvcResult mvcResultPost = mockMvc.perform(MockMvcRequestBuilders.post("/apartment_categories/create")
+        String apartmentCategoryCreatedJson = mockMvc.perform(MockMvcRequestBuilders.post("/apartment-categories")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toCreate))
-                .andReturn();
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        assertEquals(201, mvcResultPost.getResponse().getStatus());
-
-        ApartmentCategoryDto created = objectMapper.readValue(mvcResultPost.getResponse().getContentAsString(), new TypeReference<>() {
+        ApartmentCategoryDto created = objectMapper.readValue(apartmentCategoryCreatedJson, new TypeReference<>() {
         });
         String id = created.getId();
         expected.setId(id);
         assertEquals(created, expected);
 
-        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartment_categories/" + id))
-                .andReturn();
+        String apartmentCategoryDtoJson = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/apartment-categories/" + id))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        assertEquals(200, mvcResultGet.getResponse().getStatus());
-
-        ApartmentCategoryDto returned = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
+        ApartmentCategoryDto returned = objectMapper.readValue(apartmentCategoryDtoJson, new TypeReference<>() {
         });
 
         assertEquals(returned, created);
@@ -68,7 +71,7 @@ class ApartmentCategoryControllerTest {
 
     @Test
     @WithUserDetails(value = "user1@example.com")
-    void findApartmentCategoriesByOwner() throws Exception{
+    void findApartmentCategoriesByOwner() throws Exception {
         List<ApartmentCategoryDto> expectedList = new ArrayList<>();
         ApartmentCategoryDto first = new ApartmentCategoryDto();
         first.setId("ad99034d-4a69-492f-b65f-4aef01d21ee6");
@@ -95,12 +98,13 @@ class ApartmentCategoryControllerTest {
         expectedList.add(third);
 
 
-        MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartment_categories"))
-                .andReturn();
+        String categoriesListJson = mockMvc.perform(MockMvcRequestBuilders.get("/apartment-categories"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        assertEquals(200, mvcResultGet.getResponse().getStatus());
-
-        List<ApartmentCategoryDto> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
+        List<ApartmentCategoryDto> returnedList = objectMapper.readValue(categoriesListJson, new TypeReference<>() {
         });
 
         assertEquals(returnedList, expectedList);

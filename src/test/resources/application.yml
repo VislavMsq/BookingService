@@ -13,3 +13,6 @@ spring:
   sql:
     init:
       mode: never
+
+jwt:
+  secret: 456ba88f089978bc757f6cfebf7e790d1fe268ff876302e576ee23e82b31e89c
