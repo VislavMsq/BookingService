@@ -25,7 +25,6 @@ public interface PriceCategoryMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
-    @Mapping(target = "currency", ignore = true)
     @Mapping(target = "priority", source = "priority", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "name", source = "name", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "priceCategoryScheduleList", source = "periods", qualifiedByName = "toScheduleEntityList",

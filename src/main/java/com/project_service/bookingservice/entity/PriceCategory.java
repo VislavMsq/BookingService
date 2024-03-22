@@ -14,10 +14,16 @@ import static jakarta.persistence.CascadeType.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@NamedEntityGraph(
+        name = "priceCategory.priceCategoryScheduleList",
+        attributeNodes = {
+                @NamedAttributeNode("priceCategoryScheduleList"),
+                @NamedAttributeNode("currency"),
+                @NamedAttributeNode("owner")})
 @Table(name = "price_categories")
 public class PriceCategory extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
     private Currency currency;
 
@@ -28,13 +34,16 @@ public class PriceCategory extends BaseEntity {
     @Enumerated
     private Priority priority;
 
-    @OneToMany(mappedBy = "priceCategory", cascade = {MERGE, PERSIST, REFRESH}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "priceCategory",
+            cascade = {MERGE, REMOVE, PERSIST, REFRESH},
+            fetch = FetchType.LAZY,
+            orphanRemoval = true)
     private Set<PriceCategorySchedule> priceCategoryScheduleList;
 
     @Override
     public String toString() {
         return "CategoryPrice{" +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", priority=" + priority +
                 '}';
     }

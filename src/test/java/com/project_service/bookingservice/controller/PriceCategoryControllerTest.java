@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project_service.bookingservice.dto.PriceCategoryDto;
 import com.project_service.bookingservice.dto.ScheduleDto;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -53,7 +52,7 @@ class PriceCategoryControllerTest {
         String priceCategoryDtoStr = objectMapper.writeValueAsString(priceCategoryDto);
 
         // when
-        String priceCategoryDtoJson = mockMvc.perform(MockMvcRequestBuilders.post("/price_category")
+        String priceCategoryDtoJson = mockMvc.perform(MockMvcRequestBuilders.post("/price-category")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(priceCategoryDtoStr))
                 .andExpect(status().isCreated())
@@ -66,7 +65,7 @@ class PriceCategoryControllerTest {
         String id = priceCategoryDtoCreated.getId();
         priceCategoryDto.setId(id);
 
-        String actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.get("/price_category/" + id))
+        String actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.get("/price-category/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -84,33 +83,28 @@ class PriceCategoryControllerTest {
     @WithUserDetails(value = "leonardo@gmail.com")
     void updatePriceCategory() throws Exception {
 
-        String actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.get("/price_category"))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        String id = "75335102-dff9-4a66-b576-80f0b017548c";
 
-        List<PriceCategoryDto> priceCategoryDtoList = objectMapper.readValue(actualPriceCategoryJson, new TypeReference<>() {
-        });
+        PriceCategoryDto expected = new PriceCategoryDto();
+        expected.setId(id);
+        expected.setCurrencyCode("USD");
+        expected.setPriority("LOW");
+        expected.setName("Socks");
 
-        Assertions.assertFalse(priceCategoryDtoList.isEmpty());
-
-
-        PriceCategoryDto priceCategoryDtoUpdate = priceCategoryDtoList.get(0);
-        priceCategoryDtoUpdate.setName("Socks");
-        List<ScheduleDto> list = priceCategoryDtoUpdate
-                .getPeriods().stream().toList();
-
-        ScheduleDto scheduleDto = list.get(0);
+        ScheduleDto scheduleDto = new ScheduleDto();
         scheduleDto.setStartDate(LocalDate.of(2024, 7, 1));
         scheduleDto.setEndDate(LocalDate.of(2024, 9, 1).minusDays(1));
 
+        expected.setPeriods(Set.of(scheduleDto));
 
-        String priceCategoryDtoStr = objectMapper.writeValueAsString(priceCategoryDtoUpdate);
+        String priceCategoryDtoStr = objectMapper.writeValueAsString(expected);
 
-        actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.put("/price_category")
+        mockMvc.perform(MockMvcRequestBuilders.put("/price-category")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(priceCategoryDtoStr))
+                .andExpect(status().isOk());
+
+        String actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.get("/price-category/" + id))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -119,20 +113,46 @@ class PriceCategoryControllerTest {
         PriceCategoryDto actual = objectMapper.readValue(actualPriceCategoryJson, new TypeReference<>() {
         });
 
-        assertNotNull(actual.getId());
+        assertEquals(expected, actual);
+    }
 
-        PriceCategoryDto expected = new PriceCategoryDto();
-        expected.setId(actual.getId());
-        expected.setName("Socks");
-        expected.setPriority("HIGH");
-        expected.setCurrencyCode("EUR");
+    @Test
+    @WithUserDetails(value = "leonardo@gmail.com")
+    void findAll() throws Exception {
 
-        ScheduleDto expectedPeriod = new ScheduleDto();
-        expectedPeriod.setStartDate(LocalDate.of(2024, 7, 1));
-        expectedPeriod.setEndDate(LocalDate.of(2024, 9, 1).minusDays(1));
+        PriceCategoryDto priceCategoryDto1 = new PriceCategoryDto();
+        priceCategoryDto1.setId("75335102-dff9-4a66-b576-80f0b017548c");
+        priceCategoryDto1.setCurrencyCode("EUR");
+        priceCategoryDto1.setName("Standard");
+        priceCategoryDto1.setPriority("HIGH");
+        ScheduleDto scheduleDto1 = new ScheduleDto();
+        scheduleDto1.setStartDate(LocalDate.of(2024, 6, 15));
+        scheduleDto1.setEndDate(LocalDate.of(2024, 8, 31));
+        priceCategoryDto1.setPeriods(Set.of(scheduleDto1));
 
-        expected.setPeriods(Set.of(expectedPeriod));
+        PriceCategoryDto priceCategoryDto2 = new PriceCategoryDto();
+        priceCategoryDto2.setId("75435102-dff9-4a66-b576-80f0b017548c");
+        priceCategoryDto2.setCurrencyCode("EUR");
+        priceCategoryDto2.setName("Standard");
+        priceCategoryDto2.setPriority("DEFAULT");
+        ScheduleDto scheduleDto2 = new ScheduleDto();
+        scheduleDto2.setStartDate(LocalDate.of(2024, 1, 1));
+        scheduleDto2.setEndDate(LocalDate.of(2024, 12, 31));
+        priceCategoryDto2.setPeriods(Set.of(scheduleDto2));
+
+        List<PriceCategoryDto> expected = List.of(priceCategoryDto1, priceCategoryDto2);
+
+        String actualPriceCategoryJson = mockMvc.perform(MockMvcRequestBuilders.get("/price-category"))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        List<PriceCategoryDto> actual = objectMapper.readValue(actualPriceCategoryJson, new TypeReference<>() {
+        });
 
         assertEquals(expected, actual);
+
+
     }
 }

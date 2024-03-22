@@ -83,6 +83,11 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
 
         UtilsService.checkOwner(priceCategory, owner);
 
+        priceCategory.setCurrency(
+                currencyRepository.findByCode(priceCategoryDto.getCurrencyCode())
+                .orElseThrow(() -> new CurrencyNotFoundException(String.format("Currency with code %s not found",
+                        priceCategoryDto.getCurrencyCode()))));
+
         priceCategoryMapper.update(priceCategoryDto, priceCategory);
 
         priceCategory.getPriceCategoryScheduleList().stream()

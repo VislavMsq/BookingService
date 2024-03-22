@@ -10,7 +10,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/price_category")
+@RequestMapping(path = "/price-category")
 public class PriceCategoryController {
     private final PriceCategoryService priceCategoryService;
 
