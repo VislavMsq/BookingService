@@ -8,7 +8,10 @@ import com.project_service.bookingservice.exception.BookingNotFoundException;
 import com.project_service.bookingservice.exception.ClientNotFoundException;
 import com.project_service.bookingservice.exception.CurrencyNotFoundException;
 import com.project_service.bookingservice.mapper.BookingMapper;
-import com.project_service.bookingservice.repository.*;
+import com.project_service.bookingservice.repository.ApartmentRepository;
+import com.project_service.bookingservice.repository.BookingRepository;
+import com.project_service.bookingservice.repository.ClientRepository;
+import com.project_service.bookingservice.repository.CurrencyRepository;
 import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.BoardDetailService;
 import com.project_service.bookingservice.service.BookingService;
@@ -41,9 +44,9 @@ public class BookingServiceImpl implements BookingService {
         Client client = clientRepository.findByIdAndOwner(UUID.fromString(bookingDto.getClientId()), owner)
                 .orElseThrow(() -> new ClientNotFoundException(String.format("Client with id %s not found",
                         bookingDto.getClientId())));
-        Currency currency = currencyRepository.findById(UUID.fromString(bookingDto.getCurrencyId()))
-                .orElseThrow(() -> new CurrencyNotFoundException(String.format("Currency with id %s not found",
-                        bookingDto.getCurrencyId())));
+        Currency currency = currencyRepository.findByCode(bookingDto.getCurrencyCode())
+                .orElseThrow(() -> new CurrencyNotFoundException(String.format("Currency code %s not found",
+                        bookingDto.getCurrencyCode())));
         booking.setOwner(owner);
         booking.setApartment(apartment);
         booking.setClient(client);

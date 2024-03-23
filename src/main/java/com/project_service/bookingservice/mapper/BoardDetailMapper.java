@@ -11,7 +11,7 @@ import java.util.List;
 public interface BoardDetailMapper {
     @Mapping(source = "booking.id", target = "bookingId")
     @Mapping(source = "apartment.id", target = "apartmentId")
-    @Mapping(source = "currency.id", target = "currencyId")
+    @Mapping(source = "currency.code", target = "currencyCode")
     BoardDetailDto mapToDto(BoardDetail boardDetail);
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")

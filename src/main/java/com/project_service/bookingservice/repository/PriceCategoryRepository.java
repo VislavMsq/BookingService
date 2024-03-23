@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface PriceCategoryRepository extends JpaRepository<PriceCategory, UUID> {
+
+
 }

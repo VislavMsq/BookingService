@@ -1,6 +1,6 @@
 package com.project_service.bookingservice.service.impl;
 
-import com.project_service.bookingservice.dto.ApartmentDTO;
+import com.project_service.bookingservice.dto.ApartmentDto;
 import com.project_service.bookingservice.entity.*;
 import com.project_service.bookingservice.exception.ApartmentNotFoundException;
 import com.project_service.bookingservice.mapper.ApartmentMapper;
@@ -32,7 +32,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     @Transactional
-    public ApartmentDTO createApartment(ApartmentDTO apartmentDTO) {
+    public ApartmentDto createApartment(ApartmentDto apartmentDTO) {
         User owner = userProvider.getCurrentUser();
         Apartment apartment = apartmentMapper.toEntity(apartmentDTO);
         if (apartmentDTO.getApartmentCategoryId() != null) {
@@ -55,13 +55,13 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     @Transactional
-    public ApartmentDTO findApartment(String uuid) {
+    public ApartmentDto findApartment(String uuid) {
         return apartmentMapper.toDTO(find(uuid));
     }
 
     @Override
     @Transactional
-    public List<ApartmentDTO> findAllApartments() {
+    public List<ApartmentDto> findAllApartments() {
         User user = userProvider.getCurrentUser();
         UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
         List<Apartment> apartments = apartmentRepository.findByOwnerId(id);
@@ -70,7 +70,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     @Transactional
-    public List<ApartmentDTO> findApartmentByCountry(String country) {
+    public List<ApartmentDto> findApartmentByCountry(String country) {
         User user = userProvider.getCurrentUser();
         UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
         List<Apartment> apartments = apartmentRepository.findByCountry(country, id);
@@ -80,7 +80,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     @Transactional
-    public List<ApartmentDTO> findApartmentByCity(String city) {
+    public List<ApartmentDto> findApartmentByCity(String city) {
         User user = userProvider.getCurrentUser();
         UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
         List<Apartment> apartments = apartmentRepository.findByCity(city, id);
@@ -121,4 +121,3 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
 
 }
-

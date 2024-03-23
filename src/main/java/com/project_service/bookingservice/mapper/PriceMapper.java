@@ -2,6 +2,7 @@ package com.project_service.bookingservice.mapper;
 
 import com.project_service.bookingservice.dto.PriceDto;
 import com.project_service.bookingservice.entity.Price;
+import com.project_service.bookingservice.entity.enums.Priority;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,8 +18,14 @@ public interface PriceMapper {
     @Mapping(source = "apartment.id", target = "apartmentId")
     @Mapping(source = "currency.name", target = "currencyName")
     @Mapping(source = "currency.code", target = "currencyCode")
+    @Mapping(target = "priority", source = "priority", qualifiedByName = "toName")
     PriceDto mapToDto(Price price);
 
     @IterableMapping(qualifiedByName = "toPriceDto")
     List<PriceDto> mapToListDtos(List<Price> pricesOfApartment);
+
+    @Named("toName")
+    default String toName(Priority priority) {
+        return priority.name();
+    }
 }

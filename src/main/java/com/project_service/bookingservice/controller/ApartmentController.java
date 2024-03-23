@@ -1,6 +1,6 @@
 package com.project_service.bookingservice.controller;
 
-import com.project_service.bookingservice.dto.ApartmentDTO;
+import com.project_service.bookingservice.dto.ApartmentDto;
 import com.project_service.bookingservice.service.ApartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,31 +17,31 @@ public class ApartmentController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ApartmentDTO createApartment(@RequestBody ApartmentDTO apartmentDTO) {
+    public ApartmentDto createApartment(@RequestBody ApartmentDto apartmentDTO) {
         return apartmentService.createApartment(apartmentDTO);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ApartmentDTO findApartment(@PathVariable String id) {
+    public ApartmentDto findApartment(@PathVariable String id) {
         return apartmentService.findApartment(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ApartmentDTO> findAllApartments() {
+    public List<ApartmentDto> findAllApartments() {
         return apartmentService.findAllApartments();
     }
 
     @GetMapping("/country/{country}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ApartmentDTO> findApartmentsByCountry(@PathVariable String country) {
+    public List<ApartmentDto> findApartmentsByCountry(@PathVariable String country) {
         return apartmentService.findApartmentByCountry(country);
     }
 
     @GetMapping("/city/{city}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ApartmentDTO> findApartmentsByCity(@PathVariable String city) {
+    public List<ApartmentDto> findApartmentsByCity(@PathVariable String city) {
         return apartmentService.findApartmentByCity(city);
     }
 

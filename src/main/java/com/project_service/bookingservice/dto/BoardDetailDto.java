@@ -9,7 +9,7 @@ public class BoardDetailDto {
     private String id;
     private String bookingId;
     private String apartmentId;
-    private String currencyId;
+    private String currencyCode;
     private Double price;
     private LocalDate date;
     private String clientName;

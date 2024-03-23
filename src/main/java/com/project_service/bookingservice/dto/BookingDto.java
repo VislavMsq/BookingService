@@ -9,7 +9,7 @@ public class BookingDto {
     private String id;
     private String apartmentId;
     private String clientId;
-    private String currencyId;
+    private String currencyCode;
     private Double price;
     private LocalDate startDate;
     private LocalDate endDate;

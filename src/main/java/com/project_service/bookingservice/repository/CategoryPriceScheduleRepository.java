@@ -1,7 +1,7 @@
 package com.project_service.bookingservice.repository;
 
-import com.project_service.bookingservice.entity.CategoryPriceSchedule;
 import com.project_service.bookingservice.entity.PriceCategory;
+import com.project_service.bookingservice.entity.CategoryPriceSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

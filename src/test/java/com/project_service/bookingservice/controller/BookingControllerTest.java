@@ -93,7 +93,7 @@ class BookingControllerTest {
     private static BookingDto getBookingDto() {
         BookingDto bookingDto = new BookingDto();
         bookingDto.setApartmentId("a47ac10b-58cc-4372-a567-0e02b2c3d479");
-        bookingDto.setCurrencyId("3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20");
+        bookingDto.setCurrencyCode("USD");
         bookingDto.setClientId("f9f5e56d-740e-4a37-bcce-1c5c6781d5f8");
         bookingDto.setPrice(150.0);
         bookingDto.setStartDate(LocalDate.of(2024, 2, 29));
@@ -104,7 +104,7 @@ class BookingControllerTest {
 
     private List<BoardDetailDto> getExepctedBoardDetailsList() {
         BoardDetailDto boardDetailDto1 = getBoardDetailDto(2, 29, 100.00);
-        BoardDetailDto boardDetailDto2 = getBoardDetailDto(3, 1, 150.00);
+        BoardDetailDto boardDetailDto2 = getBoardDetailDto(3, 1, 100.00);
         return List.of(boardDetailDto1, boardDetailDto2);
     }
 
@@ -113,7 +113,7 @@ class BookingControllerTest {
         boardDetailDto.setDate(LocalDate.of(2024, month, dayOfMonth));
         boardDetailDto.setApartmentId("a47ac10b-58cc-4372-a567-0e02b2c3d479");
         boardDetailDto.setPrice(price);
-        boardDetailDto.setCurrencyId("3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20");
+        boardDetailDto.setCurrencyCode("USD");
         boardDetailDto.setApartmentSleepingPlace(2.0);
         boardDetailDto.setApartmentCity("New York");
         boardDetailDto.setClientName("Client One");

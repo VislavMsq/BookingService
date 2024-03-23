@@ -19,6 +19,7 @@ public class PriceServiceImpl implements PriceService {
     private final PriceRepository priceRepository;
     private final PriceMapper priceMapper;
 
+
     @Override
     @Transactional
     public List<PriceDto> getPricesOfApartment(BookingDto bookingDto) {
