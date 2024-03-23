@@ -3,9 +3,7 @@ package com.project_service.bookingservice.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project_service.bookingservice.dto.ApartmentCategoryDto;
-import com.project_service.bookingservice.service.ApartmentCategoryService;
 import org.junit.jupiter.api.Test;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,9 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Sql("/database/add_test_data.sql")
 @AutoConfigureMockMvc
 class ApartmentCategoryControllerTest {
-    @Autowired
-    ApartmentCategoryService apartmentCategoryService;
-
     @Autowired
     MockMvc mockMvc;
 
@@ -102,9 +97,6 @@ class ApartmentCategoryControllerTest {
 
         MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartment_categories"))
                 .andReturn();
-
-        LoggerFactory.getLogger(this.getClass()).info(mvcResultGet.getResponse().getContentAsString());
-
 
         assertEquals(200, mvcResultGet.getResponse().getStatus());
 

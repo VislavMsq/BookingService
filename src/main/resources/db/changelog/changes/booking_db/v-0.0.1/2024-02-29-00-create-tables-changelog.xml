@@ -226,7 +226,7 @@
                 <constraints foreignKeyName="currency_id" references="currencies(id)" nullable="false"/>
             </column>
             <column name="name" type="varchar(30)"/>
-            <column name="priority" type="int(2)">
+            <column name="priority" type="int">
                 <constraints nullable="false"/>
             </column>
             <column name="is_deleted" type="bool" defaultValue="false"/>

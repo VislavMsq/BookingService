@@ -5,11 +5,20 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.Set;
+
+import static jakarta.persistence.CascadeType.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@NamedEntityGraph(
+        name = "priceCategory.priceCategoryScheduleList",
+        attributeNodes = {
+                @NamedAttributeNode("priceCategoryScheduleList"),
+                @NamedAttributeNode("currency"),
+                @NamedAttributeNode("owner")})
 @Table(name = "price_categories")
 public class PriceCategory extends BaseEntity {
 
@@ -24,10 +33,16 @@ public class PriceCategory extends BaseEntity {
     @Column(name = "priority")
     private Priority priority;
 
+    @OneToMany(mappedBy = "priceCategory",
+            cascade = {MERGE, REMOVE, PERSIST, REFRESH},
+            fetch = FetchType.LAZY,
+            orphanRemoval = true)
+    private Set<PriceCategorySchedule> priceCategoryScheduleList;
+
     @Override
     public String toString() {
         return "CategoryPrice{" +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", priority=" + priority +
                 '}';
     }

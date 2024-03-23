@@ -7,7 +7,6 @@ import com.project_service.bookingservice.dto.BookingDto;
 import com.project_service.bookingservice.dto.PriceDto;
 import com.project_service.bookingservice.service.ApartmentService;
 import org.junit.jupiter.api.Test;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -172,7 +171,6 @@ class ApartmentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andReturn();
-        LoggerFactory.getLogger(this.getClass()).info(checkPrices.getResponse().getContentAsString());
 
         assertEquals(200, checkPrices.getResponse().getStatus());
 
@@ -180,6 +178,7 @@ class ApartmentControllerTest {
         });
 
         List<PriceDto> expected = getPriceDtos();
+        returned.forEach(p -> p.setId(null));
         assertEquals(expected, returned);
     }
 
@@ -214,7 +213,6 @@ class ApartmentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andReturn();
-        LoggerFactory.getLogger(this.getClass()).info(getPrices.getResponse().getContentAsString());
 
         assertEquals(200, getPrices.getResponse().getStatus());
 

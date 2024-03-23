@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Table(name = "price_category_schedule")
-public class CategoryPriceSchedule extends BaseEntity {
+public class PriceCategorySchedule extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "price_category_id", referencedColumnName = "id")
