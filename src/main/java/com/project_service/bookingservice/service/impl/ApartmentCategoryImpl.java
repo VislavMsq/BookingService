@@ -1,6 +1,6 @@
 package com.project_service.bookingservice.service.impl;
 
-import com.project_service.bookingservice.dto.ApartmentCategoryDTO;
+import com.project_service.bookingservice.dto.ApartmentCategoryDto;
 import com.project_service.bookingservice.entity.ApartmentCategory;
 import com.project_service.bookingservice.entity.User;
 import com.project_service.bookingservice.exception.ApartmentCategoryNotFoundException;
@@ -26,7 +26,7 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
 
     @Override
     @Transactional
-    public ApartmentCategoryDTO createApartmentCategory(ApartmentCategoryDTO apartmentCategoryCreateDTO) {
+    public ApartmentCategoryDto createApartmentCategory(ApartmentCategoryDto apartmentCategoryCreateDTO) {
         User owner = userProvider.getCurrentUser();
         ApartmentCategory apartmentCategory = apartmentCategoryMapper.toEntity(apartmentCategoryCreateDTO);
         apartmentCategory.setOwner(owner);
@@ -42,13 +42,13 @@ public class ApartmentCategoryImpl implements ApartmentCategoryService {
 
     @Override
     @Transactional
-    public ApartmentCategoryDTO getDTO(String uuid) {
+    public ApartmentCategoryDto getDTO(String uuid) {
         return apartmentCategoryMapper.toApartmentDTO(getApartmentCategory(uuid));
     }
 
     @Override
     @Transactional
-    public List<ApartmentCategoryDTO> getList() {
+    public List<ApartmentCategoryDto> getList() {
         User user = userProvider.getCurrentUser();
         UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
         List<ApartmentCategory> categories = apartmentCategoryRepository.findByOwnerId(id);

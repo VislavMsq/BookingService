@@ -1,6 +1,6 @@
 package com.project_service.bookingservice.mapper;
 
-import com.project_service.bookingservice.dto.ApartmentDTO;
+import com.project_service.bookingservice.dto.ApartmentDto;
 import com.project_service.bookingservice.entity.Apartment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,12 +12,12 @@ public interface ApartmentMapper {
 
     @Mapping(source = "apartmentCategory.id", target = "apartmentCategoryId")
     @Mapping(source = "parent.id", target = "parentId")
-    ApartmentDTO toDTO(Apartment apartment);
+    ApartmentDto toDTO(Apartment apartment);
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "isDeleted" , expression = "java(false)")
-    Apartment toEntity(ApartmentDTO apartmentDTO);
+    Apartment toEntity(ApartmentDto apartmentDTO);
 
-    List<ApartmentDTO> listToDTO(List<Apartment> apartments);
+    List<ApartmentDto> listToDTO(List<Apartment> apartments);
 }

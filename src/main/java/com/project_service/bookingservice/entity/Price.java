@@ -33,8 +33,8 @@ public class Price extends BaseEntity {
     @Column(name = "is_edited_price")
     private Boolean isEditedPrice;
 
-    @Column(name = "priority")
     @Enumerated
+    @Column(name = "priority")
     private Priority priority;
 
     @Override
@@ -43,7 +43,7 @@ public class Price extends BaseEntity {
                 "pricePerDay=" + pricePerDay +
                 ", date=" + date +
                 ", isEditedPrice=" + isEditedPrice +
-                ". priority=" + priority +
+                ", priority=" + priority +
                 '}';
     }
 }

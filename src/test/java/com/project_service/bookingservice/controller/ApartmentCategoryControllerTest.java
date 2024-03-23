@@ -2,7 +2,7 @@ package com.project_service.bookingservice.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project_service.bookingservice.dto.ApartmentCategoryDTO;
+import com.project_service.bookingservice.dto.ApartmentCategoryDto;
 import com.project_service.bookingservice.service.ApartmentCategoryService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ class ApartmentCategoryControllerTest {
     @Test
     @WithUserDetails(value = "user1@example.com")
     void createDTO() throws Exception {
-        ApartmentCategoryDTO expected = new ApartmentCategoryDTO();
+        ApartmentCategoryDto expected = new ApartmentCategoryDto();
         expected.setName("test apartment 1");
         expected.setAbbreviation("ta1");
         expected.setType("APARTMENT");
@@ -54,7 +54,7 @@ class ApartmentCategoryControllerTest {
 
         assertEquals(201, mvcResultPost.getResponse().getStatus());
 
-        ApartmentCategoryDTO created = objectMapper.readValue(mvcResultPost.getResponse().getContentAsString(), new TypeReference<>() {
+        ApartmentCategoryDto created = objectMapper.readValue(mvcResultPost.getResponse().getContentAsString(), new TypeReference<>() {
         });
         String id = created.getId();
         expected.setId(id);
@@ -65,7 +65,7 @@ class ApartmentCategoryControllerTest {
 
         assertEquals(200, mvcResultGet.getResponse().getStatus());
 
-        ApartmentCategoryDTO returned = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
+        ApartmentCategoryDto returned = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
         });
 
         assertEquals(returned, created);
@@ -74,22 +74,22 @@ class ApartmentCategoryControllerTest {
     @Test
     @WithUserDetails(value = "user1@example.com")
     void findApartmentCategoriesByOwner() throws Exception{
-        List<ApartmentCategoryDTO> expectedList = new ArrayList<>();
-        ApartmentCategoryDTO first = new ApartmentCategoryDTO();
+        List<ApartmentCategoryDto> expectedList = new ArrayList<>();
+        ApartmentCategoryDto first = new ApartmentCategoryDto();
         first.setId("ad99034d-4a69-492f-b65f-4aef01d21ee6");
         first.setName("Apartment Category 1");
         first.setAbbreviation("ABC1");
         first.setType("APARTMENT");
         first.setSleepPlace("2");
 
-        ApartmentCategoryDTO second = new ApartmentCategoryDTO();
+        ApartmentCategoryDto second = new ApartmentCategoryDto();
         second.setId("be2f0f46-9e36-4b99-8d62-8e498b783c38");
         second.setName("Apartment Category 2");
         second.setAbbreviation("ABC2");
         second.setType("ROOM");
         second.setSleepPlace("4");
 
-        ApartmentCategoryDTO third = new ApartmentCategoryDTO();
+        ApartmentCategoryDto third = new ApartmentCategoryDto();
         third.setId("d7f3cb48-dee2-11ee-bd3d-0242ac120002");
         third.setName("Apartment Category 1");
         third.setAbbreviation("ABC1");
@@ -99,6 +99,7 @@ class ApartmentCategoryControllerTest {
         expectedList.add(second);
         expectedList.add(third);
 
+
         MvcResult mvcResultGet = mockMvc.perform(MockMvcRequestBuilders.get("/apartment_categories"))
                 .andReturn();
 
@@ -107,7 +108,7 @@ class ApartmentCategoryControllerTest {
 
         assertEquals(200, mvcResultGet.getResponse().getStatus());
 
-        List<ApartmentCategoryDTO> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
+        List<ApartmentCategoryDto> returnedList = objectMapper.readValue(mvcResultGet.getResponse().getContentAsString(), new TypeReference<>() {
         });
 
         assertEquals(returnedList, expectedList);

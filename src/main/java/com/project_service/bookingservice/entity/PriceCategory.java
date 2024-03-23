@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.Set;
 
 import static jakarta.persistence.CascadeType.*;
@@ -23,15 +22,15 @@ import static jakarta.persistence.CascadeType.*;
 @Table(name = "price_categories")
 public class PriceCategory extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
     private Currency currency;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "priority")
     @Enumerated
+    @Column(name = "priority")
     private Priority priority;
 
     @OneToMany(mappedBy = "priceCategory",

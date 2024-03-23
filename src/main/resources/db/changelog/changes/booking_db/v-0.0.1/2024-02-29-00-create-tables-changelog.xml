@@ -15,10 +15,10 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(50)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="code" type="varchar(3)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -40,7 +40,7 @@
                 <constraints foreignKeyName="currency_id" references="currencies(id)"/>
             </column>
             <column name="email" type="varchar(80)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="phone" type="varchar(20)"/>
             <column name="password" type="varchar(80)">
@@ -332,10 +332,10 @@
             <column name="price" type="decimal(15,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="date" type="timestamp">
+            <column name="priority" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="priority" type="int">
+            <column name="date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
             <column name="is_edited_price" type="bool" defaultValue="false"/>

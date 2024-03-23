@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS currencies
     id   UUID PRIMARY KEY NOT NULL,
     name VARCHAR(50)      NOT NULL,
     code VARCHAR(3)       NOT NULL
-);
+    );
 
 -- PS-13 create table users
 CREATE TABLE IF NOT EXISTS users
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS users
     updated_at  TIMESTAMP        NOT NULL,
     CONSTRAINT fk_users_owner FOREIGN KEY (owner_id) REFERENCES users (id),
     CONSTRAINT fk_users_currency FOREIGN KEY (currency_id) REFERENCES currencies (id)
-);
+    );
 
 -- PS-13 create apartment_categories table
 CREATE TABLE IF NOT EXISTS apartment_categories
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS apartment_categories
     created_at   TIMESTAMP        NOT NULL,
     updated_at   TIMESTAMP        NOT NULL,
     CONSTRAINT fk_apartment_categories_owner FOREIGN KEY (owner_id) REFERENCES users (id)
-);
+    );
 
 -- PS-13 create clients table
 CREATE TABLE IF NOT EXISTS clients
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS clients
     created_at   TIMESTAMP        NOT NULL,
     updated_at   TIMESTAMP        NOT NULL,
     CONSTRAINT fk_clients_owner FOREIGN KEY (owner_id) REFERENCES users (id)
-);
+    );
 
 -- PS-13 create apartments table
 CREATE TABLE IF NOT EXISTS apartments
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS apartments
     CONSTRAINT fk_apartments_owner FOREIGN KEY (owner_id) REFERENCES users (id),
     CONSTRAINT fk_apartments_parent FOREIGN KEY (parent_id) REFERENCES apartments (id),
     CONSTRAINT fk_apartments_category FOREIGN KEY (apartment_category_id) REFERENCES apartment_categories (id)
-);
+    );
 
 -- PS-13 create bookings table
 CREATE TABLE IF NOT EXISTS bookings
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS bookings
     CONSTRAINT fk_bookings_client FOREIGN KEY (client_id) REFERENCES clients (id),
     CONSTRAINT fk_bookings_owner FOREIGN KEY (owner_id) REFERENCES users (id),
     CONSTRAINT fk_bookings_currency FOREIGN KEY (currency_id) REFERENCES currencies (id)
-);
+    );
 
 -- PS-13 create price_categories table
 CREATE TABLE IF NOT EXISTS price_categories
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS price_categories
     updated_at  TIMESTAMP        NOT NULL,
     CONSTRAINT fk_price_categories_owner FOREIGN KEY (owner_id) REFERENCES users (id),
     CONSTRAINT fk_price_categories_currency FOREIGN KEY (currency_id) REFERENCES currencies (id)
-);
+    );
 
 -- PS-13 create price_category_to_apartments_categories table
 CREATE TABLE IF NOT EXISTS price_category_to_apartments_categories
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS price_category_to_apartments_categories
     CONSTRAINT fk_price_cat_to_price_cat FOREIGN KEY (price_category_id) REFERENCES price_categories (id),
     CONSTRAINT fk_price_cat_owner FOREIGN KEY (owner_id) REFERENCES users (id),
     CONSTRAINT fk_price_cat_currency FOREIGN KEY (currency_id) REFERENCES currencies (id)
-);
+    );
 
 -- region price_category_schedule table
 CREATE TABLE IF NOT EXISTS price_category_schedule
@@ -150,12 +150,12 @@ CREATE TABLE IF NOT EXISTS price_category_schedule
     price_category_id UUID             NOT NULL,
     start_date        TIMESTAMP        NOT NULL,
     end_date          TIMESTAMP        NOT NULL,
-    is_deleted        BOOL DEFAULT FALSE,
+    is_deleted        BOOL             DEFAULT FALSE,
     created_at        TIMESTAMP        NOT NULL,
     updated_at        TIMESTAMP        NOT NULL,
     CONSTRAINT fk_price_cat_sched_owner FOREIGN KEY (owner_id) REFERENCES users (id),
     CONSTRAINT fk_price_cat_sched_price_cat FOREIGN KEY (price_category_id) REFERENCES price_categories (id)
-);
+    );
 
 -- endregion price_category_schedule table
 
@@ -170,13 +170,13 @@ CREATE TABLE IF NOT EXISTS prices
     date            TIMESTAMP        NOT NULL,
     is_edited_price BOOL             NOT NULL,
     is_deleted      BOOL DEFAULT FALSE,
-    priority INTEGER NOT NULL,
+    priority        INTEGER          NOT NULL,
     created_at      TIMESTAMP        NOT NULL,
     updated_at      TIMESTAMP        NOT NULL,
     CONSTRAINT fk_prices_apartment FOREIGN KEY (apartment_id) REFERENCES apartments (id),
     CONSTRAINT fk_prices_owner FOREIGN KEY (owner_id) REFERENCES users (id),
     CONSTRAINT fk_prices_currency FOREIGN KEY (currency_id) REFERENCES currencies (id)
-);
+    );
 
 -- endregion prices table
 
@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS board_details
     CONSTRAINT fk_board_details_apartment FOREIGN KEY (apartment_id) REFERENCES apartments (id),
     CONSTRAINT fk_board_details_owner FOREIGN KEY (owner_id) REFERENCES users (id),
     CONSTRAINT fk_board_details_currency FOREIGN KEY (currency_id) REFERENCES currencies (id)
-);
+    );
 
 -- endregion board_details table
 
@@ -215,4 +215,4 @@ CREATE TABLE IF NOT EXISTS workers_to_apartments
     CONSTRAINT fk_workers_to_apartments_apartment FOREIGN KEY (apartment_id) REFERENCES apartments (id),
     CONSTRAINT fk_workers_to_apartments_owner FOREIGN KEY (owner_id) REFERENCES users (id),
     CONSTRAINT fk_workers_to_apartments_worker FOREIGN KEY (worker_id) REFERENCES users (id)
-);
+    );
