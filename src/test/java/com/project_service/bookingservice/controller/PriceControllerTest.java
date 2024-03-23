@@ -37,9 +37,9 @@ class PriceControllerTest {
     @WithUserDetails(value = "aloha.test@gmail.com")
     void getPricesOfApartment() throws Exception {
         //given
-        Result result = getResult();
+        BookingDto request = getResult();
 
-        String bookingDtoStr = objectMapper.writeValueAsString(result.bookingDto());
+        String bookingDtoStr = objectMapper.writeValueAsString(request);
 
         //when
         String pricesResultStr = mockMvc.perform(MockMvcRequestBuilders.get("/prices")
@@ -53,20 +53,19 @@ class PriceControllerTest {
         //then
         List<PriceDto> actual = objectMapper.readValue(pricesResultStr, new TypeReference<>() {
         });
-        Assertions.assertEquals(result.expected(), actual);
+
+        actual.forEach(p -> p.setId(null));
+
+        Assertions.assertEquals(getExpectedPrices(), actual);
 
     }
 
-    private Result getResult() {
+    private BookingDto getResult() {
         BookingDto bookingDto = new BookingDto();
         bookingDto.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         bookingDto.setStartDate(LocalDate.of(2024, 2, 29));
         bookingDto.setEndDate(LocalDate.of(2024, 3, 2));
-        List<PriceDto> expected = getExpectedPrices();
-        return new Result(bookingDto, expected);
-    }
-
-    private record Result(BookingDto bookingDto, List<PriceDto> expected) {
+        return bookingDto;
     }
 
     private List<PriceDto> getExpectedPrices() {
@@ -78,7 +77,6 @@ class PriceControllerTest {
         priceDto1.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto1.setCurrencyName("Yuan Renminbi");
         priceDto1.setCurrencyCode("CNY");
-        priceDto1.setPriority(1);
 
         PriceDto priceDto2 = new PriceDto();
         priceDto2.setPrice(100.00);
@@ -88,7 +86,6 @@ class PriceControllerTest {
         priceDto2.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto2.setCurrencyName("Yuan Renminbi");
         priceDto2.setCurrencyCode("CNY");
-        priceDto2.setPriority(1);
 
         return Arrays.asList(priceDto1, priceDto2);
     }

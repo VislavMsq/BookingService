@@ -7,7 +7,6 @@ import com.project_service.bookingservice.dto.BookingDto;
 import com.project_service.bookingservice.dto.PriceDto;
 import com.project_service.bookingservice.service.ApartmentService;
 import org.junit.jupiter.api.Test;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -172,7 +171,6 @@ class ApartmentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andReturn();
-        LoggerFactory.getLogger(this.getClass()).info(checkPrices.getResponse().getContentAsString());
 
         assertEquals(200, checkPrices.getResponse().getStatus());
 
@@ -180,6 +178,7 @@ class ApartmentControllerTest {
         });
 
         List<PriceDto> expected = getPriceDtos();
+        returned.forEach(p -> p.setId(null));
         assertEquals(expected, returned);
     }
 
@@ -214,7 +213,6 @@ class ApartmentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andReturn();
-        LoggerFactory.getLogger(this.getClass()).info(getPrices.getResponse().getContentAsString());
 
         assertEquals(200, getPrices.getResponse().getStatus());
 
@@ -233,7 +231,6 @@ class ApartmentControllerTest {
         priceDto1.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto1.setCurrencyName("Yuan Renminbi");
         priceDto1.setCurrencyCode("CNY");
-        priceDto1.setPriority(1);
 
         PriceDto priceDto2 = new PriceDto();
         priceDto2.setPrice(120.00);
@@ -243,7 +240,6 @@ class ApartmentControllerTest {
         priceDto2.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto2.setCurrencyName("Yuan Renminbi");
         priceDto2.setCurrencyCode("CNY");
-        priceDto2.setPriority(1);
 
         PriceDto priceDto3 = new PriceDto();
         priceDto3.setPrice(120.00);
@@ -253,7 +249,6 @@ class ApartmentControllerTest {
         priceDto3.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
         priceDto3.setCurrencyName("Peso");
         priceDto3.setCurrencyCode("PHP");
-        priceDto3.setPriority(1);
 
         return Arrays.asList(priceDto1, priceDto2, priceDto3);
     }
