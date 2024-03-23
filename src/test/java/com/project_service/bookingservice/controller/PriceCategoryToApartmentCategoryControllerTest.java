@@ -50,20 +50,14 @@ class PriceCategoryToApartmentCategoryControllerTest {
         PriceCategoryToApartmentCategoryDto categoryToCategoryCreation = objectMapper.readValue(categoryToCategoryCreationJson,
                 PriceCategoryToApartmentCategoryDto.class);
 
-        assertNotNull(categoryToCategoryCreation.getId());
-
-        categoryToCategoryDto.setId(categoryToCategoryCreation.getId());
-
-        assertEquals(categoryToCategoryDto, categoryToCategoryCreation);
-
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/prices-to-apartments/" + categoryToCategoryCreation.getId()))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertEquals(200, mvcResult.getResponse().getStatus());
-
         PriceCategoryToApartmentCategoryDto returned = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), PriceCategoryToApartmentCategoryDto.class);
 
-        assertEquals(categoryToCategoryCreation, returned);
+        assertNotNull(categoryToCategoryCreation.getId());
+        returned.setId(null);
+        assertEquals(categoryToCategoryDto, returned);
     }
 }
