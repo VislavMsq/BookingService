@@ -5,8 +5,6 @@ import com.project_service.bookingservice.entity.*;
 import com.project_service.bookingservice.exception.ApartmentNotFoundException;
 import com.project_service.bookingservice.mapper.ApartmentMapper;
 import com.project_service.bookingservice.repository.ApartmentRepository;
-import com.project_service.bookingservice.repository.PriceCategoryToApartmentCategoryRepository;
-import com.project_service.bookingservice.repository.PriceRepository;
 import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.ApartmentCategoryService;
 import com.project_service.bookingservice.service.ApartmentService;
@@ -15,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,8 +23,6 @@ public class ApartmentServiceImpl implements ApartmentService {
     private final ApartmentMapper apartmentMapper;
     private final UserProvider userProvider;
     private final ApartmentCategoryService apartmentCategoryService;
-    private final PriceCategoryToApartmentCategoryRepository priceCategoryToApartmentCategoryRepository;
-    private final PriceRepository priceRepository;
 
     @Override
     @Transactional
@@ -100,22 +94,6 @@ public class ApartmentServiceImpl implements ApartmentService {
         List<Apartment> apartments = apartmentRepository.findAllByIdAndOwner(uuids, user.getId());
         for (Apartment apartment : apartments) {
             apartment.setApartmentCategory(apartmentCategory);
-        }
-        List<PriceCategoryToApartmentCategory> priceCategoryToApartmentCategories =
-                priceCategoryToApartmentCategoryRepository.findByApartmentCategoryAndOwner(apartmentCategory, user);
-        if (priceCategoryToApartmentCategories.isEmpty()) {
-            priceRepository.deleteByApartmentIn(apartments);
-        } else {
-            priceCategoryToApartmentCategories.sort(Comparator.comparing(priceCategoryToApartmentCategory
-                    -> priceCategoryToApartmentCategory.getPriceCategory().getPriority()));
-            for (PriceCategoryToApartmentCategory priceCategoryToApartmentCategory : priceCategoryToApartmentCategories) {
-                BigDecimal price = priceCategoryToApartmentCategory.getPrice();
-
-                List<Price> prices =
-                        priceRepository.findPricesOfApartmentsBetweenDates(apartments,
-                                priceCategoryToApartmentCategory.getPriceCategory());
-                prices.forEach(p -> p.setPricePerDay(price));
-            }
         }
         apartmentRepository.saveAll(apartments);
     }

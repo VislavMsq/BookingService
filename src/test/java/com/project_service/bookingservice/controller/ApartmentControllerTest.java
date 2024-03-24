@@ -3,8 +3,6 @@ package com.project_service.bookingservice.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project_service.bookingservice.dto.ApartmentDto;
-import com.project_service.bookingservice.dto.BookingDto;
-import com.project_service.bookingservice.dto.PriceDto;
 import com.project_service.bookingservice.service.ApartmentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Sql("/database/schema-cleanup.sql")
@@ -159,98 +154,6 @@ class ApartmentControllerTest {
         String secondReturnedCategoryId = secondReturned.getApartmentCategoryId();
 
         assertEquals(categoryId, secondReturnedCategoryId);
-
-        BookingDto request = new BookingDto();
-        request.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        request.setStartDate(LocalDate.of(2024, 1, 1));
-        request.setEndDate(LocalDate.of(2025, 1, 1).minusDays(1));
-
-        String json = objectMapper.writeValueAsString(request);
-
-        MvcResult checkPrices = mockMvc.perform(MockMvcRequestBuilders.get("/prices")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andReturn();
-
-        assertEquals(200, checkPrices.getResponse().getStatus());
-
-        List<PriceDto> returned = objectMapper.readValue(checkPrices.getResponse().getContentAsString(), new TypeReference<>() {
-        });
-
-        List<PriceDto> expected = getPriceDtos();
-        returned.forEach(p -> p.setId(null));
-        assertEquals(expected, returned);
-    }
-
-    @Test
-    @WithUserDetails(value = "user1@example.com")
-    void setApartmentsCategoryNotFound() throws Exception {
-        List<String> listApartmentIds = new ArrayList<>();
-        listApartmentIds.add("3f120739-8a84-4e21-84b3-7a66358157bf");
-        listApartmentIds.add("8c5fcf45-8e6d-42cd-8da3-c978c8cc58b2");
-        listApartmentIds.add("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-
-        String categoryId = "d7f3cb48-dee2-11ee-bd3d-0242ac120002";
-
-        String listIdsRequest = objectMapper.writeValueAsString(listApartmentIds);
-
-        MvcResult mvcResultPost =
-                mockMvc.perform(MockMvcRequestBuilders.put("/apartments/set-apartment-category/" + categoryId)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(listIdsRequest))
-                        .andReturn();
-
-        assertEquals(200, mvcResultPost.getResponse().getStatus());
-
-        BookingDto request = new BookingDto();
-        request.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        request.setStartDate(LocalDate.of(2024, 1, 1));
-        request.setEndDate(LocalDate.of(2025, 1, 1).minusDays(1));
-
-        String json = objectMapper.writeValueAsString(request);
-
-        MvcResult getPrices = mockMvc.perform(MockMvcRequestBuilders.get("/prices")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andReturn();
-
-        assertEquals(200, getPrices.getResponse().getStatus());
-
-        List<PriceDto> returned = objectMapper.readValue(getPrices.getResponse().getContentAsString(), new TypeReference<>() {
-        });
-
-        assertTrue(returned.isEmpty());
-    }
-
-    private List<PriceDto> getPriceDtos() {
-        PriceDto priceDto1 = new PriceDto();
-        priceDto1.setPrice(120.00);
-        priceDto1.setDate(LocalDate.of(2024, 2, 29));
-        priceDto1.setIsEditedPrice(false);
-        priceDto1.setPriority("LOW");
-        priceDto1.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        priceDto1.setCurrencyName("Yuan Renminbi");
-        priceDto1.setCurrencyCode("CNY");
-
-        PriceDto priceDto2 = new PriceDto();
-        priceDto2.setPrice(120.00);
-        priceDto2.setDate(LocalDate.of(2024, 3, 1));
-        priceDto2.setIsEditedPrice(false);
-        priceDto2.setPriority("HOLIDAY");
-        priceDto2.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        priceDto2.setCurrencyName("Yuan Renminbi");
-        priceDto2.setCurrencyCode("CNY");
-
-        PriceDto priceDto3 = new PriceDto();
-        priceDto3.setPrice(120.00);
-        priceDto3.setDate(LocalDate.of(2024, 3, 2));
-        priceDto3.setIsEditedPrice(false);
-        priceDto3.setPriority("LOW");
-        priceDto3.setApartmentId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-        priceDto3.setCurrencyName("Peso");
-        priceDto3.setCurrencyCode("PHP");
-
-        return Arrays.asList(priceDto1, priceDto2, priceDto3);
     }
 
     private List<ApartmentDto> expectListFindAllApartments() {
@@ -450,6 +353,5 @@ class ApartmentControllerTest {
         expected.setParentId("3f120739-8a84-4e21-84b3-7a66358157bf");
         return expected;
     }
-
 
 }
