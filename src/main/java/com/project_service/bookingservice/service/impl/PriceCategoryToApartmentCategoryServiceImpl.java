@@ -14,9 +14,11 @@ import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.PriceCategoryToApartmentCategoryService;
 import com.project_service.bookingservice.service.UtilsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -68,6 +70,29 @@ public class PriceCategoryToApartmentCategoryServiceImpl implements PriceCategor
         return priceCategoryToApartmentCategoryRepository.findById(UUID.fromString(uuid))
                 .map(categoryToCategoryMapper::mapToDto)
                 .orElseThrow(() -> new PriceCategoryNotFoundException(String.format("Price category %s not found", uuid)));
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasAuthority('OWNER')")
+    public PriceCategoryToApartmentCategoryDto update(PriceCategoryToApartmentCategoryDto priceCategoryToApartmentCategoryDto) {
+
+        User owner = userProvider.getCurrentUser();
+        PriceCategoryToApartmentCategory priceCategoryToApartmentCategory = priceCategoryToApartmentCategoryRepository.findById(
+                        UUID.fromString(priceCategoryToApartmentCategoryDto.getId()))
+                .orElseThrow(() -> new PriceCategoryNotFoundException(String.format("Price category %s not found",
+                        priceCategoryToApartmentCategoryDto.getId())));
+
+        UtilsService.checkOwner(priceCategoryToApartmentCategory, owner);
+
+        Currency currency = currencyRepository.findByCode(priceCategoryToApartmentCategoryDto.getCurrencyCode())
+                .orElseThrow(() -> new CurrencyNotFoundException(String.format("Currency code %s not found",
+                        priceCategoryToApartmentCategoryDto.getCurrencyCode())));
+
+        priceCategoryToApartmentCategory.setCurrency(currency);
+        priceCategoryToApartmentCategory.setPrice(BigDecimal.valueOf(priceCategoryToApartmentCategoryDto.getPrice()));
+
+        return categoryToCategoryMapper.mapToDto(priceCategoryToApartmentCategory);
     }
 }
 

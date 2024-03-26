@@ -20,6 +20,14 @@ public class PriceCategoryToApartmentCategoryController {
         return priceCategoryToApartmentCategoryService.create(priceCategoryToApartmentCategoryDto);
     }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public PriceCategoryToApartmentCategoryDto update(@PathVariable String id, @RequestBody PriceCategoryToApartmentCategoryDto priceCategoryToApartmentCategoryDto) {
+        priceCategoryToApartmentCategoryDto.setId(id);
+        return priceCategoryToApartmentCategoryService.update(priceCategoryToApartmentCategoryDto);
+    }
+
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PriceCategoryToApartmentCategoryDto findPriceToApartment(@PathVariable String id) {
