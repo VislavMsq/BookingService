@@ -1,13 +1,16 @@
 package com.project_service.bookingservice.service.impl;
 
 import com.project_service.bookingservice.dto.PriceCategoryDto;
-import com.project_service.bookingservice.entity.*;
 import com.project_service.bookingservice.entity.Currency;
+import com.project_service.bookingservice.entity.PriceCategory;
+import com.project_service.bookingservice.entity.PriceCategorySchedule;
+import com.project_service.bookingservice.entity.User;
 import com.project_service.bookingservice.exception.CurrencyNotFoundException;
 import com.project_service.bookingservice.exception.PriceCategoryNotFoundException;
 import com.project_service.bookingservice.mapper.PriceCategoryMapper;
 import com.project_service.bookingservice.mapper.PriceScheduleMapper;
-import com.project_service.bookingservice.repository.*;
+import com.project_service.bookingservice.repository.CurrencyRepository;
+import com.project_service.bookingservice.repository.PriceCategoryRepository;
 import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.PriceCategoryService;
 import com.project_service.bookingservice.service.UtilsService;
@@ -16,9 +19,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.temporal.ChronoUnit;
-
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
