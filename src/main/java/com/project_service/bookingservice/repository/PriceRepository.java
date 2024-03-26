@@ -18,7 +18,7 @@ public interface PriceRepository extends JpaRepository<Price, UUID> {
     List<Price> findPricesOfApartment(@Param("uuid") UUID uuid, @Param("startDate") LocalDate startDate,
                                       @Param("endDate") LocalDate endDate);
 
-    @Query("select p from Price p where p.apartment.id in :apartmentIds and p.date >= :startDate and p.date < :endDate")
+    @Query("select p from Price p where p.apartment.id in :apartmentIds and p.date >= :startDate and p.date <= :endDate")
     List<Price> findPricesOfListApartments(List<String> apartmentIds, LocalDate startDate, LocalDate endDate);
 
     @Query("select p from Price p where p.apartment.id = :apartmentId and p.date = :localDate")
