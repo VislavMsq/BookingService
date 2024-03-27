@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.util.Set;
 
 import static jakarta.persistence.CascadeType.*;
@@ -16,9 +17,8 @@ import static jakarta.persistence.CascadeType.*;
 @NamedEntityGraph(
         name = "priceCategory.priceCategoryScheduleList",
         attributeNodes = {
-                @NamedAttributeNode("priceCategoryScheduleList"),
-                @NamedAttributeNode("currency"),
-                @NamedAttributeNode("owner")})
+                @NamedAttributeNode("priceCategoryScheduleSet"),
+                @NamedAttributeNode("currency")})
 @Table(name = "price_categories")
 public class PriceCategory extends BaseEntity {
 
@@ -26,18 +26,27 @@ public class PriceCategory extends BaseEntity {
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
     private Currency currency;
 
+    @OneToMany(
+            mappedBy = "priceCategory",
+            cascade = {MERGE, REMOVE, PERSIST, REFRESH},
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    private Set<PriceCategorySchedule> priceCategoryScheduleSet;
+
+    @OneToMany(
+            mappedBy = "priceCategory",
+            cascade = {MERGE, PERSIST, REFRESH},
+            fetch = FetchType.LAZY
+    )
+    private Set<PriceCategoryToApartmentCategory> categoryToCategorySet;
+
     @Column(name = "name")
     private String name;
 
     @Enumerated
     @Column(name = "priority")
     private Priority priority;
-
-    @OneToMany(mappedBy = "priceCategory",
-            cascade = {MERGE, REMOVE, PERSIST, REFRESH},
-            fetch = FetchType.LAZY,
-            orphanRemoval = true)
-    private Set<PriceCategorySchedule> priceCategoryScheduleList;
 
     @Override
     public String toString() {

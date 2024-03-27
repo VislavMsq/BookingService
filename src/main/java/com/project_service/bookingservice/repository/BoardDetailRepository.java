@@ -1,6 +1,7 @@
 package com.project_service.bookingservice.repository;
 
 import com.project_service.bookingservice.entity.BoardDetail;
+import com.project_service.bookingservice.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,14 +14,15 @@ import java.util.UUID;
 @Repository
 public interface BoardDetailRepository extends JpaRepository<BoardDetail, UUID> {
 
-    @Query("select bd from BoardDetail bd where bd.owner.id = :id and bd.date >= :startDate and bd.date <= :endDate")
-    List<BoardDetail> findAllByOwnerInDateRange(@Param("id") UUID id, @Param("startDate") LocalDate startDate,
+    @Query("select bd from BoardDetail bd where bd.owner = :owner and bd.date >= :startDate and bd.date <= :endDate")
+    List<BoardDetail> findAllByOwnerInDateRange(@Param("owner") User owner,
+                                                @Param("startDate") LocalDate startDate,
                                                 @Param("endDate") LocalDate endDate);
 
-    @Query("select bd from BoardDetail bd where bd.owner.id = :ownerId and bd.apartment.id = :apartmentId " +
+    @Query("select bd from BoardDetail bd where bd.owner = :owner and bd.apartment.id IN :apartmentIds " +
             "and bd.date >= :startDate and bd.date <= :endDate")
-    List<BoardDetail> findAllByApartmentInDateRange(@Param("ownerId") UUID ownerId,
-                                                    @Param("apartmentId") String apartmentId,
-                                                    @Param("startDate") LocalDate startDate,
-                                                    @Param("endDate") LocalDate endDate);
+    List<BoardDetail> findAllByApartmentsInDateRange(@Param("owner") User owner,
+                                                     @Param("apartmentIds") List<String> apartmentIds,
+                                                     @Param("startDate") LocalDate startDate,
+                                                     @Param("endDate") LocalDate endDate);
 }

@@ -17,6 +17,20 @@ import static jakarta.persistence.CascadeType.*;
 @Table(name = "apartment_categories")
 public class ApartmentCategory extends BaseEntity {
 
+    @OneToMany(
+            mappedBy = "apartmentCategory",
+            cascade = {MERGE, PERSIST, REFRESH},
+            fetch = FetchType.LAZY
+    )
+    private Set<Apartment> apartmentList;
+
+    @OneToMany(
+            mappedBy = "apartmentCategory",
+            cascade = {MERGE, PERSIST, REFRESH},
+            fetch = FetchType.LAZY
+    )
+    private Set<PriceCategoryToApartmentCategory> categoryToCategorySet;
+
     @Column(name = "name")
     private String name;
 
@@ -28,9 +42,6 @@ public class ApartmentCategory extends BaseEntity {
 
     @Column(name = "sleep_place")
     private BigDecimal sleepPlace;
-
-    @OneToMany(mappedBy = "apartmentCategory", cascade = {MERGE, PERSIST, REFRESH}, fetch = FetchType.LAZY)
-    private Set<Apartment> apartmentList;
 
     @Override
     public String toString() {

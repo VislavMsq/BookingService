@@ -17,7 +17,7 @@ public class BookingController {
         return bookingService.findById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BookingDto createBooking(@RequestBody BookingDto bookingDto) {
         return bookingService.createBooking(bookingDto);

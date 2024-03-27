@@ -2,6 +2,7 @@ package com.project_service.bookingservice.controller;
 
 import com.project_service.bookingservice.dto.ClientDto;
 import com.project_service.bookingservice.service.ClientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +23,9 @@ public class ClientController {
         return clientService.findById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ClientDto create(@RequestBody ClientDto clientDto) {
+    public ClientDto create(@RequestBody @Valid ClientDto clientDto) {
         return clientService.create(clientDto);
     }
 }

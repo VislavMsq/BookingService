@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.Year;
 
 @Entity
 @Getter
@@ -31,7 +30,7 @@ public class PriceCategoryToApartmentCategory extends BaseEntity {
     private BigDecimal price;
 
     @Column(name = "period")
-    private Year period;
+    private Integer period;
 
     @Override
     public String toString() {

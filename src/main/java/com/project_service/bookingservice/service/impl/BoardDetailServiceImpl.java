@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -40,22 +39,21 @@ public class BoardDetailServiceImpl implements BoardDetailService {
     @Override
     public List<BoardDetailDto> findAllBoardDetailDto(BoardDetailsFilterDto boardDetailsFilterDto) {
         User user = userProvider.getCurrentUser();
-        UUID id = user.getOwner() == null ? user.getId() : user.getOwner().getId();
-        List<BoardDetail> boardDetailList = boardDetailsFilterDto.getApartmentId() == null ?
-                boardDetailRepository.findAllByOwnerInDateRange(id, boardDetailsFilterDto.getStart(),
-                        boardDetailsFilterDto.getFinish()) :
-                boardDetailRepository.findAllByApartmentInDateRange(id, boardDetailsFilterDto.getApartmentId(),
-                        boardDetailsFilterDto.getStart(), boardDetailsFilterDto.getFinish());
+        User owner = user.getOwner() == null ? user : user.getOwner();
+        List<String> apartmentIds = boardDetailsFilterDto.getApartmentIds();
+        List<BoardDetail> boardDetailList = (apartmentIds == null || apartmentIds.isEmpty()) ?
+                boardDetailRepository.findAllByOwnerInDateRange(owner, boardDetailsFilterDto.getStartDate(),
+                        boardDetailsFilterDto.getEndDate()) :
+                boardDetailRepository.findAllByApartmentsInDateRange(owner, apartmentIds,
+                        boardDetailsFilterDto.getStartDate(), boardDetailsFilterDto.getEndDate());
         return boardDetailMapper.toList(boardDetailList);
     }
 
     private List<BoardDetail> getBoardDetailList(Booking booking) {
         List<BoardDetail> boardDetailList = new ArrayList<>();
-        // Days
         LocalDate startDate = booking.getStartDate();
         LocalDate endDate = booking.getEndDate();
         long dateRange = startDate.until(endDate, ChronoUnit.DAYS);
-        // Arrays with date
         for (int i = 0; i < dateRange; i++) {
             BoardDetail boardDetail = getBoardDetail(booking, startDate.plusDays(i));
             boardDetailList.add(boardDetail);

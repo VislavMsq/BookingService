@@ -37,15 +37,16 @@ class BookingControllerTest {
     @WithUserDetails(value = "appolon12@gmail.com")
     void createBooking() throws Exception {
         //given
-        BookingDto bookingDto = getBookingDto();
-        BoardDetailsFilterDto boardDetailsFilterDto = getBoardDetailsFilterDto();
-        List<BoardDetailDto> boardDetailDtoExpected = getExepctedBoardDetailsList();
+        String apartmentId = "a47ac10b-58cc-4372-a567-0e02b2c3d479";
+        BookingDto bookingDto = getBookingDto(apartmentId);
+        BoardDetailsFilterDto boardDetailsFilterDto = getBoardDetailsFilterDto(List.of(apartmentId));
+        List<BoardDetailDto> boardDetailDtoExpected = getExepctedBoardDetailsList(apartmentId);
 
         String boardDetailsOfRangeDtoStr = objectMapper.writeValueAsString(boardDetailsFilterDto);
         String bookingDtoStr = objectMapper.writeValueAsString(bookingDto);
 
         //when
-        String bookingCreationJson = mockMvc.perform(MockMvcRequestBuilders.post("/bookings/create")
+        String bookingCreationJson = mockMvc.perform(MockMvcRequestBuilders.post("/bookings")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bookingDtoStr))
                 .andExpect(status().isCreated())
@@ -53,7 +54,7 @@ class BookingControllerTest {
                 .getResponse()
                 .getContentAsString();
 
-        String boardDetailsListJson = mockMvc.perform(MockMvcRequestBuilders.get("/board_details")
+        String boardDetailsListJson = mockMvc.perform(MockMvcRequestBuilders.get("/board-details")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(boardDetailsOfRangeDtoStr))
                 .andExpect(status().isOk())
@@ -83,16 +84,17 @@ class BookingControllerTest {
         Assertions.assertEquals(boardDetailDtoExpected, boardDetailDtoActual);
     }
 
-    private static BoardDetailsFilterDto getBoardDetailsFilterDto() {
+    private static BoardDetailsFilterDto getBoardDetailsFilterDto(List<String> apartmentIds) {
         BoardDetailsFilterDto boardDetailsFilterDto = new BoardDetailsFilterDto();
-        boardDetailsFilterDto.setStart(LocalDate.of(2024, 2, 29));
-        boardDetailsFilterDto.setFinish(LocalDate.of(2024, 3, 2));
+        boardDetailsFilterDto.setStartDate(LocalDate.of(2024, 2, 29));
+        boardDetailsFilterDto.setEndDate(LocalDate.of(2024, 3, 2));
+        boardDetailsFilterDto.setApartmentIds(apartmentIds);
         return boardDetailsFilterDto;
     }
 
-    private static BookingDto getBookingDto() {
+    private static BookingDto getBookingDto(String apartmentId) {
         BookingDto bookingDto = new BookingDto();
-        bookingDto.setApartmentId("a47ac10b-58cc-4372-a567-0e02b2c3d479");
+        bookingDto.setApartmentId(apartmentId);
         bookingDto.setCurrencyCode("USD");
         bookingDto.setClientId("f9f5e56d-740e-4a37-bcce-1c5c6781d5f8");
         bookingDto.setPrice(150.0);
@@ -102,17 +104,17 @@ class BookingControllerTest {
         return bookingDto;
     }
 
-    private List<BoardDetailDto> getExepctedBoardDetailsList() {
-        BoardDetailDto boardDetailDto1 = getBoardDetailDto(2, 29, 100.00);
-        BoardDetailDto boardDetailDto2 = getBoardDetailDto(3, 1, 100.00);
+    private List<BoardDetailDto> getExepctedBoardDetailsList(String apartmentId) {
+        BoardDetailDto boardDetailDto1 = getBoardDetailDto(apartmentId, 2, 29);
+        BoardDetailDto boardDetailDto2 = getBoardDetailDto(apartmentId, 3, 1);
         return List.of(boardDetailDto1, boardDetailDto2);
     }
 
-    private static BoardDetailDto getBoardDetailDto(int month, int dayOfMonth, double price) {
+    private static BoardDetailDto getBoardDetailDto(String apartmentId, int month, int dayOfMonth) {
         BoardDetailDto boardDetailDto = new BoardDetailDto();
         boardDetailDto.setDate(LocalDate.of(2024, month, dayOfMonth));
-        boardDetailDto.setApartmentId("a47ac10b-58cc-4372-a567-0e02b2c3d479");
-        boardDetailDto.setPrice(price);
+        boardDetailDto.setApartmentId(apartmentId);
+        boardDetailDto.setPrice(100.0);
         boardDetailDto.setCurrencyCode("USD");
         boardDetailDto.setApartmentSleepingPlace(2.0);
         boardDetailDto.setApartmentCity("New York");

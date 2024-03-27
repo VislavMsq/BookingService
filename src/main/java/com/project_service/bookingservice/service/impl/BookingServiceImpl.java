@@ -15,6 +15,7 @@ import com.project_service.bookingservice.repository.CurrencyRepository;
 import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.BoardDetailService;
 import com.project_service.bookingservice.service.BookingService;
+import com.project_service.bookingservice.service.UtilsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,6 @@ public class BookingServiceImpl implements BookingService {
     private final ClientRepository clientRepository;
     private final CurrencyRepository currencyRepository;
     private final BoardDetailService boardDetailService;
-
     private final BookingMapper bookingMapper;
     private final UserProvider userProvider;
 
@@ -38,12 +38,14 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto createBooking(BookingDto bookingDto) {
         Booking booking = bookingMapper.mapToEntity(bookingDto);
         User owner = userProvider.getCurrentUser();
-        Apartment apartment = apartmentRepository.findByIdAndOwner(UUID.fromString(bookingDto.getApartmentId()), owner)
+        Apartment apartment = apartmentRepository.findById(UUID.fromString(bookingDto.getApartmentId()))
                 .orElseThrow(() -> new ApartmentNotFoundException(String.format("Apartment with id %s not found",
                         bookingDto.getApartmentId())));
-        Client client = clientRepository.findByIdAndOwner(UUID.fromString(bookingDto.getClientId()), owner)
+        UtilsService.checkOwner(apartment, owner);
+        Client client = clientRepository.findById(UUID.fromString(bookingDto.getClientId()))
                 .orElseThrow(() -> new ClientNotFoundException(String.format("Client with id %s not found",
                         bookingDto.getClientId())));
+        UtilsService.checkOwner(client, owner);
         Currency currency = currencyRepository.findByCode(bookingDto.getCurrencyCode())
                 .orElseThrow(() -> new CurrencyNotFoundException(String.format("Currency code %s not found",
                         bookingDto.getCurrencyCode())));
