@@ -14,7 +14,7 @@ import java.util.UUID;
 @Repository
 public interface PriceRepository extends JpaRepository<Price, UUID> {
 
-    @Query("select p from Price p where p.apartment.id = :uuid and p.date >= :startDate and p.date < :endDate")
+    @Query("select p from Price p where p.apartment.id = :uuid and p.date >= :startDate and p.date <= :endDate")
     List<Price> findPricesOfApartment(@Param("uuid") UUID uuid, @Param("startDate") LocalDate startDate,
                                       @Param("endDate") LocalDate endDate);
 

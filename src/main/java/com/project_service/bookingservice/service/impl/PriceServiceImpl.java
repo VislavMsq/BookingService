@@ -43,11 +43,11 @@ public class PriceServiceImpl implements PriceService {
     @Transactional
     public void updatePrices(BoardDetailsFilterDto boardDetailsFilterDto) {
         User owner = userProvider.getCurrentUser();
+        List<String> apartmentIds = boardDetailsFilterDto.getApartmentIds();
         LocalDate startDate = boardDetailsFilterDto.getStartDate();
         LocalDate endDate = boardDetailsFilterDto.getEndDate();
-        List<Apartment> apartments = getApartments(boardDetailsFilterDto, owner, startDate, endDate);
-        List<Price> prices = priceRepository.findPricesOfListApartments(boardDetailsFilterDto.getApartmentIds(),
-                startDate, endDate);
+        List<Apartment> apartments = getApartments(apartmentIds, owner, startDate, endDate);
+        List<Price> prices = priceRepository.findPricesOfListApartments(apartmentIds, startDate, endDate);
         Map<Pair<Apartment, LocalDate>, Price> priceOfApartmentsByDay = prices.stream()
                 .collect(Collectors.toMap(p -> Pair.of(p.getApartment(), p.getDate()), p -> p));
         List<Price> pricesToSave = new ArrayList<>(prices.size());
@@ -55,8 +55,7 @@ public class PriceServiceImpl implements PriceService {
         priceRepository.saveAll(pricesToSave);
     }
 
-    private List<Apartment> getApartments(BoardDetailsFilterDto boardDetailsFilterDto, User owner, LocalDate startDate, LocalDate endDate) {
-        List<String> apartmentIds = boardDetailsFilterDto.getApartmentIds();
+    private List<Apartment> getApartments(List<String> apartmentIds, User owner, LocalDate startDate, LocalDate endDate) {
         return (apartmentIds == null || apartmentIds.isEmpty()) ?
                 apartmentRepository.findAllByOwnerWithPrices(owner, startDate.getYear(),
                         startDate.getMonthValue(), startDate.getDayOfMonth(),
@@ -75,7 +74,7 @@ public class PriceServiceImpl implements PriceService {
             apartments.forEach(apartment -> {
                 Price price = priceOfApartmentsByDay.get(Pair.of(apartment, date));
                 if (price == null) {
-                    getPrice(apartment, date).ifPresent(pricesToSave::add);
+                    getPricePerDay(apartment, date).ifPresent(pricesToSave::add);
                 } else {
                     updatePricePerDay(price, apartment, date);
                     pricesToSave.add(price);
@@ -84,9 +83,9 @@ public class PriceServiceImpl implements PriceService {
         }
     }
 
-    private Optional<Price> getPrice(Apartment apartment, LocalDate date) {
+    private Optional<Price> getPricePerDay(Apartment apartment, LocalDate date) {
         Optional<PriceCategoryToApartmentCategory> categoryToCategoryOptional =
-                getCategoryToCategoryWithMaxPriorityInDate(apartment, date);
+                getCategoryToCategoryWithMaxPriority(apartment, date);
         if (categoryToCategoryOptional.isEmpty()) {
             return Optional.empty();
         }
@@ -105,7 +104,7 @@ public class PriceServiceImpl implements PriceService {
         return Optional.of(price);
     }
 
-    private Optional<PriceCategoryToApartmentCategory> getCategoryToCategoryWithMaxPriorityInDate(Apartment apartment, LocalDate date) {
+    private Optional<PriceCategoryToApartmentCategory> getCategoryToCategoryWithMaxPriority(Apartment apartment, LocalDate date) {
         return apartment.getApartmentCategory()
                 .getCategoryToCategorySet().stream()
                 .filter(ctc -> ctc.getPeriod().equals(date.getYear())
@@ -116,7 +115,7 @@ public class PriceServiceImpl implements PriceService {
 
     private void updatePricePerDay(Price price, Apartment apartment, LocalDate date) {
         Optional<PriceCategoryToApartmentCategory> optionalCTC =
-                getCategoryToCategoryWithMaxPriorityInDate(apartment, date);
+                getCategoryToCategoryWithMaxPriority(apartment, date);
         if (optionalCTC.isPresent()) {
             PriceCategoryToApartmentCategory categoryToCategory = optionalCTC.get();
             price.setPricePerDay(categoryToCategory.getPrice());

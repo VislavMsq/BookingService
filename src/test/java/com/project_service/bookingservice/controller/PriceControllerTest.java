@@ -123,7 +123,7 @@ class PriceControllerTest {
         BookingDto bookingDto = new BookingDto();
         bookingDto.setApartmentId(apartmentId);
         bookingDto.setStartDate(LocalDate.of(2024, 2, 29));
-        bookingDto.setEndDate(LocalDate.of(2024, 3, 2));
+        bookingDto.setEndDate(LocalDate.of(2024, 3, 1));
         return bookingDto;
     }
 

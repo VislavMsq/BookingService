@@ -34,8 +34,10 @@ public interface ApartmentRepository extends JpaRepository<Apartment, UUID> {
             "inner join PriceCategoryToApartmentCategory pcac on pcac.apartmentCategory.id = a.apartmentCategory.id " +
             "inner join PriceCategorySchedule pcs on pcac.priceCategory.id = pcs.priceCategory.id " +
             "where a.id in :apartmentIds and a.owner = :owner and pcac.period = :year " +
-            "and pcs.startMonth <= :startMonth and pcs.startDay <= :startDay " +
-            "and pcs.endMonth >= :endMonth and pcs.endDay >= :endDay")
+            "and ((pcs.startMonth < :startMonth and pcs.endMonth > :endMonth) " +
+            "or (pcs.startMonth = :startMonth and pcs.startDay <= :startDay and pcs.endMonth > :endMonth) " +
+            "or (pcs.startMonth < :startMonth and pcs.endMonth = :endMonth and pcs.endDay >= :endDay) " +
+            "or (pcs.startMonth = :startMonth and pcs.startDay <= :startDay and pcs.endMonth = :endMonth and pcs.endDay >= :endDay))")
     List<Apartment> findAllByIdAndOwnerWithPrices(List<String> apartmentIds, User owner, Integer year,
                                                   Integer startMonth, Integer startDay,
                                                   Integer endMonth, Integer endDay);
@@ -49,8 +51,10 @@ public interface ApartmentRepository extends JpaRepository<Apartment, UUID> {
             "inner join PriceCategoryToApartmentCategory pcac on pcac.apartmentCategory.id = a.apartmentCategory.id " +
             "inner join PriceCategorySchedule pcs on pcac.priceCategory.id = pcs.priceCategory.id " +
             "where a.owner = :owner and pcac.period = :year " +
-            "and pcs.startMonth <= :startMonth and pcs.startDay <= :startDay " +
-            "and pcs.endMonth >= :endMonth and pcs.endDay >= :endDay")
+            "and ((pcs.startMonth < :startMonth and pcs.endMonth > :endMonth) " +
+            "or (pcs.startMonth = :startMonth and pcs.startDay <= :startDay and pcs.endMonth > :endMonth) " +
+            "or (pcs.startMonth < :startMonth and pcs.endMonth = :endMonth and pcs.endDay >= :endDay) " +
+            "or (pcs.startMonth = :startMonth and pcs.startDay <= :startDay and pcs.endMonth = :endMonth and pcs.endDay >= :endDay))")
     List<Apartment> findAllByOwnerWithPrices(User owner, Integer year,
                                              Integer startMonth, Integer startDay,
                                              Integer endMonth, Integer endDay);
