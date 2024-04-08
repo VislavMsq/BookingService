@@ -21,6 +21,7 @@ public class PriceCategorySchedule {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "price_category_id")
     private PriceCategory priceCategory;
 
     @Column(name = "start_month")

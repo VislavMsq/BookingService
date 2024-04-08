@@ -21,6 +21,7 @@ public abstract class OwnEntity {
     private UUID id;
 
     @ManyToOne
+    @JoinColumn(name = "owner_id")
     private User owner;
 
     @Column(name = "is_deleted")

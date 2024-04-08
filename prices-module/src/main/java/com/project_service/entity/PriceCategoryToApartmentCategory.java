@@ -15,9 +15,11 @@ import java.math.BigDecimal;
 public class PriceCategoryToApartmentCategory extends OwnEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apartment_category_id")
     private ApartmentCategory apartmentCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "price_category_id")
     private PriceCategory priceCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)

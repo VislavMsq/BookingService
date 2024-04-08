@@ -16,12 +16,15 @@ import java.time.LocalDate;
 public class BoardDetail extends OwnEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "booking_id")
     private Booking booking;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apartment_id")
     private Apartment apartment;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id")
     private Currency currency;
 
     @Column(name = "price")

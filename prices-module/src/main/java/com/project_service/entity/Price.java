@@ -17,9 +17,11 @@ import java.time.LocalDate;
 public class Price extends OwnEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apartment_id")
     private Apartment apartment;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id")
     private Currency currency;
 
     @Column(name = "price")

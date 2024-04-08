@@ -14,6 +14,7 @@ import lombok.Setter;
 public class User extends OwnEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id")
     private Currency currency;
 
     @Column(name = "email")

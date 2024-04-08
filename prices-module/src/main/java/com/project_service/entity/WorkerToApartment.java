@@ -13,9 +13,11 @@ import lombok.Setter;
 public class WorkerToApartment extends OwnEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apartment_id")
     private Apartment apartment;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "worker_id")
     private User worker;
 
     @Override

@@ -24,6 +24,7 @@ import static jakarta.persistence.CascadeType.*;
 public class PriceCategory extends OwnEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id")
     private Currency currency;
 
     @OneToMany(

@@ -14,9 +14,11 @@ import lombok.Setter;
 public class Apartment extends OwnEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
     private Apartment parent;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apartment_category_id")
     private ApartmentCategory apartmentCategory;
 
     @Column(name = "name")
