@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -85,7 +84,7 @@ class PriceCategoryToApartmentCategoryControllerTest {
 
         categoryToCategoryCreation.setPrice(200.0);
         String categoryToCategoryUpdateStr = objectMapper.writeValueAsString(categoryToCategoryCreation);
-        String categoryToCategoryUpdateJson = mockMvc.perform(MockMvcRequestBuilders.put("/prices-to-apartments")
+        String categoryToCategoryUpdateJson = mockMvc.perform(MockMvcRequestBuilders.put("/prices-to-apartments/" + categoryToCategoryCreation.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(categoryToCategoryUpdateStr))
                 .andExpect(status().isOk())
@@ -97,6 +96,7 @@ class PriceCategoryToApartmentCategoryControllerTest {
                 PriceCategoryToApartmentCategoryDto.class);
 
         assertEquals(categoryToCategoryCreation.getId(), categoryToCategoryUpdate.getId());
-        assertEquals(categoryToCategoryCreation.getPrice(), categoryToCategoryUpdate.getPrice());
+        assertEquals(categoryToCategoryCreation.getApartmentCategoryId(), categoryToCategoryUpdate.getApartmentCategoryId());
+        assertEquals(categoryToCategoryCreation.getPriceCategoryId(), categoryToCategoryUpdate.getPriceCategoryId());
     }
 }

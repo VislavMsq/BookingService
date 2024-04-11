@@ -14,7 +14,6 @@ import com.project_service.bookingservice.security.UserProvider;
 import com.project_service.bookingservice.service.PriceCategoryToApartmentCategoryService;
 import com.project_service.bookingservice.service.UtilsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +44,6 @@ public class PriceCategoryToApartmentCategoryServiceImpl implements PriceCategor
                         priceCategoryToApartmentCategoryDto.getApartmentCategoryId())));
 
         UtilsService.checkOwner(apartmentCategory, owner);
-
 
         PriceCategory priceCategory = priceCategoryRepository.findById(UUID.fromString(
                         priceCategoryToApartmentCategoryDto.getPriceCategoryId()))
