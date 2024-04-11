@@ -33,28 +33,27 @@ public class PriceCategoryToApartmentCategoryServiceImpl implements PriceCategor
 
     @Override
     @Transactional
-    public PriceCategoryToApartmentCategoryDto create(PriceCategoryToApartmentCategoryDto priceCategoryToApartmentCategoryDto) {
+    public PriceCategoryToApartmentCategoryDto create(PriceCategoryToApartmentCategoryDto categoryToCategoryDto) {
+
         PriceCategoryToApartmentCategory priceCategoryToApartmentCategory = categoryToCategoryMapper
-                .mapToEntity(priceCategoryToApartmentCategoryDto);
+                .mapToEntity(categoryToCategoryDto);
         User owner = userProvider.getCurrentUser();
         ApartmentCategory apartmentCategory = apartmentCategoryRepository.findById(
-                        UUID.fromString(priceCategoryToApartmentCategoryDto.getApartmentCategoryId()))
+                        UUID.fromString(categoryToCategoryDto.getApartmentCategoryId()))
                 .orElseThrow(() -> new ApartmentCategoryNotFoundException(String.format("Apartment category with id %s not found",
-                        priceCategoryToApartmentCategoryDto.getApartmentCategoryId())));
+                        categoryToCategoryDto.getApartmentCategoryId())));
 
         UtilsService.checkOwner(apartmentCategory, owner);
 
-        PriceCategory priceCategory = priceCategoryRepository.findById(UUID.fromString(
-                        priceCategoryToApartmentCategoryDto.getPriceCategoryId()))
-                .orElseThrow(() -> new PriceCategoryNotFoundException(String.format("Price category %s not found",
-                        priceCategoryToApartmentCategoryDto.getPriceCategoryId())));
+        PriceCategory priceCategory = findPriceCategoryById(categoryToCategoryDto.getPriceCategoryId());
 
         UtilsService.checkOwner(priceCategory, owner);
+
         Currency currency;
-        if (priceCategoryToApartmentCategoryDto.getCurrencyCode() != null) {
-            currency = currencyRepository.findByCode(priceCategoryToApartmentCategoryDto.getCurrencyCode())
+        if (categoryToCategoryDto.getCurrencyCode() != null) {
+            currency = currencyRepository.findByCode(categoryToCategoryDto.getCurrencyCode())
                     .orElseThrow(() -> new CurrencyNotFoundException(String.format("Currency code %s not found",
-                            priceCategoryToApartmentCategoryDto.getCurrencyCode())));
+                            categoryToCategoryDto.getCurrencyCode())));
         } else {
             currency = priceCategory.getCurrency();
         }
@@ -70,9 +69,8 @@ public class PriceCategoryToApartmentCategoryServiceImpl implements PriceCategor
     @Override
     @Transactional
     public PriceCategoryToApartmentCategoryDto getDto(String uuid) {
-        return priceCategoryToApartmentCategoryRepository.findById(UUID.fromString(uuid))
-                .map(categoryToCategoryMapper::mapToDto)
-                .orElseThrow(() -> new PriceCategoryNotFoundException(String.format("Price category %s not found", uuid)));
+        PriceCategoryToApartmentCategory priceCategoryToApartmentCategory = findPriceCategoryToApartmentCategoryById(uuid);
+        return categoryToCategoryMapper.mapToDto(priceCategoryToApartmentCategory);
     }
 
     @Override
@@ -80,10 +78,7 @@ public class PriceCategoryToApartmentCategoryServiceImpl implements PriceCategor
     public PriceCategoryToApartmentCategoryDto update(PriceCategoryToApartmentCategoryDto priceCategoryToApartmentCategoryDto) {
 
         User owner = userProvider.getCurrentUser();
-        PriceCategoryToApartmentCategory priceCategoryToApartmentCategory = priceCategoryToApartmentCategoryRepository.findById(
-                        UUID.fromString(priceCategoryToApartmentCategoryDto.getId()))
-                .orElseThrow(() -> new PriceCategoryNotFoundException(String.format("Price category %s not found",
-                        priceCategoryToApartmentCategoryDto.getId())));
+        PriceCategoryToApartmentCategory priceCategoryToApartmentCategory = findPriceCategoryToApartmentCategoryById(priceCategoryToApartmentCategoryDto.getId());
 
         UtilsService.checkOwner(priceCategoryToApartmentCategory, owner);
 
@@ -95,7 +90,20 @@ public class PriceCategoryToApartmentCategoryServiceImpl implements PriceCategor
         priceCategoryToApartmentCategory.setPrice(BigDecimal.valueOf(priceCategoryToApartmentCategoryDto.getPrice()));
         priceCategoryToApartmentCategory.setUpdatedAt(LocalDateTime.now());
 
+        priceCategoryToApartmentCategoryRepository.save(priceCategoryToApartmentCategory);
+
         return categoryToCategoryMapper.mapToDto(priceCategoryToApartmentCategory);
+    }
+
+    @Override
+    public PriceCategory findPriceCategoryById(String id) throws PriceCategoryNotFoundException {
+        return priceCategoryRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new PriceCategoryNotFoundException(String.format(id)));
+    }
+
+    public PriceCategoryToApartmentCategory findPriceCategoryToApartmentCategoryById(String id) throws PriceCategoryNotFoundException {
+        return priceCategoryToApartmentCategoryRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new PriceCategoryNotFoundException(String.format(id)));
     }
 }
 

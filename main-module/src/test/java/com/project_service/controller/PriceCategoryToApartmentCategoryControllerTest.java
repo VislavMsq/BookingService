@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -66,39 +65,38 @@ class PriceCategoryToApartmentCategoryControllerTest {
     @Test
     @WithUserDetails(value = "user1@example.com")
     void update() throws Exception {
-        PriceCategoryToApartmentCategoryDto categoryToCategoryDto = new PriceCategoryToApartmentCategoryDto();
-        categoryToCategoryDto.setApartmentCategoryId("d7f3cb48-dee2-11ee-bd3d-0242ac120002");
-        categoryToCategoryDto.setPriceCategoryId("f050448b-7a16-468c-8183-5f161a83db62");
-        categoryToCategoryDto.setCurrencyCode("USD");
-        categoryToCategoryDto.setPrice(100.0);
-        categoryToCategoryDto.setYear(2021);
+        String existingId = "7d6f1727-f7aa-48a2-9971-161f30f3b497";
+        double newPrice = 200.0;
+        String newCurrencyCode = "EUR";
 
-        String categoryToCategoryDtoStr = objectMapper.writeValueAsString(categoryToCategoryDto);
-        String categoryToCategoryCreationJson = mockMvc.perform(MockMvcRequestBuilders.post("/prices-to-apartments")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(categoryToCategoryDtoStr))
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/prices-to-apartments/" + existingId))
+                .andExpect(status().isOk())
+                .andReturn();
 
-        PriceCategoryToApartmentCategoryDto categoryToCategoryCreation = objectMapper.readValue(categoryToCategoryCreationJson,
-                PriceCategoryToApartmentCategoryDto.class);
+        PriceCategoryToApartmentCategoryDto existingCategoryToCategoryDto = objectMapper.readValue(result.getResponse().getContentAsString(), PriceCategoryToApartmentCategoryDto.class);
 
-        categoryToCategoryCreation.setPrice(200.0);
-        String categoryToCategoryUpdateStr = objectMapper.writeValueAsString(categoryToCategoryCreation);
-        String categoryToCategoryUpdateJson = mockMvc.perform(MockMvcRequestBuilders.put("/prices-to-apartments")
+        double originalPrice = existingCategoryToCategoryDto.getPrice();
+        String originalCurrencyCode = existingCategoryToCategoryDto.getCurrencyCode();
+
+        existingCategoryToCategoryDto.setPrice(newPrice);
+        existingCategoryToCategoryDto.setCurrencyCode(newCurrencyCode);
+
+        String categoryToCategoryUpdateStr = objectMapper.writeValueAsString(existingCategoryToCategoryDto);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/prices-to-apartments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(categoryToCategoryUpdateStr))
+                .andExpect(status().isOk());
+
+        MvcResult updatedResult = mockMvc.perform(MockMvcRequestBuilders.get("/prices-to-apartments/" + existingId))
                 .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+                .andReturn();
 
-        PriceCategoryToApartmentCategoryDto categoryToCategoryUpdate = objectMapper.readValue(categoryToCategoryUpdateJson,
-                PriceCategoryToApartmentCategoryDto.class);
+        PriceCategoryToApartmentCategoryDto updatedCategoryToCategoryDto = objectMapper.readValue(updatedResult.getResponse().getContentAsString(), PriceCategoryToApartmentCategoryDto.class);
 
-        assertEquals(categoryToCategoryCreation.getId(), categoryToCategoryUpdate.getId());
-        assertEquals(categoryToCategoryCreation.getApartmentCategoryId(), categoryToCategoryUpdate.getApartmentCategoryId());
-        assertEquals(categoryToCategoryCreation.getPriceCategoryId(), categoryToCategoryUpdate.getPriceCategoryId());
+        assertNotEquals(originalPrice, updatedCategoryToCategoryDto.getPrice());
+        assertNotEquals(originalCurrencyCode, updatedCategoryToCategoryDto.getCurrencyCode());
+        assertEquals(newPrice, updatedCategoryToCategoryDto.getPrice());
+        assertEquals(newCurrencyCode, updatedCategoryToCategoryDto.getCurrencyCode());
     }
 }
