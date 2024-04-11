@@ -98,12 +98,12 @@ public class PriceCategoryToApartmentCategoryServiceImpl implements PriceCategor
     @Override
     public PriceCategory findPriceCategoryById(String id) throws PriceCategoryNotFoundException {
         return priceCategoryRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new PriceCategoryNotFoundException(String.format(id)));
+                .orElseThrow(() -> new PriceCategoryNotFoundException(String.format("Price category %s not found", id)));
     }
 
     public PriceCategoryToApartmentCategory findPriceCategoryToApartmentCategoryById(String id) throws PriceCategoryNotFoundException {
         return priceCategoryToApartmentCategoryRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new PriceCategoryNotFoundException(String.format(id)));
+                .orElseThrow(() -> new PriceCategoryNotFoundException(String.format("Price category %s not found", id)));
     }
 }
 
