@@ -1,6 +1,5 @@
 package com.project_service.service.impl;
 
-
 import com.project_service.dto.PriceCategoryToApartmentCategoryDto;
 import com.project_service.entity.*;
 import com.project_service.exception.ApartmentCategoryNotFoundException;

@@ -58,7 +58,8 @@ class PriceCategoryToApartmentCategoryControllerTest {
 
         assertNotNull(categoryToCategoryCreation.getId());
         returned.setId(null);
-        categoryToCategoryDto.setCurrencyCode(returned.getCurrencyCode());
+        assertEquals("USD", returned.getCurrencyCode());
+        categoryToCategoryDto.setCurrencyCode("USD");
         assertEquals(categoryToCategoryDto, returned);
     }
 
@@ -85,7 +86,7 @@ class PriceCategoryToApartmentCategoryControllerTest {
 
         categoryToCategoryCreation.setPrice(200.0);
         String categoryToCategoryUpdateStr = objectMapper.writeValueAsString(categoryToCategoryCreation);
-        String categoryToCategoryUpdateJson = mockMvc.perform(MockMvcRequestBuilders.put("/prices-to-apartments/" + categoryToCategoryCreation.getId())
+        String categoryToCategoryUpdateJson = mockMvc.perform(MockMvcRequestBuilders.put("/prices-to-apartments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(categoryToCategoryUpdateStr))
                 .andExpect(status().isOk())

@@ -32,6 +32,7 @@
         <h2.version>2.2.224</h2.version>
         <jjwt-api.version>0.12.5</jjwt-api.version>
         <springdoc.version>2.3.0</springdoc.version>
+        <swagger-anatations.version>2.2.19</swagger-anatations.version>
     </properties>
 
     <dependencies>
@@ -67,6 +68,13 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
             <version>${mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations-jakarta</artifactId>
+            <version>${swagger-anatations.version}</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
