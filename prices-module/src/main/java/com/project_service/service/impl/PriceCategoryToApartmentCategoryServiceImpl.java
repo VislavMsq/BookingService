@@ -6,7 +6,6 @@ import com.project_service.exception.ApartmentCategoryNotFoundException;
 import com.project_service.exception.PriceCategoryNotFoundException;
 import com.project_service.mapper.PriceCategoryToApartmentCategoryMapper;
 import com.project_service.repository.ApartmentCategoryRepository;
-import com.project_service.repository.CurrencyRepository;
 import com.project_service.repository.PriceCategoryToApartmentCategoryRepository;
 import com.project_service.security.UserProvider;
 import com.project_service.service.CurrencyService;
@@ -26,7 +25,6 @@ import java.util.UUID;
 public class PriceCategoryToApartmentCategoryServiceImpl implements PriceCategoryToApartmentCategoryService {
     private final PriceCategoryToApartmentCategoryRepository priceCategoryToApartmentCategoryRepository;
     private final ApartmentCategoryRepository apartmentCategoryRepository;
-    private final CurrencyRepository currencyRepository;
     private final PriceCategoryToApartmentCategoryMapper categoryToCategoryMapper;
     private final UserProvider userProvider;
     private final PriceCategoryService priceCategoryService;
