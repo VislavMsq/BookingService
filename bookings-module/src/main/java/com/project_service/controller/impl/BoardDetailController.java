@@ -1,9 +1,13 @@
-package com.project_service.controller;
+package com.project_service.controller.impl;
 
+import com.project_service.controller.BoardDetailOperationService;
 import com.project_service.dto.BoardDetailDto;
 import com.project_service.service.BoardDetailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/board-details")
-public class BoardDetailController {
+public class BoardDetailController implements BoardDetailOperationService {
     private final BoardDetailService boardDetailService;
 
     @GetMapping

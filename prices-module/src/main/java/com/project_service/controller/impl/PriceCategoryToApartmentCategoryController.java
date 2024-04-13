@@ -1,5 +1,6 @@
-package com.project_service.controller;
+package com.project_service.controller.impl;
 
+import com.project_service.controller.PriceCategoryToApartmentCategoryOperationsService;
 import com.project_service.dto.PriceCategoryToApartmentCategoryDto;
 import com.project_service.service.PriceCategoryToApartmentCategoryService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/prices-to-apartments")
-public class PriceCategoryToApartmentCategoryController {
+public class PriceCategoryToApartmentCategoryController implements PriceCategoryToApartmentCategoryOperationsService {
 
     private final PriceCategoryToApartmentCategoryService priceCategoryToApartmentCategoryService;
 

@@ -1,5 +1,6 @@
-package com.project_service.controller;
+package com.project_service.controller.impl;
 
+import com.project_service.controller.UserOperationsService;
 import com.project_service.dto.UserDto;
 import com.project_service.security.jwt.JwtService;
 import com.project_service.service.UserService;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/users")
-public class UserController {
+public class UserController implements UserOperationsService {
     private final UserService userService;
     private final JwtService jwtService;
 
