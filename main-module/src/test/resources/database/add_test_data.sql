@@ -8,21 +8,24 @@ VALUES ('3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20', 'US Dollar', 'USD'),
 
 -- Insert dummy data into users table
 INSERT INTO users (id, owner_id, currency_id, email, phone, password, timezone, first_name, last_name, country,
-                   language, role, created_at, updated_at)
+                   language, role, activation_code, expiration_time, status, created_at, updated_at)
 VALUES ('c205da57-0722-4b5d-9c13-30adfe3b0d72', NULL, '3f4245b3-94cc-4b2d-bc7b-d29f6a0d7f20', 'user1@example.com',
-        '123456789', 'password1', 0, 'John', 'Doe', 'USA', 'en', 'OWNER', '2024-03-03 12:00:00', '2024-03-03 12:00:00'),
+        '123456789', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 0, 'John', 'Doe', 'USA', 'en', 'OWNER', '345543', '2030-10-01T23:15:46Z', 'PENDING', '2024-03-03 12:00:00', '2024-03-03 12:00:00'),
        ('b6e4b3b5-8265-4aeb-bdb7-17f5081e56a2', 'c205da57-0722-4b5d-9c13-30adfe3b0d72',
-        '6e0727d5-8eb9-438e-8e61-c30e0506a889', 'user2@example.com', '987654321', 'password2', 0, 'Jane', 'Doe', 'UK',
-        'en', 'WORKER', '2024-03-03 12:01:00', '2024-03-03 12:01:00'),
+        '6e0727d5-8eb9-438e-8e61-c30e0506a889', 'user2@example.com', '987654321', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 0, 'Jane', 'Doe', 'UK',
+        'en', 'WORKER', '345543', '2030-10-01T23:15:46Z', 'PENDING', '2024-03-03 12:01:00', '2024-03-03 12:01:00'),
        ('4a56fe6e-6910-4b0d-863e-ac60262e7a17', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'aloha.test@gmail.com',
         '+48798456123', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 2, 'Aloha', 'Test', 'Poland',
-        'Russian', 'OWNER', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z'),
+        'Russian', 'OWNER', '345543', '2030-10-01T23:15:46Z', 'ACTIVATED', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z'),
        ('54ea1478-dee2-11ee-bd3d-0242ac120002', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'appolon12@gmail.com',
         '+48798456123', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 2, 'Lui', 'Armstrong', 'USA',
-        'English', 'OWNER', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z'),
+        'English', 'OWNER', '345543', '2030-10-01T23:15:46Z', 'PENDING', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z'),
        ('72ea1478-dee2-11ee-bd3d-0242ac120002', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'leonardo@gmail.com',
         '+41198456123', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 2, 'Leo', 'Turtle', 'USA',
-        'English', 'OWNER', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z');
+        'English', 'OWNER', '345543', '2030-10-01T23:15:46Z', 'PENDING', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z'),
+       ('12ea1478-dee2-11ee-bd3d-0242ac120003', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'eusebiujacot2000@gmail.com',
+        '+41198456123', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 2, 'Leo', 'Turtle', 'USA',
+        'English', 'OWNER', '345543', '2030-10-01T23:15:46Z', 'PENDING', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z');
 
 -- Insert dummy data into apartment_categories table
 INSERT INTO apartment_categories (id, owner_id, name, abbreviation, type, sleep_place, created_at, updated_at)
