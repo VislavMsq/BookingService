@@ -7,19 +7,19 @@ import com.project_service.entity.User;
 import com.project_service.entity.enums.Role;
 
 public interface UserService {
-    User findByCredentials(UserCredentialsDto userCredentialsDto);
+    User authenticateUser(UserCredentialsDto userCredentialsDto);
 
     Role getAuthorizedUserRole();
 
-    void create(UserDto userDto);
+    void registerUser(UserDto userDto);
 
     void resendActivationCode();
 
-    void resetPassword(String email);
+    void initiatePasswordReset(String email);
 
     void updatePassword(UpdatePasswordDto updatePasswordDto);
 
     void activateUser(int activationCode);
 
-    UserDto findById(String id);
+    UserDto getUserById(String id);
 }

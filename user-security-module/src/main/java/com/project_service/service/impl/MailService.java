@@ -34,14 +34,12 @@ public class MailService {
         javaMailSender.send(message);
     }
 
-    @Async
     public void sendActivationEmail(String to, String activationCode) throws MessagingException {
         Context context = new Context();
         context.setVariable("activationCode", activationCode);
         sendEmail(to, "Activation Code", "EmailConfirmation", context);
     }
 
-    @Async
     public void sendPasswordResetEmail(String to, String resetCode) throws MessagingException {
         Context context = new Context();
         context.setVariable("resetCode", resetCode);

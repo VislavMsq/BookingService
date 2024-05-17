@@ -1,11 +1,11 @@
 package com.project_service.service.impl;
 
-
 import com.project_service.dto.UpdatePasswordDto;
 import com.project_service.dto.UserCredentialsDto;
 import com.project_service.dto.UserDto;
 import com.project_service.entity.Currency;
 import com.project_service.entity.User;
+import com.project_service.entity.enums.EmailType;
 import com.project_service.entity.enums.Role;
 import com.project_service.entity.enums.Status;
 import com.project_service.exception.*;
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User findByCredentials(UserCredentialsDto userCredentialsDto) {
+    public User authenticateUser(UserCredentialsDto userCredentialsDto) {
         Optional<User> optionalUser = userRepository.findByEmail(userCredentialsDto.getEmail());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -53,7 +53,6 @@ public class UserServiceImpl implements UserService {
             }
         }
         throw new AuthenticationException("Email or password is not correct");
-
     }
 
     @Override
@@ -63,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void create(UserDto userDto) {
+    public void registerUser(UserDto userDto) {
         Currency currency = currencyRepository.findByCode(userDto.getCurrencyCode())
                 .orElse(null);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -72,54 +71,22 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.OWNER);
         user.setStatus(Status.PENDING);
 
-        int activationCode = generateCode();
-        user.setActivationCode(activationCode);
-        user.setExpirationTime(Timestamp.valueOf(LocalDateTime.now().plusMinutes(3)));
-
-        try {
-            userRepository.save(user);
-            mailService.sendActivationEmail(userDto.getEmail(), String.valueOf(activationCode));
-        } catch (DataIntegrityViolationException exception) {
-            throw new UserAlreadyExistsException(String.format("User with email %s already exists.", user.getEmail()));
-        } catch (MessagingException e) {
-            throw new MailSendingException("Mail sending failed", e);
-        }
+        generateAndSendCode(user, userDto.getEmail(), EmailType.ACTIVATION, 3);
     }
-
 
     @Override
     @Transactional
     public void resendActivationCode() {
         User user = userProvider.getCurrentUser();
-        int activationCode = generateCode();
-        user.setActivationCode(activationCode);
-        user.setExpirationTime(Timestamp.valueOf(LocalDateTime.now().plusMinutes(3)));
-
-        try {
-            userRepository.save(user);
-
-            mailService.sendActivationEmail(user.getEmail(), String.valueOf(activationCode));
-        } catch (DataIntegrityViolationException exception) {
-            throw new UserAlreadyExistsException(String.format("User with email %s already exists.", user.getEmail()));
-        } catch (MessagingException e) {
-            throw new MailSendingException("Mail sending failed", e);
-        }
+        generateAndSendCode(user, user.getEmail(), EmailType.ACTIVATION, 3);
     }
 
     @Override
     @Transactional
-    public void resetPassword(String email){
+    public void initiatePasswordReset(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with email %s not found", email)));
-        int resetCode = generateCode();
-        user.setActivationCode(resetCode);
-        user.setExpirationTime(Timestamp.valueOf(LocalDateTime.now().plusMinutes(5)));
-        try {
-            userRepository.save(user);
-            mailService.sendPasswordResetEmail(user.getEmail(), String.valueOf(resetCode));
-        } catch (MessagingException e) {
-            throw new MailSendingException("Mail sending failed", e);
-        }
+        generateAndSendCode(user, user.getEmail(), EmailType.PASSWORD_RESET, 5);
     }
 
     @Override
@@ -127,37 +94,23 @@ public class UserServiceImpl implements UserService {
     public void updatePassword(UpdatePasswordDto updatePasswordDto) {
         User user = userRepository.findByEmail(updatePasswordDto.getEmail())
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with email %s not found", updatePasswordDto.getEmail())));
-        if (user.getActivationCode().equals(Integer.valueOf(updatePasswordDto.getResetCode()))) {
-            if (user.getExpirationTime().after(Timestamp.valueOf(LocalDateTime.now()))) {
-                user.setPassword(passwordEncoder.encode(updatePasswordDto.getNewPassword()));
-                userRepository.save(user);
-            } else {
-                throw new ExpiredCodeException("Reset code has expired");
-            }
-        } else {
-            throw new InvalidCodeException("Reset code is invalid");
-        }
+        validateCode(user, updatePasswordDto.getResetCode());
+        user.setPassword(passwordEncoder.encode(updatePasswordDto.getNewPassword()));
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
     public void activateUser(int activationCode) {
         User user = userProvider.getCurrentUser();
-        if (user.getActivationCode() == activationCode) {
-            if (user.getExpirationTime().after(Timestamp.valueOf(LocalDateTime.now()))) {
-                user.setStatus(Status.ACTIVATED);
-                userRepository.save(user);
-            } else {
-                throw new ExpiredCodeException("Activation code has expired");
-            }
-        } else {
-            throw new InvalidCodeException("Activation code is invalid");
-        }
+        validateCode(user, String.valueOf(activationCode));
+        user.setStatus(Status.ACTIVATED);
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
-    public UserDto findById(String id) {
+    public UserDto getUserById(String id) {
         User user = userRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with id %s not found", id)));
         User currentUser = userProvider.getCurrentUser();
@@ -167,8 +120,47 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapToDto(user);
     }
 
+    private void generateAndSendCode(User user, String email, EmailType emailType, int expirationMinutes) {
+        int code = generateCode();
+        user.setActivationCode(code);
+        user.setExpirationTime(Timestamp.valueOf(LocalDateTime.now().plusMinutes(expirationMinutes)));
+
+        try {
+            userRepository.save(user);
+            sendEmail(email, String.valueOf(code), emailType);
+        } catch (DataIntegrityViolationException exception) {
+            throw new UserAlreadyExistsException(String.format("User with email %s already exists.", user.getEmail()));
+        } catch (MessagingException e) {
+            throw new MailSendingException("Mail sending failed", e);
+        }
+    }
+
+    private void validateCode(User user, String code) {
+        if (user.getActivationCode().equals(Integer.valueOf(code))) {
+            if (user.getExpirationTime().before(Timestamp.valueOf(LocalDateTime.now()))) {
+                throw new ExpiredCodeException("Code has expired");
+            }
+        } else {
+            throw new InvalidCodeException("Code is invalid");
+        }
+    }
+
     private int generateCode() {
         SecureRandom random = new SecureRandom();
         return random.nextInt(900000) + 100000;
     }
+
+    private void sendEmail(String email, String code, EmailType emailType) throws MessagingException {
+        switch (emailType) {
+            case ACTIVATION:
+                mailService.sendActivationEmail(email, code);
+                break;
+            case PASSWORD_RESET:
+                mailService.sendPasswordResetEmail(email, code);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid email type");
+        }
+    }
+
 }

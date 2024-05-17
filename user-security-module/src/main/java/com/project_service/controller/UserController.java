@@ -17,12 +17,12 @@ public class UserController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@Valid @RequestBody UserDto userDto) {
-        userService.create(userDto);
+        userService.registerUser(userDto);
     }
 
     @GetMapping("/{id}")
     public UserDto findById(@PathVariable("id") String id) {
-        return userService.findById(id);
+        return userService.getUserById(id);
     }
 
     @PutMapping("/activate")
@@ -30,14 +30,14 @@ public class UserController {
         userService.activateUser(activationCode);
     }
 
-    @PutMapping("/resend")
+    @PutMapping("/resend_email")
     public void resendActivationCode(){
         userService.resendActivationCode();
     }
 
-    @PutMapping("/reset_password")
+    @PutMapping("/forgot_password")
     public void resetPassword(@RequestBody String email){
-        userService.resetPassword(email);
+        userService.initiatePasswordReset(email);
     }
 
     @PutMapping("/change_password")
