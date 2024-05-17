@@ -15,6 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -36,7 +37,7 @@ class UserControllerTest {
         String userStr = objectMapper.writeValueAsString(userDto);
 
         //when
-        mockMvc.perform(MockMvcRequestBuilders.post("/users/register")
+        String registerUserRequest = mockMvc.perform(MockMvcRequestBuilders.post("/users/register")
                         .with(SecurityMockMvcRequestPostProcessors.anonymous())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userStr))
@@ -44,7 +45,7 @@ class UserControllerTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-
+        assertNotNull(registerUserRequest);
     }
 
     //then

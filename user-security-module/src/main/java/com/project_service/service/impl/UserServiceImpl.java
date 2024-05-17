@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void registerUser(UserDto userDto) {
+    public String registerUser(UserDto userDto) {
         Currency currency = currencyRepository.findByCode(userDto.getCurrencyCode())
                 .orElse(null);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -72,6 +72,7 @@ public class UserServiceImpl implements UserService {
         user.setStatus(Status.PENDING);
 
         generateAndSendCode(user, userDto.getEmail(), EmailType.ACTIVATION, 3);
+        return String.valueOf(user.getId());
     }
 
     @Override

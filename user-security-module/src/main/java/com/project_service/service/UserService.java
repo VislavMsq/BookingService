@@ -11,7 +11,7 @@ public interface UserService {
 
     Role getAuthorizedUserRole();
 
-    void registerUser(UserDto userDto);
+    String registerUser(UserDto userDto);
 
     void resendActivationCode();
 

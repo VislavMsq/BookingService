@@ -16,8 +16,8 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@Valid @RequestBody UserDto userDto) {
-        userService.registerUser(userDto);
+    public String create(@Valid @RequestBody UserDto userDto) {
+        return userService.registerUser(userDto);
     }
 
     @GetMapping("/{id}")
