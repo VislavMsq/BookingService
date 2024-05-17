@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -35,7 +34,6 @@ class PriceCategoryToApartmentCategoryControllerTest {
         PriceCategoryToApartmentCategoryDto categoryToCategoryDto = new PriceCategoryToApartmentCategoryDto();
         categoryToCategoryDto.setApartmentCategoryId("d7f3cb48-dee2-11ee-bd3d-0242ac120002");
         categoryToCategoryDto.setPriceCategoryId("f050448b-7a16-468c-8183-5f161a83db62");
-        categoryToCategoryDto.setCurrencyCode("USD");
         categoryToCategoryDto.setPrice(100.0);
         categoryToCategoryDto.setYear(2021);
 
@@ -59,6 +57,46 @@ class PriceCategoryToApartmentCategoryControllerTest {
 
         assertNotNull(categoryToCategoryCreation.getId());
         returned.setId(null);
+        assertEquals("USD", returned.getCurrencyCode());
+        categoryToCategoryDto.setCurrencyCode("USD");
         assertEquals(categoryToCategoryDto, returned);
+    }
+
+    @Test
+    @WithUserDetails(value = "user1@example.com")
+    void update() throws Exception {
+        String existingId = "7d6f1727-f7aa-48a2-9971-161f30f3b497";
+        double newPrice = 200.0;
+        String newCurrencyCode = "EUR";
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/prices-to-apartments/" + existingId))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        PriceCategoryToApartmentCategoryDto existingCategoryToCategoryDto = objectMapper.readValue(result.getResponse().getContentAsString(), PriceCategoryToApartmentCategoryDto.class);
+
+        double originalPrice = existingCategoryToCategoryDto.getPrice();
+        String originalCurrencyCode = existingCategoryToCategoryDto.getCurrencyCode();
+
+        existingCategoryToCategoryDto.setPrice(newPrice);
+        existingCategoryToCategoryDto.setCurrencyCode(newCurrencyCode);
+
+        String categoryToCategoryUpdateStr = objectMapper.writeValueAsString(existingCategoryToCategoryDto);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/prices-to-apartments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(categoryToCategoryUpdateStr))
+                .andExpect(status().isOk());
+
+        MvcResult updatedResult = mockMvc.perform(MockMvcRequestBuilders.get("/prices-to-apartments/" + existingId))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        PriceCategoryToApartmentCategoryDto updatedCategoryToCategoryDto = objectMapper.readValue(updatedResult.getResponse().getContentAsString(), PriceCategoryToApartmentCategoryDto.class);
+
+        assertNotEquals(originalPrice, updatedCategoryToCategoryDto.getPrice());
+        assertNotEquals(originalCurrencyCode, updatedCategoryToCategoryDto.getCurrencyCode());
+        assertEquals(newPrice, updatedCategoryToCategoryDto.getPrice());
+        assertEquals(newCurrencyCode, updatedCategoryToCategoryDto.getCurrencyCode());
     }
 }
