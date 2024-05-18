@@ -66,7 +66,7 @@ class UserControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = "eusebiujacot2000@gmail.com")
+    @WithUserDetails(value = "eusebiujacot@gmail.com")
     void activateUser() throws Exception {
 
         String activationCode = "345543";
@@ -77,10 +77,10 @@ class UserControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = "eusebiujacot2000@gmail.com")
+    @WithUserDetails(value = "eusebiujacot@gmail.com")
     void updatePassword() throws Exception {
         UpdatePasswordDto updatePasswordDto = new UpdatePasswordDto();
-        updatePasswordDto.setEmail("eusebiujacot2000@gmail.com");
+        updatePasswordDto.setEmail("eusebiujacot@gmail.com");
         updatePasswordDto.setResetCode("345543");
         updatePasswordDto.setNewPassword("NewPassword1");
 

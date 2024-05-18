@@ -23,7 +23,7 @@ VALUES ('c205da57-0722-4b5d-9c13-30adfe3b0d72', NULL, '3f4245b3-94cc-4b2d-bc7b-d
        ('72ea1478-dee2-11ee-bd3d-0242ac120002', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'leonardo@gmail.com',
         '+41198456123', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 2, 'Leo', 'Turtle', 'USA',
         'English', 'OWNER', '345543', '2030-10-01T23:15:46Z', 'PENDING', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z'),
-       ('12ea1478-dee2-11ee-bd3d-0242ac120003', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'eusebiujacot2000@gmail.com',
+       ('12ea1478-dee2-11ee-bd3d-0242ac120003', null, '3b56fe6e-6910-4b0d-863e-ac60262e7a17', 'eusebiujacot@gmail.com',
         '+41198456123', '$2a$04$ulExgnCSzgj/7Gl4w4hLd.qdr6Bv3djEb6FYwJaSK../sLhLEevLG', 2, 'Leo', 'Turtle', 'USA',
         'English', 'OWNER', '345543', '2030-10-01T23:15:46Z', 'PENDING', '2023-10-01T23:15:46Z', '2024-01-22T22:18:11Z');
 

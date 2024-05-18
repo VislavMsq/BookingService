@@ -1,15 +1,16 @@
 package com.project_service.controller;
 
+import com.project_service.service.EmailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -21,20 +22,28 @@ class EmailControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+    private EmailService emailService;
+
     @Test
-    @WithUserDetails(value = "eusebiujacot2000@gmail.com")
-    void resendActivationCode() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/emails/resend_activation"))
+    void sendCode() throws Exception {
+        String email = "eusebiujacot@gmail.com";
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/emails/send_code")
+                        .param("email", email))
                 .andExpect(status().isOk());
+
+        verify(emailService).resendActivationCode(email);
     }
 
     @Test
-    @WithUserDetails(value = "eusebiujacot2000@gmail.com")
-    void resetPassword() throws Exception {
-        String email = "eusebiujacot2000@gmail.com";
+    void initiateForgotPassword() throws Exception {
+        String email = "eusebiujacot@gmail.com";
+
         mockMvc.perform(MockMvcRequestBuilders.put("/emails/forgot_password")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(email))
+                        .param("email", email))
                 .andExpect(status().isOk());
+
+        verify(emailService).initiatePasswordReset(email);
     }
 }
