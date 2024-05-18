@@ -78,23 +78,6 @@ class UserControllerTest {
 
     @Test
     @WithUserDetails(value = "eusebiujacot2000@gmail.com")
-    void resendActivationCode() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/users/resend_email"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithUserDetails(value = "eusebiujacot2000@gmail.com")
-    void resetPassword() throws Exception {
-        String email = "eusebiujacot2000@gmail.com";
-        mockMvc.perform(MockMvcRequestBuilders.put("/users/forgot_password")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(email))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithUserDetails(value = "eusebiujacot2000@gmail.com")
     void updatePassword() throws Exception {
         UpdatePasswordDto updatePasswordDto = new UpdatePasswordDto();
         updatePasswordDto.setEmail("eusebiujacot2000@gmail.com");

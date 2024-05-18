@@ -13,7 +13,9 @@ import com.project_service.mapper.UserMapper;
 import com.project_service.repository.CurrencyRepository;
 import com.project_service.repository.UserRepository;
 import com.project_service.security.UserProvider;
+import com.project_service.service.EmailService;
 import com.project_service.service.UserService;
+import com.project_service.service.UtilsService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,7 +24,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
     private final CurrencyRepository currencyRepository;
     private final UserProvider userProvider;
     private final UserMapper userMapper;
-    private final MailService mailService;
+    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -122,7 +123,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void generateAndSendCode(User user, String email, EmailType emailType, int expirationMinutes) {
-        int code = generateCode();
+        int code = UtilsService.generateCode();
         user.setActivationCode(code);
         user.setExpirationTime(Timestamp.valueOf(LocalDateTime.now().plusMinutes(expirationMinutes)));
 
@@ -146,18 +147,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private int generateCode() {
-        SecureRandom random = new SecureRandom();
-        return random.nextInt(900000) + 100000;
-    }
-
     private void sendEmail(String email, String code, EmailType emailType) throws MessagingException {
         switch (emailType) {
             case ACTIVATION:
-                mailService.sendActivationEmail(email, code);
+                emailService.sendActivationEmail(email, code);
                 break;
             case PASSWORD_RESET:
-                mailService.sendPasswordResetEmail(email, code);
+                emailService.sendPasswordResetEmail(email, code);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid email type");

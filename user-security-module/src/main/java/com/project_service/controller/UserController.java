@@ -30,16 +30,6 @@ public class UserController {
         userService.activateUser(activationCode);
     }
 
-    @PutMapping("/resend_email")
-    public void resendActivationCode(){
-        userService.resendActivationCode();
-    }
-
-    @PutMapping("/forgot_password")
-    public void resetPassword(@RequestBody String email){
-        userService.initiatePasswordReset(email);
-    }
-
     @PutMapping("/change_password")
     public void updatePassword(@Valid @RequestBody UpdatePasswordDto updatePasswordDto) {
         userService.updatePassword(updatePasswordDto);
