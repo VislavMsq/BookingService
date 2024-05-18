@@ -15,10 +15,7 @@ import com.project_service.repository.UserRepository;
 import com.project_service.security.UserProvider;
 import com.project_service.service.EmailService;
 import com.project_service.service.UserService;
-import com.project_service.service.UtilsService;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -72,23 +69,8 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.OWNER);
         user.setStatus(Status.PENDING);
 
-        generateAndSendCode(user, userDto.getEmail(), EmailType.ACTIVATION, 3);
+        emailService.generateAndSendCode(user, userDto.getEmail(), EmailType.ACTIVATION, 3);
         return String.valueOf(user.getId());
-    }
-
-    @Override
-    @Transactional
-    public void resendActivationCode() {
-        User user = userProvider.getCurrentUser();
-        generateAndSendCode(user, user.getEmail(), EmailType.ACTIVATION, 3);
-    }
-
-    @Override
-    @Transactional
-    public void initiatePasswordReset(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(String.format("User with email %s not found", email)));
-        generateAndSendCode(user, user.getEmail(), EmailType.PASSWORD_RESET, 5);
     }
 
     @Override
@@ -122,22 +104,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapToDto(user);
     }
 
-    private void generateAndSendCode(User user, String email, EmailType emailType, int expirationMinutes) {
-        int code = UtilsService.generateCode();
-        user.setActivationCode(code);
-        user.setExpirationTime(Timestamp.valueOf(LocalDateTime.now().plusMinutes(expirationMinutes)));
-
-        try {
-            userRepository.save(user);
-            sendEmail(email, String.valueOf(code), emailType);
-        } catch (DataIntegrityViolationException exception) {
-            throw new UserAlreadyExistsException(String.format("User with email %s already exists.", user.getEmail()));
-        } catch (MessagingException e) {
-            throw new MailSendingException("Mail sending failed", e);
-        }
-    }
-
-    private void validateCode(User user, String code) {
+    public static void validateCode(User user, String code) {
         if (user.getActivationCode().equals(Integer.valueOf(code))) {
             if (user.getExpirationTime().before(Timestamp.valueOf(LocalDateTime.now()))) {
                 throw new ExpiredCodeException("Code has expired");
@@ -146,18 +113,4 @@ public class UserServiceImpl implements UserService {
             throw new InvalidCodeException("Code is invalid");
         }
     }
-
-    private void sendEmail(String email, String code, EmailType emailType) throws MessagingException {
-        switch (emailType) {
-            case ACTIVATION:
-                emailService.sendActivationEmail(email, code);
-                break;
-            case PASSWORD_RESET:
-                emailService.sendPasswordResetEmail(email, code);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid email type");
-        }
-    }
-
 }

@@ -13,10 +13,6 @@ public interface UserService {
 
     String registerUser(UserDto userDto);
 
-    void resendActivationCode();
-
-    void initiatePasswordReset(String email);
-
     void updatePassword(UpdatePasswordDto updatePasswordDto);
 
     void activateUser(int activationCode);
