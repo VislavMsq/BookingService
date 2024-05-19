@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User authenticateUser(UserCredentialsDto userCredentialsDto) {
+    public User findByCredentials(UserCredentialsDto userCredentialsDto) {
         Optional<User> optionalUser = userRepository.findByEmail(userCredentialsDto.getEmail());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void activateUser(int activationCode) {
+    public void activateUser(String activationCode) {
         User user = userProvider.getCurrentUser();
         validateCode(user, String.valueOf(activationCode));
         user.setStatus(Status.ACTIVATED);
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto getUserById(String id) {
+    public UserDto findById(String id) {
         User user = userRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with id %s not found", id)));
         User currentUser = userProvider.getCurrentUser();

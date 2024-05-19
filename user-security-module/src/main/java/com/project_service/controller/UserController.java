@@ -22,11 +22,11 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserDto findById(@PathVariable("id") String id) {
-        return userService.getUserById(id);
+        return userService.findById(id);
     }
 
     @PutMapping("/activate")
-    public void activateUser(@RequestBody int activationCode){
+    public void activateUser(@RequestBody String activationCode){
         userService.activateUser(activationCode);
     }
 

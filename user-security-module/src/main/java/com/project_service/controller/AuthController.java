@@ -18,7 +18,7 @@ public class AuthController {
 
     @PostMapping
     public String auth(@RequestBody UserCredentialsDto userCredentialsDto) {
-        User user = userService.authenticateUser(userCredentialsDto);
+        User user = userService.findByCredentials(userCredentialsDto);
         return jwtService.generateToken(user.getEmail());
     }
 

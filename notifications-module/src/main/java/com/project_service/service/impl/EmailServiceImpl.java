@@ -34,7 +34,6 @@ public class EmailServiceImpl implements EmailService {
     private final SpringTemplateEngine templateEngine;
     private final UserRepository userRepository;
 
-    @Async
     @Override
     @Transactional
     public void resendActivationCode(String email) {
@@ -50,7 +49,6 @@ public class EmailServiceImpl implements EmailService {
         sendMail(mail);
     }
 
-    @Async
     @Override
     @Transactional
     public void initiatePasswordReset(String email) {
@@ -71,7 +69,8 @@ public class EmailServiceImpl implements EmailService {
         return random.nextInt(900000) + 100000;
     }
 
-    private void sendMail(Mail mail) {
+    @Async
+    public void sendMail(Mail mail) {
         final Context ctx = new Context();
         ctx.setVariables(mail.getTemplateVars());
 

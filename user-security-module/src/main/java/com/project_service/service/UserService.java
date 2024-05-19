@@ -7,7 +7,7 @@ import com.project_service.entity.User;
 import com.project_service.entity.enums.Role;
 
 public interface UserService {
-    User authenticateUser(UserCredentialsDto userCredentialsDto);
+    User findByCredentials(UserCredentialsDto userCredentialsDto);
 
     Role getAuthorizedUserRole();
 
@@ -15,7 +15,7 @@ public interface UserService {
 
     void updatePassword(UpdatePasswordDto updatePasswordDto);
 
-    void activateUser(int activationCode);
+    void activateUser(String activationCode);
 
-    UserDto getUserById(String id);
+    UserDto findById(String id);
 }
