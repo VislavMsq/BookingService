@@ -1,10 +1,13 @@
 package com.project_service.entity;
 
 import com.project_service.entity.enums.Role;
+import com.project_service.entity.enums.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -44,6 +47,16 @@ public class User extends OwnEntity {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Column(name = "activation_code")
+    private Integer activationCode;
+
+    @Column(name = "expiration_time")
+    private Timestamp expirationTime;
 
     @Override
     public String toString() {

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to HouseHub</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #031231;
+      margin: 0;
+      padding: 0;
+      color: black;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #6B51EA;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    p {
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .activation-code {
+      padding: 10px;
+      background-color: #EC6A50;
+      border: 1px solid #ffffff;
+      border-radius: 5px;
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ffffff; /* Activation code text color */
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #999999;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Welcome to HouseHub</h1>
+  <p>Thank you for joining HouseHub! To get started, please activate your account by using the following activation code:</p>
+  <div class="activation-code" th:text="${activationCode}"></div>
+  <p>Copy the activation code above and paste it on the activation page to complete the process.</p>
+</div>
+<div class="footer">
+  <p>If you have any questions or need assistance, please contact our support team at <a href="mailto:support@househub.com">support@househub24.com</a>.</p>
+  <p>&copy; 2024 HouseHub. All rights reserved.</p>
+</div>
+</body>
+</html>
