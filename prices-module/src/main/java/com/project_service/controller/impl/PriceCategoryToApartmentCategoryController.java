@@ -5,6 +5,7 @@ import com.project_service.dto.PriceCategoryToApartmentCategoryDto;
 import com.project_service.service.PriceCategoryToApartmentCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -19,6 +20,14 @@ public class PriceCategoryToApartmentCategoryController implements PriceCategory
     public PriceCategoryToApartmentCategoryDto create(@RequestBody PriceCategoryToApartmentCategoryDto priceCategoryToApartmentCategoryDto) {
         return priceCategoryToApartmentCategoryService.create(priceCategoryToApartmentCategoryDto);
     }
+
+    @PutMapping()
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('OWNER')")
+    public PriceCategoryToApartmentCategoryDto update(@RequestBody PriceCategoryToApartmentCategoryDto priceCategoryToApartmentCategoryDto) {
+        return priceCategoryToApartmentCategoryService.update(priceCategoryToApartmentCategoryDto);
+    }
+
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

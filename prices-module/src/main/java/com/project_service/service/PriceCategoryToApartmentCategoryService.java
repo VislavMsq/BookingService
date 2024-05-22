@@ -7,4 +7,6 @@ public interface PriceCategoryToApartmentCategoryService {
     PriceCategoryToApartmentCategoryDto create(PriceCategoryToApartmentCategoryDto priceCategoryToApartmentCategoryDto);
 
     PriceCategoryToApartmentCategoryDto getDto(String id);
+
+    PriceCategoryToApartmentCategoryDto update(PriceCategoryToApartmentCategoryDto priceCategoryToApartmentCategoryDto);
 }

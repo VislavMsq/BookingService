@@ -2,10 +2,7 @@ package com.project_service.service.impl;
 
 
 import com.project_service.dto.PriceCategoryDto;
-import com.project_service.entity.Currency;
-import com.project_service.entity.PriceCategory;
-import com.project_service.entity.PriceCategorySchedule;
-import com.project_service.entity.User;
+import com.project_service.entity.*;
 import com.project_service.exception.CurrencyNotFoundException;
 import com.project_service.exception.PriceCategoryNotFoundException;
 import com.project_service.mapper.PriceCategoryMapper;
@@ -51,11 +48,7 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
     @Override
     @Transactional
     public PriceCategoryDto findById(String id) {
-        PriceCategory priceCategory = priceCategoryRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new PriceCategoryNotFoundException(
-                                String.format("Price category with id %s not found", id)
-                        )
-                );
+        PriceCategory priceCategory = findPriceCategoryById(id);
         PriceCategoryDto priceCategoryDto = priceCategoryMapper.mapToDto(priceCategory);
         List<PriceCategorySchedule> priceCategorySchedules = priceCategory.getPriceCategoryScheduleSet().stream().toList();
         priceCategoryDto.setPeriods(priceScheduleMapper.toScheduleDto(priceCategorySchedules));
@@ -66,11 +59,8 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
     @Transactional
     public PriceCategoryDto update(PriceCategoryDto priceCategoryDto) {
         User owner = userProvider.getCurrentUser();
-        PriceCategory priceCategory = priceCategoryRepository.findById(UUID.fromString(priceCategoryDto.getId()))
-                .orElseThrow(() -> new PriceCategoryNotFoundException(
-                                String.format("Price category with id %s not found", priceCategoryDto.getId())
-                        )
-                );
+        PriceCategory priceCategory = findPriceCategoryById(priceCategoryDto.getId());
+
         UtilsService.checkOwner(priceCategory, owner);
         priceCategory.setCurrency(
                 currencyRepository.findByCode(priceCategoryDto.getCurrencyCode())
@@ -87,5 +77,14 @@ public class PriceCategoryServiceImpl implements PriceCategoryService {
     @Transactional
     public List<PriceCategoryDto> findAll() {
         return priceCategoryMapper.mapToListDto(priceCategoryRepository.findAllByOwner(userProvider.getCurrentUser()));
+    }
+
+    @Override
+    public PriceCategory findPriceCategoryById(String id) {
+        return priceCategoryRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new PriceCategoryNotFoundException(
+                                String.format("Price category with id %s not found", id)
+                        )
+                );
     }
 }

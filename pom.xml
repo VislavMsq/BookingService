@@ -21,6 +21,7 @@
         <module>bookings-module</module>
         <module>user-security-module</module>
         <module>prices-module</module>
+        <module>notifications-module</module>
     </modules>
 
     <properties>

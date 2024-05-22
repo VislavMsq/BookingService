@@ -49,6 +49,7 @@ public class PriceServiceImpl implements PriceService {
         priceRepository.saveAll(pricesToSave);
     }
 
+
     private List<Apartment> getApartments(List<String> apartmentIds, User owner, LocalDate startDate, LocalDate endDate) {
         return (apartmentIds == null || apartmentIds.isEmpty()) ?
                 apartmentRepository.findAllByOwnerWithPrices(owner, startDate.getYear(),
@@ -130,4 +131,5 @@ public class PriceServiceImpl implements PriceService {
         MonthDay endDate = MonthDay.of(schedule.getEndMonth(), schedule.getEndDay());
         return !monthDay.isBefore(startDate) && !monthDay.isAfter(endDate);
     }
+
 }

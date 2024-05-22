@@ -10,5 +10,7 @@ public interface PriceService {
     List<PriceDto> getPricesOfApartment(String apartmentId, LocalDate startDate, LocalDate endDate);
 
     void updatePrices(List<String> apartmentIds, LocalDate startDate, LocalDate endDate);
+
 }
+
 
