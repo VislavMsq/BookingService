@@ -1,5 +1,6 @@
-package com.project_service.controller;
+package com.project_service.controller.impl;
 
+import com.project_service.controller.BookingOperationsService;
 import com.project_service.dto.BookingDto;
 import com.project_service.service.BookingService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/bookings")
-public class BookingController {
+public class BookingController implements BookingOperationsService {
     private final BookingService bookingService;
 
     @GetMapping("/{id}")

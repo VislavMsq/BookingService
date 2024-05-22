@@ -1,5 +1,6 @@
-package com.project_service.controller;
+package com.project_service.controller.impl;
 
+import com.project_service.controller.BoardDetailOperationService;
 import com.project_service.dto.BoardDetailDto;
 import com.project_service.service.BoardDetailService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/board-details")
-public class BoardDetailController {
+public class BoardDetailController implements BoardDetailOperationService {
     private final BoardDetailService boardDetailService;
 
     @GetMapping

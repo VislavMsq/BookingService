@@ -1,5 +1,6 @@
-package com.project_service.controller;
+package com.project_service.controller.impl;
 
+import com.project_service.controller.PriceCategoryOperationsService;
 import com.project_service.dto.PriceCategoryDto;
 import com.project_service.service.PriceCategoryService;
 import jakarta.validation.Valid;
@@ -13,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/price-category")
-public class PriceCategoryController {
+public class PriceCategoryController implements PriceCategoryOperationsService {
     private final PriceCategoryService priceCategoryService;
 
     @PostMapping

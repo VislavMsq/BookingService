@@ -1,5 +1,6 @@
-package com.project_service.controller;
+package com.project_service.controller.impl;
 
+import com.project_service.controller.ApartmentOperationsService;
 import com.project_service.dto.ApartmentDto;
 import com.project_service.service.ApartmentService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/apartments")
 @RequiredArgsConstructor
-public class ApartmentController {
+public class ApartmentController implements ApartmentOperationsService {
     private final ApartmentService apartmentService;
 
     @PostMapping

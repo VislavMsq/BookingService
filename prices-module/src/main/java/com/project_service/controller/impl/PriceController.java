@@ -1,5 +1,6 @@
-package com.project_service.controller;
+package com.project_service.controller.impl;
 
+import com.project_service.controller.PriceOperationsService;
 import com.project_service.dto.PriceDto;
 import com.project_service.service.PriceService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/prices")
-public class PriceController {
+public class PriceController implements PriceOperationsService {
+
     private final PriceService priceService;
 
     @GetMapping("/apartment/{id}")

@@ -1,5 +1,6 @@
-package com.project_service.controller;
+package com.project_service.controller.impl;
 
+import com.project_service.controller.ClientOperationsService;
 import com.project_service.dto.ClientDto;
 import com.project_service.service.ClientService;
 import jakarta.validation.Valid;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/clients")
-public class ClientController {
+public class ClientController implements ClientOperationsService {
     private final ClientService clientService;
 
     @GetMapping("/phones/{phone}")

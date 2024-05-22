@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/users")
-public class UserController {
+public class UserController implements UserOperationsService {
     private final UserService userService;
 
     @PostMapping("/register")
